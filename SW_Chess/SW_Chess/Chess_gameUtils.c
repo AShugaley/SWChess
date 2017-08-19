@@ -4,7 +4,7 @@
 //
 //  Created by Alexander Shugaley on 19/08/2017.
 //  Copyright © 2017 Alexander Shugaley. All rights reserved.
-//
+// bla bla
 
 #include "Chess_gameUtils.h"
 #include "Chess_gameUtilsAux.h"
