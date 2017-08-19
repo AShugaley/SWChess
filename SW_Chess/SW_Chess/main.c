@@ -7,9 +7,15 @@
 //
 
 #include <stdio.h>
+#include "Chess_gameUtils.h"
+
+
 
 int main(int argc, const char * argv[]) {
-    // insert code here...
     printf("Hello, World!\n");
+    chessGame* src = createChessGame(5, TWO_PLAYERS);
+    chessConsolePrintBoard(src);
+    
+    
     return 0;
 }

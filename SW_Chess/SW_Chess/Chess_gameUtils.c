@@ -27,8 +27,10 @@ chessGame* createChessGame(int historySize, GAME_MODE mode)
     
 
     gameSt->currentPlayer = WHITES;
-    gameSt->historyArray = spArrayListCreate(historySize);
+   // gameSt->historyArray = spArrayListCreate(historySize);
     gameSt->gameMode = mode;
+    
+    initChessBoard(gameSt);
     
     return gameSt;
     
@@ -55,7 +57,7 @@ chessGame* copyChessGame(chessGame* src){ // INCOMPLETE!!
 void destroyChessGame(chessGame* src){
     if (src != NULL)
     {
-        spArrayListDestroy(src->historyArray);
+   //     spArrayListDestroy(src->historyArray);
         free(src);
     }
 }

@@ -9,7 +9,8 @@
 #ifndef Chess_gameUtils_h
 #define Chess_gameUtils_h
 #include <stdio.h>
-#include "Chess_ArrayList.h"
+#include <stdbool.h>
+//#include "Chess_ArrayList.h"
 
 #define BOARD_SIZE 8
 
@@ -20,7 +21,7 @@ typedef enum ui_mode {
 
 typedef enum game_mode {
     ONE_PLAYER_WHITES,
-    ONE_PLAYER_BLACK,
+    ONE_PLAYER_BLACKS,
     TWO_PLAYERS,
 } GAME_MODE;
 
@@ -40,7 +41,7 @@ typedef struct chess_game {
     char gameBoard[BOARD_SIZE][BOARD_SIZE];
     GAME_MODE gameMode;
     CURRENT_PLAYER currentPlayer;
-    SPArrayList *historyArray;
+  //  SPArrayList *historyArray;
     int currentMove;
     UI_MODE uiMode;
 } chessGame;

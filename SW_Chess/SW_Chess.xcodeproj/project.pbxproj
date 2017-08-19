@@ -10,7 +10,6 @@
 		DB7B09651F48154300A8243D /* Chess_gameUtils.c in Sources */ = {isa = PBXBuildFile; fileRef = DB7B09631F48154300A8243D /* Chess_gameUtils.c */; };
 		DB7B096B1F4855AB00A8243D /* Chess_gameUtilsAux.c in Sources */ = {isa = PBXBuildFile; fileRef = DB7B09691F4855AB00A8243D /* Chess_gameUtilsAux.c */; };
 		DBB8EBD01F45797C00B87875 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = DBB8EBCF1F45797C00B87875 /* main.c */; };
-		DBB8EBD81F457FA700B87875 /* Chess_ArrayList.c in Sources */ = {isa = PBXBuildFile; fileRef = DBB8EBD61F457FA700B87875 /* Chess_ArrayList.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -32,8 +31,6 @@
 		DB7B096A1F4855AB00A8243D /* Chess_gameUtilsAux.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Chess_gameUtilsAux.h; sourceTree = "<group>"; };
 		DBB8EBCC1F45797C00B87875 /* SW_Chess */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SW_Chess; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBB8EBCF1F45797C00B87875 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
-		DBB8EBD61F457FA700B87875 /* Chess_ArrayList.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Chess_ArrayList.c; sourceTree = "<group>"; };
-		DBB8EBD71F457FA700B87875 /* Chess_ArrayList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Chess_ArrayList.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,8 +66,6 @@
 				DB7B09691F4855AB00A8243D /* Chess_gameUtilsAux.c */,
 				DB7B096A1F4855AB00A8243D /* Chess_gameUtilsAux.h */,
 				DBB8EBCF1F45797C00B87875 /* main.c */,
-				DBB8EBD61F457FA700B87875 /* Chess_ArrayList.c */,
-				DBB8EBD71F457FA700B87875 /* Chess_ArrayList.h */,
 				DB7B09631F48154300A8243D /* Chess_gameUtils.c */,
 				DB7B09641F48154300A8243D /* Chess_gameUtils.h */,
 			);
@@ -134,7 +129,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DBB8EBD81F457FA700B87875 /* Chess_ArrayList.c in Sources */,
 				DB7B09651F48154300A8243D /* Chess_gameUtils.c in Sources */,
 				DBB8EBD01F45797C00B87875 /* main.c in Sources */,
 				DB7B096B1F4855AB00A8243D /* Chess_gameUtilsAux.c in Sources */,
