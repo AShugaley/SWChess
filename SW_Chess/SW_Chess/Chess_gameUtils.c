@@ -6,10 +6,10 @@
 //  Copyright © 2017 Alexander Shugaley. All rights reserved.
 //
 
-#include "Chess_gameUtils.h"
-#include "Chess_gameUtilsAux.h"
-#include <assert.h>
 
+
+#include <assert.h>
+#include "Chess_gameUtils.h"
 #include <stdlib.h>
 
 
@@ -79,6 +79,25 @@ CHESS_GAME_MESSAGE chessConsolePrintBoard(chessGame* src) {
 }
 
 
+movesArray* allPossibleMoves(chessGame* src, int row, int col){
+    movesArray* array = (movesArray *)malloc(sizeof(movesArray));
+    
+    int index = 0;
+    for(int i = 0; i < BOARD_SIZE; i++){
+        for(int j = 0; j<BOARD_SIZE; j++){
+            if(isValidMove(src, row, col, i, j)){
+                array->moves[index][0] =  row;
+                array->moves[index][1] = col;
+                array->moves[index][2] = i;
+                array->moves[index][3] = j;
+                index++;
+            }
+        }
+    }
+    array->moves[index][0] = -1;
+    return array;
+}
+
 
 bool isValidMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col){
     
@@ -91,7 +110,7 @@ bool isValidMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_po
         player = WHITES;
     else
         player = BLACKS;
-    
+  
     
     if(!isValidDestenetion(player, src->gameBoard[next_pos_row][next_pos_col]))
         return false;
@@ -99,22 +118,22 @@ bool isValidMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_po
     switch(figure){
         case PAWN_BLACK:
         case PAWN_WHITE:
-              return isValidPawnMove(src, prev_pos_row, prev_pos_row, next_pos_row, next_pos_col);
+              return isValidPawnMove(src, prev_pos_row, prev_pos_col, next_pos_row, next_pos_col);
         case BISHOP_BLACK:
         case BISHOP_WHITE:
-              return isValidBishopMove(src, prev_pos_row, prev_pos_row, next_pos_row, next_pos_col);
+              return isValidBishopMove(src, prev_pos_row, prev_pos_col, next_pos_row, next_pos_col);
         case KNIGHT_BLACK:
         case KNIGHT_WHITE:
-              return isValidKnightMove(src, prev_pos_row, prev_pos_row, next_pos_row, next_pos_col);
+              return isValidKnightMove(src, prev_pos_row, prev_pos_col, next_pos_row, next_pos_col);
         case ROOK_BLACK:
         case ROOK_WHITE:
-              return isValidRookMove(src, prev_pos_row, prev_pos_row, next_pos_row, next_pos_col);
+              return isValidRookMove(src, prev_pos_row, prev_pos_col, next_pos_row, next_pos_col);
         case QUEEN_BLACK:
         case QUEEN_WHITE:
-              return isValidQueenMove(src, prev_pos_row, prev_pos_row, next_pos_row, next_pos_col);
+              return isValidQueenMove(src, prev_pos_row, prev_pos_col, next_pos_row, next_pos_col);
         case KING_WHITE:
         case KING_BLACK:
-              return isValidKingMove(src, prev_pos_row, prev_pos_row, next_pos_row, next_pos_col);
+              return isValidKingMove(src, prev_pos_row, prev_pos_col, next_pos_row, next_pos_col);
     }
     printf("should not get here #453"); // delete
     return false;
@@ -215,6 +234,9 @@ bool isStalemate(chessGame* src){
         
 }
 
+CHESS_GAME_MESSAGE undoChessPrevMove(chessGame* src){
+    return CHESS_GAME_INVALID_MOVE;
+}
 
 bool isCheck(chessGame* src){
     
@@ -228,6 +250,7 @@ bool isCheck(chessGame* src){
                 }
             }
             else{
+          
                 if(src->gameBoard[i][j] == KING_BLACK){
                     king_row = i;
                     king_col = j;
