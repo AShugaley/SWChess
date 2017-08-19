@@ -29,12 +29,12 @@
 #define KING_WHITE 'k'
 #define KING_BLACK 'K'
 
-#define EMPTY_BOARD_POS ' '
+#define EMPTY_BOARD_POS '_'
 
-
+void initChessBoard(chessGame* src);
 bool isValidDestenetion(CURRENT_PLAYER player, char figure);
 bool isOpponentPosition(CURRENT_PLAYER player, char figure);
-bool isValidBoardPosition(prev_pos_row, prev_pos_col, next_pos_row, next_pos_col);
+bool isValidBoardPosition(int prev_pos_row, int prev_pos_col,int  next_pos_row, int next_pos_col);
 bool isValidPawnMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col);
 bool isValidBishopMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col);
 bool isValidRookMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col);

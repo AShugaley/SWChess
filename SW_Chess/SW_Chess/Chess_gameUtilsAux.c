@@ -199,6 +199,41 @@ bool isValidBoardPosition(prev_pos_row, prev_pos_col, next_pos_row, next_pos_col
 
 
 
+void initChessBoard(chessGame* src){
+    for(int i = 0; i<BOARD_SIZE; i++)
+        for(int j = 0; j <BOARD_SIZE; j++)
+            src->gameBoard[i][j] = EMPTY_BOARD_POS;
+    for(int i = 0; i < BOARD_SIZE; i++){
+        src->gameBoard[1][i] = PAWN_WHITE;
+        src->gameBoard[6][i] = PAWN_BLACK;
+        
+    }
+    
+    //whites
+    src->gameBoard[0][0] = ROOK_WHITE;
+    src->gameBoard[0][1] = KNIGHT_WHITE;
+    src->gameBoard[0][2] = BISHOP_WHITE;
+    src->gameBoard[0][3] = KING_WHITE;
+    src->gameBoard[0][4] = QUEEN_WHITE;
+    src->gameBoard[0][5] = BISHOP_WHITE;
+    src->gameBoard[0][6] = KNIGHT_WHITE;
+    src->gameBoard[0][7] = ROOK_WHITE;
+    
+    
+    
+    //blacks
+    src->gameBoard[0][0] = ROOK_BLACK;
+    src->gameBoard[0][1] = KNIGHT_BLACK;
+    src->gameBoard[0][2] = BISHOP_BLACK;
+    src->gameBoard[0][3] = KING_BLACK;
+    src->gameBoard[0][4] = QUEEN_BLACK;
+    src->gameBoard[0][5] = BISHOP_BLACK;
+    src->gameBoard[0][6] = KNIGHT_BLACK;
+    src->gameBoard[0][7] = ROOK_BLACK;
+}
+
+
+
 bool isUnderPressure(chessGame* src, int row, int col){
     
     for(int i = 0; i< BOARD_SIZE; i++){

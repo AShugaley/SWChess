@@ -10,6 +10,73 @@
 #include "Chess_gameUtilsAux.h"
 #include <assert.h>
 
+#include <stdlib.h>
+
+
+
+
+chessGame* createChessGame(int historySize, GAME_MODE mode)
+{
+
+    if (historySize <= 0)
+        return NULL;
+    
+    chessGame *gameSt = (chessGame *)malloc(sizeof(chessGame));
+    if (gameSt == NULL)
+        return NULL;
+    
+
+    gameSt->currentPlayer = WHITES;
+    gameSt->historyArray = spArrayListCreate(historySize);
+    gameSt->gameMode = mode;
+    
+    return gameSt;
+    
+}
+
+
+chessGame* copyChessGame(chessGame* src){ // INCOMPLETE!!
+    chessGame *gameSt = (chessGame *)malloc(sizeof(chessGame));
+    if (gameSt == NULL)
+        return NULL;
+    for(int i = 0; i<BOARD_SIZE; i++)
+        for(int j = 0; j<BOARD_SIZE; j++)
+            gameSt->gameBoard[i][j] = src->gameBoard[i][j];
+    gameSt->currentPlayer = src->currentPlayer;
+    
+    //NEED ADD COPY OF HISTORY ARRAY!!
+    
+    gameSt->gameMode = src->gameMode;
+    
+    return gameSt;
+    
+}
+
+void destroyChessGame(chessGame* src){
+    if (src != NULL)
+    {
+        spArrayListDestroy(src->historyArray);
+        free(src);
+    }
+}
+
+
+CHESS_GAME_MESSAGE chessConsolePrintBoard(chessGame* src) {
+    if (src == NULL)
+        return CHESS_GAME_INVALID_ARGUMENT;
+    for (int i = BOARD_SIZE - 1; i>-1; i--) {
+        printf("%d| ", i+1 );
+        for (int j = 0; j<BOARD_SIZE; j++) {
+            printf("%c ", src->gameBoard[i][j]);
+        }
+        printf("|\n");
+    }
+    printf("  -----------------  \n");
+    printf("   A B C D E F G H   \n");
+    return CHESS_GAME_SUCCESS;
+}
+
+
 
 bool isValidMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col){
     

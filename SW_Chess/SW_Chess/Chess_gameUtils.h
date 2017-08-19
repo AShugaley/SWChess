@@ -48,28 +48,27 @@ typedef struct chess_game {
 
 
 
-chessGame* createChessGame(int historySize, GAME_MODE mode);
+chessGame* createChessGame(int historySize, GAME_MODE mode); //D
 
-chessGame* copyChessGame(chessGame* src);
+chessGame* copyChessGame(chessGame* src); //D
 
-void destroyChessGame(chessGame* src);
+void destroyChessGame(chessGame* src); // D
 
-CHESS_GAME_MESSAGE setChessMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col);
+CHESS_GAME_MESSAGE setChessMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col); // D
 
-bool isValidMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col);
+bool isValidMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col); // D
 
-CHESS_GAME_MESSAGE undoChessPrevMove(chessGame* src);
+CHESS_GAME_MESSAGE undoChessPrevMove(chessGame* src); //NT
 
-bool hasValidMove(chessGame* src, int row, int col);
+bool hasValidMove(chessGame* src, int row, int col); // D
 
-void chessConsolePrintBoard(chessGame* src);
+CHESS_GAME_MESSAGE chessConsolePrintBoard(chessGame* src); // D
 
-bool isCheck(chessGame* src);
+bool isCheck(chessGame* src); // D
 
-bool isCheckmate(chessGame* src);
+bool isCheckmate(chessGame* src); // D
 
-
-bool isStalemate(chessGame* src);
+bool isStalemate(chessGame* src); // D
 
 
 
