@@ -1,15 +1,6 @@
-//
-//  Chess_ArrayList.h
-//  SW_Chess
-//
-//  Created by Alexander Shugaley on 17/08/2017.
-//  Copyright © 2017 Alexander Shugaley. All rights reserved.
-//
-/*
-
-#ifndef SPARRAYLIST_H_
-#define SPARRAYLIST_H_
 #include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 /**
  * SPArrayList summary:
@@ -244,7 +235,3 @@ bool spArrayListIsFull(SPArrayList* src);
  */
 bool spArrayListIsEmpty(SPArrayList* src);
 
-
-
-#endif /* Chess_ArrayList_h */
-/*
