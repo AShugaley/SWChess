@@ -115,14 +115,23 @@ bool isValidKnightMove(chessGame* src, int prev_pos_row, int prev_pos_col, int n
 
     
     int operatorRow =1;
-    if (prev_pos_row > next_pos_row)
+    if (prev_pos_row < next_pos_row)
         operatorRow = -1;
     
     
     int operatorCol =1;
-    if (prev_pos_col > next_pos_col)
+    if (prev_pos_col < next_pos_col)
         operatorCol = -1;
-
+//    printf("HERE + %d/n", prev_pos_row);
+//    printf("HERE + %d/n", prev_pos_col);
+//    printf("HERE + %d/n", next_pos_row);
+//    printf("HERE + %d/n", next_pos_col);
+//    printf("HERE + %d/n", operatorRow);
+//    printf("HERE + %d/n", operatorCol);
+//    printf("HERE + %d/n", next_pos_row + (2*operatorRow));
+//    printf("HERE + %d/n", next_pos_col+ (1*operatorCol));
+//    printf("HERE + %d/n", next_pos_col + (2*operatorCol));
+//    printf("HERE + %d/n", next_pos_row+ (1*operatorRow));
     if(prev_pos_row == next_pos_row + (2*operatorRow))
         if(prev_pos_col == next_pos_col+ (1*operatorCol))
             return true;
