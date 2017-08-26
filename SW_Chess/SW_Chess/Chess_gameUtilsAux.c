@@ -6,8 +6,11 @@
 //  Copyright © 2017 Alexander Shugaley. All rights reserved.
 //
 
-#include "Chess_gameUtilsAux.h"
 
+
+#include "Chess_gameUtilsAux.h"
+#include "Chess_gameUtils.h"
+#include <stdbool.h>
 
 //we assume that the arguments are legal - i.e. 0<=pos<=7 => need to check it elsewhere! - the comp will do so by himself, and we will check arguments from the user at input.
 
@@ -18,11 +21,16 @@ bool isValidPawnMove(chessGame* src, int prev_pos_row, int prev_pos_col, int nex
         first_row = 7;
         operator = -1;
     }
-    if (prev_pos_col != next_pos_col) //diff col - pawns do not do it
-        return false;
-    if (prev_pos_row == next_pos_row+(1*operator)) // reg move
+    printf("%d,%d,%d,%d,%d,%d",prev_pos_row,prev_pos_col,next_pos_row,next_pos_col,operator,operator);
+    if (prev_pos_col != next_pos_col){
+        if((next_pos_row == prev_pos_row+(1*operator))&&((prev_pos_col+1 == next_pos_col)||(prev_pos_col-1==next_pos_col)))
+            return true;
+        else
+            return false;
+    }
+    if (prev_pos_row+(1*operator) == next_pos_row) // reg move
         return true;
-    if ((prev_pos_row == first_row+(1*operator)) && (prev_pos_row == next_pos_row+(2*operator))) // first move
+    if ((prev_pos_row == first_row+(1*operator)) && (prev_pos_row+(2*operator) == next_pos_row) && (src->gameBoard[prev_pos_row+(1*operator)][prev_pos_col] == EMPTY_BOARD_POS)) // first move
         return true;
     return false;
 }
@@ -30,31 +38,34 @@ bool isValidPawnMove(chessGame* src, int prev_pos_row, int prev_pos_col, int nex
 
 bool isValidBishopMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col){
     if((prev_pos_row+prev_pos_col) != (next_pos_row+next_pos_col)){ //LB to TR diag
-        for (int i = 0; i<8; i++){
-            if(src->gameBoard[prev_pos_row+i][prev_pos_col+i] != EMPTY_BOARD_POS)
-                break;
+        for (int i = 1; i<8; i++){
             if((prev_pos_row+i == next_pos_row) && (prev_pos_col+i == next_pos_col))
                 return true;
-        }
-        for (int i = 7; i<-1; i--){
-            if(src->gameBoard[prev_pos_row-i][prev_pos_col-i] != EMPTY_BOARD_POS)
+            if(src->gameBoard[prev_pos_row+i][prev_pos_col+i] != EMPTY_BOARD_POS)
                 break;
+
+        }
+        for (int i = 1; i<8; i++){
             if((prev_pos_row-i == next_pos_row) && (prev_pos_col-i == next_pos_col))
                 return true;
+            if(src->gameBoard[prev_pos_row-i][prev_pos_col-i] != EMPTY_BOARD_POS)
+                break;
         }
     }
     else{
-        for (int i = 0; i<8; i++){
-            if(src->gameBoard[prev_pos_row+i][prev_pos_col-i] != EMPTY_BOARD_POS)
-                break;
+        for (int i = 1; i<8; i++){
             if((prev_pos_row+i == next_pos_row) && (prev_pos_col-i == next_pos_col))
                 return true;
-        }
-        for (int i = 0; i<8; i++){
-            if(src->gameBoard[prev_pos_row-i][prev_pos_col+i] != EMPTY_BOARD_POS)
+            if(src->gameBoard[prev_pos_row+i][prev_pos_col-i] != EMPTY_BOARD_POS)
                 break;
+
+        }
+        for (int i = 1; i<8; i++){
             if((prev_pos_row-i == next_pos_row) && (prev_pos_col+i == next_pos_col))
                 return true;
+            if(src->gameBoard[prev_pos_row-i][prev_pos_col+i] != EMPTY_BOARD_POS)
+                break;
+
         }
     }
     return false;
@@ -64,27 +75,33 @@ bool isValidBishopMove(chessGame* src, int prev_pos_row, int prev_pos_col, int n
 
 
 bool isValidRookMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col){
+
     if(prev_pos_row == next_pos_row){
+      
         int operator =1;
-        if (prev_pos_row > next_pos_row)
+        if (prev_pos_col > next_pos_col)
             operator = -1;
-        for(int i = 0; i<8; i++){
-            if(src->gameBoard[prev_pos_row][prev_pos_col+(i*operator)] != EMPTY_BOARD_POS)
-                break;
+        for(int i = 1; i<8; i++){
             if((prev_pos_col+(i*operator) == next_pos_col))
                 return true;
+            if(src->gameBoard[prev_pos_row][prev_pos_col+(i*operator)] != EMPTY_BOARD_POS)
+                break;
+
         }
     }
     
     if(prev_pos_col == next_pos_col){
-        int operator =1;
-        if (prev_pos_col > next_pos_col)
+     
+        int operator = 1;
+        if (prev_pos_row > next_pos_row)
             operator = -1;
-        for(int i = 0; i<8; i++){
-            if(src->gameBoard[prev_pos_row+(i*operator)][prev_pos_col] != EMPTY_BOARD_POS)
-                break;
+        for(int i = 1; i<8; i++){
+         
             if((prev_pos_row+(i*operator) == next_pos_row))
                 return true;
+            if(src->gameBoard[prev_pos_row+(i*operator)][prev_pos_col] != EMPTY_BOARD_POS)
+                break;
+
         }
     }
     return false;
@@ -172,12 +189,12 @@ void switchCurrentPlayer(chessGame* src){
 
 
 bool isWhiteFigure(char figure){
-    return (figure == PAWN_WHITE) || (figure == BISHOP_WHITE)||(figure == KNIGHT_WHITE)||(figure == BISHOP_WHITE)||(figure == QUEEN_WHITE)||(figure == KING_WHITE);
+    return (figure == PAWN_WHITE) || (figure == BISHOP_WHITE)||(figure == KNIGHT_WHITE)||(figure == ROOK_WHITE)||(figure == QUEEN_WHITE)||(figure == KING_WHITE);
 }
 
 
 bool isBlackFigure(char figure){
-    return (figure == PAWN_BLACK) || (figure == BISHOP_BLACK)||(figure == KNIGHT_BLACK)||(figure == BISHOP_BLACK)||(figure == QUEEN_BLACK)||(figure == KING_BLACK);
+    return (figure == PAWN_BLACK) || (figure == BISHOP_BLACK)||(figure == KNIGHT_BLACK)||(figure == ROOK_BLACK)||(figure == QUEEN_BLACK)||(figure == KING_BLACK);
 }
 
 
@@ -214,7 +231,7 @@ void initChessBoard(chessGame* src){
     src->gameBoard[0][1] = KNIGHT_WHITE;
     src->gameBoard[0][2] = BISHOP_WHITE;
     src->gameBoard[0][3] = QUEEN_WHITE;
-    src->gameBoard[0][4] = KING_BLACK;
+    src->gameBoard[0][4] = KING_WHITE;
     src->gameBoard[0][5] = BISHOP_WHITE;
     src->gameBoard[0][6] = KNIGHT_WHITE;
     src->gameBoard[0][7] = ROOK_WHITE;
@@ -238,10 +255,13 @@ bool isUnderPressure(chessGame* src, int row, int col){
     
     for(int i = 0; i< BOARD_SIZE; i++){
         for(int j = 0; j<BOARD_SIZE; j++){
+           
             if(isWhiteFigure(src->gameBoard[row][col])){
                 if(isBlackFigure(src->gameBoard[i][j])){
-                    if(isValidMove(src, i, j, row, col))
+                    if(isValidMove(src, i, j, row, col)){
                         return true;
+                    }
+                    
                 }
             }
             
@@ -257,3 +277,8 @@ bool isUnderPressure(chessGame* src, int row, int col){
     printf("Just checked empty filed - why did you do it?"); //delete
     return false;
 }
+
+
+
+///TEST
+

@@ -8,28 +8,9 @@
 
 #ifndef Chess_gameUtilsAux_h
 #define Chess_gameUtilsAux_h
-#include "Chess_gameUtils.h"
-#include <stdio.h>
-
-#define PAWN_WHITE 'm'
-#define PAWN_BLACK 'M'
-
-#define BISHOP_WHITE 'b'
-#define BISHOP_BLACK 'B'
-
-#define ROOK_WHITE 'r'
-#define ROOK_BLACK 'R'
-
-#define KNIGHT_WHITE 'n'
-#define KNIGHT_BLACK 'N'
-
-#define QUEEN_WHITE 'q'
-#define QUEEN_BLACK 'Q'
-
-#define KING_WHITE 'k'
-#define KING_BLACK 'K'
-
-#define EMPTY_BOARD_POS '_'
+#include <stdbool.h>
+#include <stdlib.h>
+#include "Chess_def.h"
 
 void initChessBoard(chessGame* src);
 bool isValidDestenetion(CURRENT_PLAYER player, char figure);

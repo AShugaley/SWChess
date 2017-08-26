@@ -1,3 +1,5 @@
+#ifndef CHESS_GAMESETTINGSPARSER_H_
+#define CHESS_GAMESETTINGSPARSER_H_
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -13,20 +15,20 @@
 
 //a type used to represent a command
 typedef enum {
-	CHESS_INVALID_LINE,
+	CHESS_INVALID_SETTING_LINE,
 	CHESS_MODE,
 	CHESS_DIFFICULTY,
 	CHESS_COLOR,
 	CHESS_LOAD,
 	CHESS_DEFAULT,
 	CHESS_PRINT_SETTINGS,
-	CHESS_QUIT,
+	CHESS_SETTING_QUIT,
 	CHESS_START,
 } CHESS_SETTING;
 
 
 // a new type that is used to encapsulate a parsed line
-typedef struct command_t {
+typedef struct commandSet_t {
 	CHESS_SETTING cmd;
 	bool isValidArg; //is set to true if the command needs a number and the user entered a valid number
 	int arg;
@@ -58,4 +60,6 @@ bool spParserIsInt(const char* str);
 *				  and the argument is valid
 *   arg			- the argument in case isValidArg is set to true
 */
-CHESSSettingCommand spParserPraseLine(const char* str);
+CHESSSettingCommand spParserSettingLine(const char* str);
+
+#endif

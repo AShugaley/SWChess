@@ -15,87 +15,101 @@ bool spParserIsInt(const char* str)
 	return false;
 }
 
-CHESSSettingCommand spParserPraseLine(const char* str)
+CHESSSettingCommand spParserSettingLine(const char* str)
 {
 	CHESSSettingCommand command;
-	command.isValidArg = false;	
+	command.isValidArg = false;
 	char currentStr[SP_MAX_LINE_LENGTH] = "\0";
 	strcpy(currentStr, str);
-	char* currentToken;
+	char* currentSetToken;
 	char delimiter[] = " \t\r\n";
-	int arg;
 
-	currentToken = strtok(currentStr, delimiter);	//curtoken is the first part of the string 
-	if (currentToken == '\0')	//doesn't suppose to get here, just in case ...
+	currentSetToken = strtok(currentStr, delimiter);	//curtoken is the first part of the string 
+	if (currentSetToken == '\0')	//doesn't suppose to get here, just in case ...
 	{
-		command.cmd = CHESS_INVALID_LINE;
+		command.cmd = CHESS_INVALID_SETTING_LINE;
 		return command;
 	}
 
-	if (!strcmp(currentToken, "game_mode"))	//curtoken == game_mode (strcmp = 0 in this case) 
+	if (!strcmp(currentSetToken, "game_mode"))	//curtoken == game_mode (strcmp = 0 in this case) 
 	{
 		command.cmd = CHESS_MODE;
-		currentToken = strtok(NULL, delimiter);
-		if (currentToken != NULL)
+		currentSetToken = strtok(NULL, delimiter);
+		if (currentSetToken != NULL)
 		{
-			if (spParserIsInt(currentToken))
+			if (spParserIsInt(currentSetToken))
 			{
-				command.arg = atoi(currentToken);
+				command.arg = atoi(currentSetToken);
 				command.isValidArg = true;
 			}
 		}
 	}
-	
-	if (!strcmp(currentToken, "difficulty"))	
+
+	if (!strcmp(currentSetToken, "difficulty"))
 	{
 		command.cmd = CHESS_DIFFICULTY;
-		currentToken = strtok(NULL, delimiter);
-		if (currentToken != NULL)
+		currentSetToken = strtok(NULL, delimiter);
+		if (currentSetToken != NULL)
 		{
-			if (spParserIsInt(currentToken))
+			if (spParserIsInt(currentSetToken))
 			{
-				command.arg = atoi(currentToken);
+				command.arg = atoi(currentSetToken);
 				command.isValidArg = true;
 			}
 		}
 	}
 
-	if (!strcmp(currentToken, "user_color"))
+	if (!strcmp(currentSetToken, "user_color"))
 	{
 		command.cmd = CHESS_COLOR;
-		currentToken = strtok(NULL, delimiter);
-		if (currentToken != NULL)
+		currentSetToken = strtok(NULL, delimiter);
+		if (currentSetToken != NULL)
 		{
-			if (spParserIsInt(currentToken))
+			if (spParserIsInt(currentSetToken))
 			{
-				command.arg = atoi(currentToken);
+				command.arg = atoi(currentSetToken);
 				command.isValidArg = true;
 			}
 		}
 	}
 
-	if (!strcmp(currentToken, "load"))	//will check the file path later in the gameUtils functions 
+	if (!strcmp(currentSetToken, "load"))	//will check the file path later in the gameUtils functions 
 	{
 		command.cmd = CHESS_LOAD;
 	}
 
-	if (!strcmp(currentToken, "default"))	
+	if (!strcmp(currentSetToken, "default"))
 	{
 		command.cmd = CHESS_DEFAULT;
 	}
 
-	if (!strcmp(currentToken, "print_setting"))	
+	if (!strcmp(currentSetToken, "print_setting"))
 	{
 		command.cmd = CHESS_PRINT_SETTINGS;
 	}
 
-	if (!strcmp(currentToken, "quit"))
+	if (!strcmp(currentSetToken, "quit"))
 	{
-		command.cmd = CHESS_QUIT;
+		command.cmd = CHESS_SETTING_QUIT;
 	}
 
-	if (!strcmp(currentToken, "start"))
+	if (!strcmp(currentSetToken, "start"))
 	{
 		command.cmd = CHESS_START;
 	}
+
+	else
+	{
+		command.cmd = CHESS_INVALID_SETTING_LINE;
+	}
+
+	//if there is additional text after the first& second parts  - invalid 
+	currentSetToken = strtok(NULL, delimiter);
+	if (currentSetToken != NULL)
+	{
+		command.cmd = CHESS_INVALID_SETTING_LINE;
+		command.isValidArg = false;
+	}
+
+	return command;
 }

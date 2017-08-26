@@ -145,7 +145,7 @@ SP_ARRAY_LIST_MESSAGE spArrayListRemoveLast(SPArrayList* src)
 SPArrayListNode* spArrayListGetAt(SPArrayList* src, int index)
 {
     if (src == NULL || index >= src->actualSize || index < 0)
-        return SP_ARRAY_LIST_INVALID_ARGUMENT;	////////should be ENUM - check where we used this -1 
+        return NULL;				//maybe we should return here node with a field of invalid - Alex what do you think? 
     return &(src->elements[index]);
 }
 
@@ -153,7 +153,7 @@ SPArrayListNode* spArrayListGetAt(SPArrayList* src, int index)
 SPArrayListNode* spArrayListGetFirst(SPArrayList* src)
 {
     if (src == NULL || src->actualSize == 0)
-        return SP_ARRAY_LIST_INVALID_ARGUMENT;
+        return NULL;			//maybe we should return here node with a field of invalid 
     return &(src->elements[0]);
 }
 
@@ -161,7 +161,7 @@ SPArrayListNode* spArrayListGetFirst(SPArrayList* src)
 SPArrayListNode* spArrayListGetLast(SPArrayList* src)
 {
     if (src == NULL || src->actualSize == 0)
-        return SP_ARRAY_LIST_INVALID_ARGUMENT;
+        return NULL;			//maybe we should return here node with a field of invalid 
     return &(src->elements[src->actualSize - 1]);   
 }
 

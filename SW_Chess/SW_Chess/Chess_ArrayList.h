@@ -1,3 +1,5 @@
+#ifndef CHESS_ARRAYLIST_H_
+#define CHESS_ARRAYLIST_H_
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -235,3 +237,4 @@ bool spArrayListIsFull(SPArrayList* src);
  */
 bool spArrayListIsEmpty(SPArrayList* src);
 
+#endif
