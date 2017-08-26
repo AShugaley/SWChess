@@ -72,6 +72,28 @@ bool isValidBishopMove(chessGame* src, int prev_pos_row, int prev_pos_col, int n
 }
 
 
+char getColumnChar(int col){
+    switch (col) {
+        case 0:
+            return 'A';
+        case 1:
+            return 'B';
+        case 2:
+            return 'C';
+        case 3:
+            return 'D';
+        case 4:
+            return 'E';
+        case 5:
+            return 'F';
+        case 6:
+            return 'G';
+        case 7:
+            return 'H';
+    }
+    return '$';
+}
+
 
 
 bool isValidRookMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col){
@@ -115,14 +137,23 @@ bool isValidKnightMove(chessGame* src, int prev_pos_row, int prev_pos_col, int n
 
     
     int operatorRow =1;
-    if (prev_pos_row > next_pos_row)
+    if (prev_pos_row < next_pos_row)
         operatorRow = -1;
     
     
     int operatorCol =1;
-    if (prev_pos_col > next_pos_col)
+    if (prev_pos_col < next_pos_col)
         operatorCol = -1;
-
+//    printf("HERE + %d/n", prev_pos_row);
+//    printf("HERE + %d/n", prev_pos_col);
+//    printf("HERE + %d/n", next_pos_row);
+//    printf("HERE + %d/n", next_pos_col);
+//    printf("HERE + %d/n", operatorRow);
+//    printf("HERE + %d/n", operatorCol);
+//    printf("HERE + %d/n", next_pos_row + (2*operatorRow));
+//    printf("HERE + %d/n", next_pos_col+ (1*operatorCol));
+//    printf("HERE + %d/n", next_pos_col + (2*operatorCol));
+//    printf("HERE + %d/n", next_pos_row+ (1*operatorRow));
     if(prev_pos_row == next_pos_row + (2*operatorRow))
         if(prev_pos_col == next_pos_col+ (1*operatorCol))
             return true;

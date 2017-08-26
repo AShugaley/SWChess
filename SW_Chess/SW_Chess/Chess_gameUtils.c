@@ -11,11 +11,12 @@
 #include <assert.h>
 #include "Chess_gameUtils.h"
 #include <stdlib.h>
+#include <string.h>
 
 
 
 
-chessGame* createChessGame(int historySize, GAME_MODE mode)
+chessGame* createChessGame(int historySize, GAME_MODE mode, int difficulty)
 {
 
     if (historySize <= 0)
@@ -24,7 +25,7 @@ chessGame* createChessGame(int historySize, GAME_MODE mode)
     chessGame *gameSt = (chessGame *)malloc(sizeof(chessGame));
     if (gameSt == NULL)
         return NULL;
-    
+    gameSt->difficulty = difficulty;
 
     gameSt->currentPlayer = WHITES;
    // gameSt->historyArray = spArrayListCreate(historySize);
@@ -153,35 +154,6 @@ CHESS_GAME_MESSAGE setChessMove(chessGame* src, int prev_pos_row, int prev_pos_c
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 bool isCheckmate(chessGame* src){
     bool checkmate = false;
     switchCurrentPlayer(src);
@@ -263,4 +235,86 @@ bool isCheck(chessGame* src){
     assert((king_col != -1) && (king_row != -1));
     return (isUnderPressure(src, king_row, king_col));
 
+}
+
+//pre - this function cannot be called if we have two players! Cannot at all!!
+void get_moves(chessGame* src, int row, int col){
+    if((row > 7)||(row < 0)||(col > 7)||(col < 0)){
+        printf("Invalid position on the board\n");
+        return;
+    }
+    int humanPlayer;
+    if(src->gameMode ==ONE_PLAYER_WHITES)
+        humanPlayer = 1;
+    else
+        humanPlayer = 0;
+    if((humanPlayer == 0)&&(!isBlackFigure(src->gameBoard[row][col]))){
+        printf("The specified position does not contain black player piece\n");
+        return;
+    }
+    if((humanPlayer == 1)&&(!isWhiteFigure(src->gameBoard[row][col]))){
+        printf("The specified position does not contain white player piece\n");
+        return;
+    }
+    movesArray* moves = allPossibleMoves(src, row, col);
+    int counter = 0;
+    char columnChar;
+    bool needHelpPrints;
+    if((src->difficulty == 1)||(src->difficulty == 2))
+        needHelpPrints = true;
+    else
+        needHelpPrints = false;
+    while(moves->moves[counter][0] != -1){
+        columnChar = getColumnChar(moves->moves[counter][3]);
+        printf("<%d,%c>", moves->moves[counter][2], columnChar);
+        //add * if threatend
+        //add ^ if enemyfield
+        printf("\n");
+        counter++;
+    }
+    
+}
+
+
+bool saveGame(chessGame* src, const char* filename){
+
+    FILE *file = fopen(filename, "w+");
+    if(file == NULL)
+        return false;
+    fprintf(file, "<?xml version=""1.0""encoding=""UTF-8""?>\n<game>\n");
+    if(src->currentPlayer == WHITES)
+        fprintf(file, "<current_turn>%s</current_turn>\n", "1");
+    else
+        fprintf(file, "<current_turn>%s</current_turn>\n", "0");
+    if(src->gameMode == ONE_PLAYER_BLACKS){
+        fprintf(file, "<game_mode>%s</game_mode>\n", "1");
+        fprintf(file, "<user_color>%s</user_color>\n", "0");
+        fprintf(file, "<difficulty>%d</difficulty>\n", src->difficulty);
+    }
+    if(src->gameMode == ONE_PLAYER_WHITES){
+        fprintf(file, "<game_mode>%s</game_mode>\n", "1");
+        fprintf(file, "<user_color>%s</user_color>\n", "1");
+        fprintf(file, "<difficulty>%d</difficulty>\n",src->difficulty);
+    }
+    if(src->gameMode == TWO_PLAYERS){
+        fprintf(file, "<game_mode>%s</game_mode>\n", "2");
+        fprintf(file, "<user_color></user_color>\n");
+    }
+        
+
+    
+    
+    fprintf(file, "<board>\n");
+    for(int i = BOARD_SIZE; i >0; i--){
+        fprintf(file, "<row_%d>", i);
+        for(int j = 0; j<BOARD_SIZE; j++){
+            fprintf(file, "%c", src->gameBoard[i-1][j]);
+        }
+        fprintf(file, "</row_%d>\n", i);
+    }
+    
+    
+    fprintf(file, "</board>\n");
+    fprintf(file, "</game>\n");
+    return true;
 }

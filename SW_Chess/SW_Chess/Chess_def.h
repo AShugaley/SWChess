@@ -38,6 +38,7 @@ typedef enum chessGameMessage{
 typedef struct chess_game {
     char gameBoard[BOARD_SIZE][BOARD_SIZE];
     GAME_MODE gameMode;
+    int difficulty;
     CURRENT_PLAYER currentPlayer;
     //  SPArrayList *historyArray;
     int currentMove;
