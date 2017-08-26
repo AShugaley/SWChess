@@ -72,6 +72,28 @@ bool isValidBishopMove(chessGame* src, int prev_pos_row, int prev_pos_col, int n
 }
 
 
+char getColumnChar(int col){
+    switch (col) {
+        case 0:
+            return 'A';
+        case 1:
+            return 'B';
+        case 2:
+            return 'C';
+        case 3:
+            return 'D';
+        case 4:
+            return 'E';
+        case 5:
+            return 'F';
+        case 6:
+            return 'G';
+        case 7:
+            return 'H';
+    }
+    return '$';
+}
+
 
 
 bool isValidRookMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col){

@@ -19,7 +19,7 @@ void TestBoard(chessGame* src);
 
 int main(int argc, const char * argv[]) {
     printf("Hello, World!\n");
-    chessGame* src = createChessGame(5, TWO_PLAYERS);
+    chessGame* src = createChessGame(5, TWO_PLAYERS,3);
     TestBoard(src);
     chessConsolePrintBoard(src);
     printf("hello\n");
@@ -35,6 +35,8 @@ int main(int argc, const char * argv[]) {
         counter++;
     }
     
+    get_moves(src, 2,6);
+    //printf("\n%d\n", saveGame(src,"/Users/alexs/dev/SWChess/test2.xml"));
     return 0;
 }
 

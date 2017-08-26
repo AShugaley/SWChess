@@ -26,7 +26,7 @@ bool isBlackFigure(char figure);
 bool isWhiteFigure(char figure);
 void switchCurrentPlayer(chessGame* src);
 bool isUnderPressure(chessGame* src, int row, int col);
-
+char getColumnChar(int col);
 
 
 #endif /* Chess_gameUtilsAux_h */
