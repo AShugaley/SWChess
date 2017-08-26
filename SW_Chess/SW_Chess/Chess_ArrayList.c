@@ -38,9 +38,9 @@ void spArrayListDestroy(SPArrayList* src)
 {
     if (src != NULL)
     {
-        for(int i =0; i<src->maxSize; i++){
+       /* for(int i =0; i<src->maxSize; i++){
             free(&(src->elements[i]));
-        }
+        }*/
         free(src->elements);	//free to int*
         free(src);
     }

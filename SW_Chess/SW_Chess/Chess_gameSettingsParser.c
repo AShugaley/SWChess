@@ -1,6 +1,6 @@
 #include "Chess_gameSettingsParser.h"
 
-bool spParserIsInt(const char* str)
+bool spParserSettingIsInt(const char* str)
 {
 	unsigned int i = 0;
 	if (str[0] == '-' || (str[0]<58 && str[0]>47))  //first char is minus or digit 
@@ -31,13 +31,13 @@ CHESSSettingCommand spParserSettingLine(const char* str)
 		return command;
 	}
 
-	if (!strcmp(currentSetToken, "game_mode"))	//curtoken == game_mode (strcmp = 0 in this case) 
+	else if (!strcmp(currentSetToken, "game_mode"))	//curtoken == game_mode (strcmp = 0 in this case) 
 	{
 		command.cmd = CHESS_MODE;
 		currentSetToken = strtok(NULL, delimiter);
 		if (currentSetToken != NULL)
 		{
-			if (spParserIsInt(currentSetToken))
+			if (spParserSettingIsInt(currentSetToken))
 			{
 				command.arg = atoi(currentSetToken);
 				command.isValidArg = true;
@@ -45,13 +45,13 @@ CHESSSettingCommand spParserSettingLine(const char* str)
 		}
 	}
 
-	if (!strcmp(currentSetToken, "difficulty"))
+	else if (!strcmp(currentSetToken, "difficulty"))
 	{
 		command.cmd = CHESS_DIFFICULTY;
 		currentSetToken = strtok(NULL, delimiter);
 		if (currentSetToken != NULL)
 		{
-			if (spParserIsInt(currentSetToken))
+			if (spParserSettingIsInt(currentSetToken))
 			{
 				command.arg = atoi(currentSetToken);
 				command.isValidArg = true;
@@ -59,13 +59,13 @@ CHESSSettingCommand spParserSettingLine(const char* str)
 		}
 	}
 
-	if (!strcmp(currentSetToken, "user_color"))
+	else if (!strcmp(currentSetToken, "user_color"))
 	{
 		command.cmd = CHESS_COLOR;
 		currentSetToken = strtok(NULL, delimiter);
 		if (currentSetToken != NULL)
 		{
-			if (spParserIsInt(currentSetToken))
+			if (spParserSettingIsInt(currentSetToken))
 			{
 				command.arg = atoi(currentSetToken);
 				command.isValidArg = true;
@@ -73,27 +73,27 @@ CHESSSettingCommand spParserSettingLine(const char* str)
 		}
 	}
 
-	if (!strcmp(currentSetToken, "load"))	//will check the file path later in the gameUtils functions 
+	else if (!strcmp(currentSetToken, "load"))	//will check the file path later in the gameUtils functions 
 	{
 		command.cmd = CHESS_LOAD;
 	}
 
-	if (!strcmp(currentSetToken, "default"))
+	else if (!strcmp(currentSetToken, "default"))
 	{
 		command.cmd = CHESS_DEFAULT;
 	}
 
-	if (!strcmp(currentSetToken, "print_setting"))
+	else if (!strcmp(currentSetToken, "print_setting"))
 	{
 		command.cmd = CHESS_PRINT_SETTINGS;
 	}
 
-	if (!strcmp(currentSetToken, "quit"))
+	else if (!strcmp(currentSetToken, "quit"))
 	{
 		command.cmd = CHESS_SETTING_QUIT;
 	}
 
-	if (!strcmp(currentSetToken, "start"))
+	else if (!strcmp(currentSetToken, "start"))
 	{
 		command.cmd = CHESS_START;
 	}

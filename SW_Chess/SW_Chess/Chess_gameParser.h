@@ -24,17 +24,19 @@ typedef enum {
 	CHESS_TARGET_MOVE,
 } CHESS_MOVE_ARG;
 
-typedef struct move_argument {
-	int sourceRow;  char sourceColl;
-	int targertRow; char targetColl;
-} MOVEArg;
+//typedef struct move_argument {
+//	int sourceRow;  char sourceColl;
+//	int targertRow; char targetColl;
+//} MOVEArg;
 
 //a new type that is used to encapsulate a parsed line
 typedef struct command_t {
 	CHESS_COMMAND cmd;
 	bool isValidFirstPair; //is set to true if the line contains a valid argument
 	bool isValidSecondPair;
-	MOVEArg* arg;
+	int sourceRow;  char sourceColl;
+	int targertRow; char targetColl;
+	//MOVEArg* arg;
 } CHESSCommand;
 
 
@@ -48,7 +50,7 @@ typedef struct command_t {
 * @return
 * true if the string represents a valid integer, and false otherwise.
 */
-bool spParserSettingIsInt(const char* str);
+bool spParserIsInt(const char* str);
 
 
 /**
@@ -67,7 +69,7 @@ bool spParserIsLetter(const char* str);
 * @return
 * true if the string represents a valid ordered pair, and false otherwise.
 */
-bool spParserIsValidOrederedPair(const char* str, char* delimiter, MOVEArg* argstruct, CHESS_MOVE_ARG argPlace);
+bool spParserIsValidOrederedPair(const char* str, char* delimiter, CHESSCommand* command, CHESS_MOVE_ARG argPlace);
 
 
 /**

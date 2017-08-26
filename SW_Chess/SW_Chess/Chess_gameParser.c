@@ -1,7 +1,7 @@
 #include "Chess_gameParser.h"
 
 
-bool spParserSettingIsInt(const char* str)
+bool spParserIsInt(const char* str)
 {
 	unsigned int i = 0;
 	if (str[0] == '-' || (str[0]<58 && str[0]>47))  //first char is minus or digit 
@@ -25,51 +25,57 @@ bool spParserIsLetter(const char* str)
 }
 
 
-bool spParserIsValidOrederedPair(const char* currentToken, char* delimiter, MOVEArg* argstruct, CHESS_MOVE_ARG argPlace)//change to empty delimiter (chech chars and not words!!!!) 
+bool spParserIsValidOrederedPair(const char* currentToken, char* delimiter, CHESSCommand* command, CHESS_MOVE_ARG argPlace)//change to empty delimiter (chech chars and not words!!!!) 
 {
-	currentToken = strtok(NULL, delimiter); //should be "<"
-	if (currentToken != "<")
+	char chToken;
+	char currentstr[2] = { '\0' };
+	if (currentToken[0] != '<')  //currentToken[0] should be "<"
 		return false;
 
-	currentToken = strtok(NULL, delimiter); //should be an int
-	if (spParserSettingIsInt(currentToken))
+	//should be an int
+	chToken = currentToken[1];
+	currentstr[0] = currentToken[1];
+	if (spParserIsInt(currentstr))
 	{
 		if (argPlace == CHESS_SOURCE_MOVE)
 		{
-
-			argstruct->sourceRow = atoi(currentToken);
+			command->sourceRow = atoi(&(chToken));
 		}
 		else if (argPlace == CHESS_TARGET_MOVE)
 		{
-			argstruct->targertRow = atoi(currentToken);
+			command->targertRow = atoi(&(chToken));
 		}
 	}
 	else
 		return false;
 
-	currentToken = strtok(NULL, delimiter); //should be ","
-	if (currentToken != ",")
+	chToken = currentToken[2];
+	//should be ","
+	if (chToken != ',')
 		return false;
 
 
-	currentToken = strtok(NULL, delimiter); //should be an uppercase letter 
-	if (spParserIsLetter(currentToken))
+	//should be an uppercase letter 
+	chToken = currentToken[3];
+	currentstr[0] = currentToken[3];
+	if (spParserIsLetter(currentstr))
 	{
 		if (argPlace == CHESS_SOURCE_MOVE)
 		{
-			argstruct->sourceColl = *currentToken; ///check this!!
+			command->sourceColl = chToken; 
 		}
 		else if (argPlace == CHESS_TARGET_MOVE)
 		{
-			argstruct->targetColl = *currentToken;
+			command->targetColl = chToken;
 		}
 	}
 	else
 		return false;
 
 
-	currentToken = strtok(NULL, delimiter); //should be ">"
-	if (currentToken != ">")
+	//should be ">"
+	chToken = currentToken[4];
+	if (chToken != '>')
 		return false;
 
 	return true;
@@ -84,7 +90,8 @@ CHESSCommand spParserLine(const char* str)
 	strcpy(currentStr, str);
 	char* currentToken;
 	char delimiter[] = " \t\r\n";
-	MOVEArg argstruct;
+	//MOVEArg argstruct;
+	
 
 	currentToken = strtok(currentStr, delimiter);	//curtoken is the first part of the string 
 	if (currentToken == '\0')	//doesn't suppose to get here, just in case ...
@@ -98,29 +105,33 @@ CHESSCommand spParserLine(const char* str)
 		command.cmd = CHESS_UNDO_MOVE;
 	}
 
-	if (!strcmp(currentToken, "quit"))
+	else if (!strcmp(currentToken, "quit"))
 	{
 		command.cmd = CHESS_QUIT;
 	}
 
-	if (!strcmp(currentToken, "reset"))
+	else if (!strcmp(currentToken, "reset"))
 	{
 		command.cmd = CHESS_RESTART;
 	}
 
-	if (!strcmp(currentToken, "save"))	//will check the file path later in the gameUtils functions 
+	else if (!strcmp(currentToken, "save"))	//will check the file path later in the gameUtils functions 
 	{
 		command.cmd = CHESS_SAVE;
 	}
 
-	if (!strcmp(currentToken, "move"))
+	else if (!strcmp(currentToken, "move"))
 	{
 		command.cmd = CHESS_MOVE;
-		command.isValidFirstPair = spParserIsValidOrederedPair(currentToken, "", &argstruct, CHESS_SOURCE_MOVE);
+		currentToken = strtok(NULL, delimiter);
+
+		command.isValidFirstPair = spParserIsValidOrederedPair(currentToken, delimiter,&command, CHESS_SOURCE_MOVE);
+		
 		currentToken = strtok(NULL, delimiter);
 		if (!strcmp(currentToken, "to"))
 		{
-			command.isValidSecondPair = spParserIsValidOrederedPair(currentToken, delimiter, &argstruct, CHESS_TARGET_MOVE);
+			currentToken = strtok(NULL, delimiter);
+			command.isValidSecondPair = spParserIsValidOrederedPair(currentToken, delimiter, &command, CHESS_TARGET_MOVE);
 		}
 		else
 		{

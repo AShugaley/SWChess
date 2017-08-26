@@ -42,7 +42,7 @@ typedef struct commandSet_t {
 * @return
 * true if the string represents a valid integer, and false otherwise.
 */
-bool spParserIsInt(const char* str);
+bool spParserSettingIsInt(const char* str);
 
 
 /**
