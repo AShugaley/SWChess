@@ -17,7 +17,7 @@
 //#include "Chess_ArrayList.h"
 
 
-chessGame* createChessGame(int historySize, GAME_MODE mode, int difficulty); //D
+chessGame* createChessGame(int historySize, GAME_MODE_PLAYER mode, int difficulty); //D
 
 chessGame* copyChessGame(chessGame* src); //D Not Tested
 
@@ -44,5 +44,7 @@ bool isStalemate(chessGame* src); // D Not Tested
 bool saveGame(chessGame* src, const char* filename);
 
 void get_moves(chessGame* src, int row, int col);
+
+char* getCurrentPlayerStringName(chessGame* src);
 
 #endif /* Chess_gameUtils_h */

@@ -318,3 +318,9 @@ bool saveGame(chessGame* src, const char* filename){
     fprintf(file, "</game>\n");
     return true;
 }
+
+char* getCurrentPlayerStringName(chessGame* src){
+    if(src->currentPlayer == WHITES)
+        return "White";
+    return "Black";
+}

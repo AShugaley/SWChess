@@ -7,10 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DB798CEB1F51E568005619B6 /* Chess_ArrayList.c in Sources */ = {isa = PBXBuildFile; fileRef = DB798CE41F51E568005619B6 /* Chess_ArrayList.c */; };
+		DB798CEC1F51E568005619B6 /* Chess_gameParser.c in Sources */ = {isa = PBXBuildFile; fileRef = DB798CE61F51E568005619B6 /* Chess_gameParser.c */; };
+		DB798CED1F51E568005619B6 /* Chess_gameSettingsParser.c in Sources */ = {isa = PBXBuildFile; fileRef = DB798CE81F51E568005619B6 /* Chess_gameSettingsParser.c */; };
 		DB7B09651F48154300A8243D /* Chess_gameUtils.c in Sources */ = {isa = PBXBuildFile; fileRef = DB7B09631F48154300A8243D /* Chess_gameUtils.c */; };
 		DB7B096B1F4855AB00A8243D /* Chess_gameUtilsAux.c in Sources */ = {isa = PBXBuildFile; fileRef = DB7B09691F4855AB00A8243D /* Chess_gameUtilsAux.c */; };
 		DB7B096E1F486B3C00A8243D /* SPMiniMax.c in Sources */ = {isa = PBXBuildFile; fileRef = DB7B096C1F486B3C00A8243D /* SPMiniMax.c */; };
 		DBB8EBD01F45797C00B87875 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = DBB8EBCF1F45797C00B87875 /* main.c */; };
+		DBE111A31F62737F004A99D7 /* Chess_FlowTwoPlayers.c in Sources */ = {isa = PBXBuildFile; fileRef = DBE111A11F62737F004A99D7 /* Chess_FlowTwoPlayers.c */; };
+		DBE111A61F628230004A99D7 /* Chess_FlowOnePlayer.c in Sources */ = {isa = PBXBuildFile; fileRef = DBE111A41F628230004A99D7 /* Chess_FlowOnePlayer.c */; };
+		DBE111A91F6285FE004A99D7 /* Chess_ConsoleFlowMain.c in Sources */ = {isa = PBXBuildFile; fileRef = DBE111A71F6285FE004A99D7 /* Chess_ConsoleFlowMain.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -26,6 +32,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		DB798CE41F51E568005619B6 /* Chess_ArrayList.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Chess_ArrayList.c; sourceTree = "<group>"; };
+		DB798CE51F51E568005619B6 /* Chess_ArrayList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Chess_ArrayList.h; sourceTree = "<group>"; };
+		DB798CE61F51E568005619B6 /* Chess_gameParser.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Chess_gameParser.c; sourceTree = "<group>"; };
+		DB798CE71F51E568005619B6 /* Chess_gameParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Chess_gameParser.h; sourceTree = "<group>"; };
+		DB798CE81F51E568005619B6 /* Chess_gameSettingsParser.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Chess_gameSettingsParser.c; sourceTree = "<group>"; };
+		DB798CE91F51E568005619B6 /* Chess_gameSettingsParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Chess_gameSettingsParser.h; sourceTree = "<group>"; };
+		DB798CEA1F51E568005619B6 /* unitTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unitTest.h; sourceTree = "<group>"; };
 		DB7B09631F48154300A8243D /* Chess_gameUtils.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Chess_gameUtils.c; sourceTree = "<group>"; };
 		DB7B09641F48154300A8243D /* Chess_gameUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Chess_gameUtils.h; sourceTree = "<group>"; };
 		DB7B09691F4855AB00A8243D /* Chess_gameUtilsAux.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Chess_gameUtilsAux.c; sourceTree = "<group>"; };
@@ -34,6 +47,12 @@
 		DB7B096D1F486B3C00A8243D /* SPMiniMax.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPMiniMax.h; sourceTree = "<group>"; };
 		DBB8EBCC1F45797C00B87875 /* SW_Chess */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SW_Chess; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBB8EBCF1F45797C00B87875 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		DBE111A11F62737F004A99D7 /* Chess_FlowTwoPlayers.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Chess_FlowTwoPlayers.c; sourceTree = "<group>"; };
+		DBE111A21F62737F004A99D7 /* Chess_FlowTwoPlayers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Chess_FlowTwoPlayers.h; sourceTree = "<group>"; };
+		DBE111A41F628230004A99D7 /* Chess_FlowOnePlayer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Chess_FlowOnePlayer.c; sourceTree = "<group>"; };
+		DBE111A51F628230004A99D7 /* Chess_FlowOnePlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Chess_FlowOnePlayer.h; sourceTree = "<group>"; };
+		DBE111A71F6285FE004A99D7 /* Chess_ConsoleFlowMain.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Chess_ConsoleFlowMain.c; sourceTree = "<group>"; };
+		DBE111A81F6285FE004A99D7 /* Chess_ConsoleFlowMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Chess_ConsoleFlowMain.h; sourceTree = "<group>"; };
 		DBED57551F488B4200877397 /* Chess_def.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Chess_def.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -67,6 +86,13 @@
 		DBB8EBCE1F45797C00B87875 /* SW_Chess */ = {
 			isa = PBXGroup;
 			children = (
+				DB798CE41F51E568005619B6 /* Chess_ArrayList.c */,
+				DB798CE51F51E568005619B6 /* Chess_ArrayList.h */,
+				DB798CE61F51E568005619B6 /* Chess_gameParser.c */,
+				DB798CE71F51E568005619B6 /* Chess_gameParser.h */,
+				DB798CE81F51E568005619B6 /* Chess_gameSettingsParser.c */,
+				DB798CE91F51E568005619B6 /* Chess_gameSettingsParser.h */,
+				DB798CEA1F51E568005619B6 /* unitTest.h */,
 				DB7B09691F4855AB00A8243D /* Chess_gameUtilsAux.c */,
 				DB7B096A1F4855AB00A8243D /* Chess_gameUtilsAux.h */,
 				DBB8EBCF1F45797C00B87875 /* main.c */,
@@ -75,6 +101,12 @@
 				DB7B096C1F486B3C00A8243D /* SPMiniMax.c */,
 				DB7B096D1F486B3C00A8243D /* SPMiniMax.h */,
 				DBED57551F488B4200877397 /* Chess_def.h */,
+				DBE111A11F62737F004A99D7 /* Chess_FlowTwoPlayers.c */,
+				DBE111A21F62737F004A99D7 /* Chess_FlowTwoPlayers.h */,
+				DBE111A41F628230004A99D7 /* Chess_FlowOnePlayer.c */,
+				DBE111A51F628230004A99D7 /* Chess_FlowOnePlayer.h */,
+				DBE111A71F6285FE004A99D7 /* Chess_ConsoleFlowMain.c */,
+				DBE111A81F6285FE004A99D7 /* Chess_ConsoleFlowMain.h */,
 			);
 			path = SW_Chess;
 			sourceTree = "<group>";
@@ -136,10 +168,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DB798CEB1F51E568005619B6 /* Chess_ArrayList.c in Sources */,
 				DB7B09651F48154300A8243D /* Chess_gameUtils.c in Sources */,
 				DBB8EBD01F45797C00B87875 /* main.c in Sources */,
+				DB798CEC1F51E568005619B6 /* Chess_gameParser.c in Sources */,
+				DB798CED1F51E568005619B6 /* Chess_gameSettingsParser.c in Sources */,
+				DBE111A61F628230004A99D7 /* Chess_FlowOnePlayer.c in Sources */,
 				DB7B096E1F486B3C00A8243D /* SPMiniMax.c in Sources */,
+				DBE111A31F62737F004A99D7 /* Chess_FlowTwoPlayers.c in Sources */,
 				DB7B096B1F4855AB00A8243D /* Chess_gameUtilsAux.c in Sources */,
+				DBE111A91F6285FE004A99D7 /* Chess_ConsoleFlowMain.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -21,7 +21,17 @@ typedef enum game_mode {
     ONE_PLAYER_WHITES,
     ONE_PLAYER_BLACKS,
     TWO_PLAYERS,
-} GAME_MODE;
+} GAME_MODE_PLAYER; //change
+
+typedef enum game_status {
+    GAME_OVER_P1_WINS,
+    GAME_OVER_P2_WINS,
+    GAME_OVER_TIE,
+    GAME_CHECK,
+    GAME_CHECKMATE,
+    GAME_RESTART,
+} GAME_STATUS;
+
 
 typedef enum current_player {
     WHITES,
@@ -37,7 +47,7 @@ typedef enum chessGameMessage{
 
 typedef struct chess_game {
     char gameBoard[BOARD_SIZE][BOARD_SIZE];
-    GAME_MODE gameMode;
+    GAME_MODE_PLAYER gameMode;
     int difficulty;
     CURRENT_PLAYER currentPlayer;
     //  SPArrayList *historyArray;

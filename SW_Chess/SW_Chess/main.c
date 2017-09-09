@@ -3,7 +3,7 @@
 #include "Chess_gameUtils.h"
 #include "Chess_gameUtilsAux.h"
 #include "SPMiniMax.h"
-
+#include "Chess_FlowTwoPlayers.h"
 #include <stdbool.h>
 
 #include "unitTest.h"
@@ -237,17 +237,19 @@ int main(int argc, const char * argv[]) {
 
 	///////////////////////////////////////////////
 	//////////////////check - MOR//////////////////
-	RUN_TEST(spParserCheckParseLine);
-	RUN_TEST(spParserCheckIsInt);
-
-	RUN_TEST(spArrayListCreateTest);
-	RUN_TEST(spArrayListBasicAddTest);
-	RUN_TEST(spArrayListBasicRemoveTest);
-	RUN_TEST(spArrayListBasicGetTest);
-	RUN_TEST(spArrayListBasicCopyTest);
+//	RUN_TEST(spParserCheckParseLine);
+//	RUN_TEST(spParserCheckIsInt);
+//
+//	RUN_TEST(spArrayListCreateTest);
+//	RUN_TEST(spArrayListBasicAddTest);
+//	RUN_TEST(spArrayListBasicRemoveTest);
+//	RUN_TEST(spArrayListBasicGetTest);
+//	RUN_TEST(spArrayListBasicCopyTest);
 	///////////////////////////////////////////////////
 	///////////////////////////////////////////////////
     
+    chessGame* src = createChessGame(5, TWO_PLAYERS, 3);
+    two_players_flow(src);
 	
 	return 0;
 }
