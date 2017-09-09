@@ -32,7 +32,7 @@ GAME_STATUS twoPlayersGameFlow(chessGame* src){
             return status;
         }
         if(cmd.cmd == CHESS_INVALID_LINE){
-            printf("Illigal command");
+            printf("Illigal command\n");
             printBoard = false;
             continue;
         }
@@ -42,21 +42,17 @@ GAME_STATUS twoPlayersGameFlow(chessGame* src){
             continue;
         }
         if(cmd.cmd == CHESS_MOVE){
-            //todo
+            printBoard = humanMove(src, cmd);
+            continue;
         }
         if(cmd.cmd == CHESS_UNDO_MOVE){
-            //todo
+            printf("Undo command not available in 2 players mode\n");
+            continue;
         }
-        
     }
     return status;
 }
-        /*
-         undo_move -> error + printboard = false + continur
-         CHESS_MOVE -> func checkmove(isvalidmove + ERRORS), if true -> setMove; else -> printboard false + continue
-    }
-         
-        */
+
      
      
      

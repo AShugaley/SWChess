@@ -11,6 +11,7 @@
 #include "Chess_def.h"
 #include "Chess_gameParser.h"
 #include "Chess_gameUtils.h"
+#include "Chess_FlowOnePlayer.h"
 
 
 #include <stdio.h>

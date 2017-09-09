@@ -15,4 +15,6 @@
 #include "Chess_gameUtils.h"
 
 GAME_STATUS onePlayerGameFlow(chessGame* src);
+
+bool humanMove(chessGame* src, CHESSCommand cmd);
 #endif /* Chess_FlowOnePlayer_h */

@@ -29,7 +29,7 @@ chessGame* createChessGame(int historySize, GAME_MODE_PLAYER mode, PLAYER_COLOR 
 
     gameSt->currentPlayer = WHITES;
     gameSt->humanPlayerColor = humanColor;
-   // gameSt->historyArray = spArrayListCreate(historySize);
+    gameSt->historyArray = spArrayListCreate(historySize);
     gameSt->gameMode = mode;
     
     initChessBoard(gameSt);
@@ -48,7 +48,7 @@ chessGame* copyChessGame(chessGame* src){ // INCOMPLETE!!
             gameSt->gameBoard[i][j] = src->gameBoard[i][j];
     gameSt->currentPlayer = src->currentPlayer;
     
-    //NEED ADD COPY OF HISTORY ARRAY!!
+    gameSt->historyArray = spArrayListCopy(src->historyArray);
     
     gameSt->gameMode = src->gameMode;
     
@@ -59,7 +59,7 @@ chessGame* copyChessGame(chessGame* src){ // INCOMPLETE!!
 void destroyChessGame(chessGame* src){
     if (src != NULL)
     {
-   //     spArrayListDestroy(src->historyArray);
+        spArrayListDestroy(src->historyArray);
         free(src);
     }
 }
@@ -144,13 +144,17 @@ bool isValidMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_po
 
 CHESS_GAME_MESSAGE setChessMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col){
     if(src->gameBoard[prev_pos_row][prev_pos_col] == EMPTY_BOARD_POS)
-        return CHESS_GAME_INVALID_ARGUMENT;
+        return CHESS_GAME_INVALID_POSITION;
     if(!isValidBoardPosition(prev_pos_row, prev_pos_col, next_pos_row, next_pos_col))
         return CHESS_GAME_INVALID_ARGUMENT;
     if(!isValidMove(src, prev_pos_row, prev_pos_col, next_pos_row, next_pos_col))
         return CHESS_GAME_INVALID_MOVE;
     src->gameBoard[next_pos_row][next_pos_col] = src->gameBoard[prev_pos_row][prev_pos_col];
     src->gameBoard[prev_pos_row][prev_pos_col] = EMPTY_BOARD_POS;
+    switchCurrentPlayer(src);
+    if(spArrayListIsFull(src->historyArray))
+        spArrayListRemoveLast(src->historyArray);
+    spArrayListAddFirst(src->historyArray, next_pos_row, next_pos_col, prev_pos_row, prev_pos_col)
     return CHESS_GAME_SUCCESS;
 }
 
@@ -208,7 +212,15 @@ bool isStalemate(chessGame* src){
 }
 
 CHESS_GAME_MESSAGE undoChessPrevMove(chessGame* src){
-    return CHESS_GAME_INVALID_MOVE;
+    if(spArrayListIsEmpty(src->historyArray))
+        return CHESS_GAME_NO_HISTORY;
+    SPArrayListNode* move = spArrayListGetLast(src->historyArray);
+    spArrayListRemoveLast(src->historyArray);
+    src->gameBoard[move->prev_pos_row][move->prev_pos_row] = src->gameBoard[move->current_pos_row][move->current_pos_col];
+    src->gameBoard[move->current_pos_row][move->current_pos_col] = move->prev_pos_fig;
+    switchCurrentPlayer(src);
+    return CHESS_GAME_SUCCESS;
+    
 }
 
 bool isCheck(chessGame* src){
@@ -344,4 +356,5 @@ void checkGameEnd(chessGame* src){
 
 void terminateGame(chessGame* src){
     destroyChessGame(src);
+    exit(0);
 }

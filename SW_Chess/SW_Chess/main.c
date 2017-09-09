@@ -248,8 +248,8 @@ int main(int argc, const char * argv[]) {
 	///////////////////////////////////////////////////
 	///////////////////////////////////////////////////
     
-    chessGame* src = createChessGame(5, TWO_PLAYERS, 3);
-    two_players_flow(src);
+   // chessGame* src = createChessGame(5, TWO_PLAYERS, WHITES, 3);
+    consoleMode();
 	
 	return 0;
 }

@@ -36,6 +36,7 @@ typedef struct command_t {
 	bool isValidSecondPair;
 	int sourceRow;  char sourceColl;
 	int targertRow; char targetColl;
+    char* path[SP_MAX_LINE_LENGTH];
 	//MOVEArg* arg;
 } CHESSCommand;
 

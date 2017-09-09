@@ -41,6 +41,7 @@ typedef enum color {
 typedef enum chessGameMessage{
     CHESS_GAME_INVALID_MOVE,
     CHESS_GAME_INVALID_ARGUMENT,
+    CHESS_GAME_INVALID_POSITION,
     CHESS_GAME_NO_HISTORY,
     CHESS_GAME_SUCCESS,
 } CHESS_GAME_MESSAGE;
@@ -51,7 +52,7 @@ typedef struct chess_game {
     int difficulty;
     PLAYER_COLOR currentPlayer;
     PLAYER_COLOR humanPlayerColor;
-    //  SPArrayList *historyArray;
+    SPArrayList *historyArray;
     int currentMove;
     UI_MODE uiMode;
 } chessGame;

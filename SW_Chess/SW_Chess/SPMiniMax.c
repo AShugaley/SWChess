@@ -6,7 +6,7 @@
 //  Copyright © 2017 Alexander Shugaley. All rights reserved.
 //
 
-#include "Chess_gameUtils.h"
+
 #include "SPMiniMax.h"
 #include <stdio.h>
 #include <limits.h>

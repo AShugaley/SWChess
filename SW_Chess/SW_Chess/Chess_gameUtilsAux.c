@@ -21,7 +21,7 @@ bool isValidPawnMove(chessGame* src, int prev_pos_row, int prev_pos_col, int nex
         first_row = 7;
         operator = -1;
     }
-    printf("%d,%d,%d,%d,%d,%d",prev_pos_row,prev_pos_col,next_pos_row,next_pos_col,operator,operator);
+    //printf("%d,%d,%d,%d,%d,%d",prev_pos_row,prev_pos_col,next_pos_row,next_pos_col,operator,operator);
     if (prev_pos_col != next_pos_col){
         if((next_pos_row == prev_pos_row+(1*operator))&&((prev_pos_col+1 == next_pos_col)||(prev_pos_col-1==next_pos_col)))
             return true;
@@ -94,6 +94,30 @@ char getColumnChar(int col){
     return '$';
 }
 
+
+char getIntFromColumnChar(char col){
+    switch (col) {
+        case 'A':
+            return 0;
+        case 'B':
+            return 1;
+        case 'C':
+            return 2;
+        case 'D':
+            return 3;
+        case 'E':
+            return 4;
+        case 'F':
+            return 5;
+        case 'G':
+            return 6;
+        case 'H':
+            return 7;
+    }
+    return -1;
+    
+    
+}
 
 
 bool isValidRookMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col){
@@ -195,7 +219,7 @@ bool isValidKingMove(chessGame* src, int prev_pos_row, int prev_pos_col, int nex
     return isNotCheck;
 }
 
-bool isValidDestenetion(CURRENT_PLAYER player, char figure){
+bool isValidDestenetion(PLAYER_COLOR player, char figure){
     if(figure == EMPTY_BOARD_POS)
         return true;
     if(isOpponentPosition(player, figure))
@@ -204,7 +228,7 @@ bool isValidDestenetion(CURRENT_PLAYER player, char figure){
 }
 
 
-bool isOpponentPosition(CURRENT_PLAYER player, char figure){
+bool isOpponentPosition(PLAYER_COLOR player, char figure){
     if(player == WHITES)
         return isBlackFigure(figure);
     else
@@ -305,7 +329,7 @@ bool isUnderPressure(chessGame* src, int row, int col){
         }
     }
     
-    printf("Just checked empty filed - why did you do it?"); //delete
+   // printf("Just checked empty filed - why did you do it?\n"); //delete
     return false;
 }
 
