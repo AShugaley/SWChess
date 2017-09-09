@@ -14,7 +14,7 @@
 
 
 #include <stdio.h>
-GAME_STATUS two_players_flow(chessGame* src);
+GAME_STATUS twoPlayersGameFlow(chessGame* src);
 
 
 #endif /* Chess_FlowTwoPlayers_h */

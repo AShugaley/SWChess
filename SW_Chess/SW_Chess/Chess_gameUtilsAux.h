@@ -13,8 +13,8 @@
 #include "Chess_def.h"
 
 void initChessBoard(chessGame* src);
-bool isValidDestenetion(CURRENT_PLAYER player, char figure);
-bool isOpponentPosition(CURRENT_PLAYER player, char figure);
+bool isValidDestenetion(PLAYER_COLOR player, char figure);
+bool isOpponentPosition(PLAYER_COLOR player, char figure);
 bool isValidBoardPosition(int prev_pos_row, int prev_pos_col,int  next_pos_row, int next_pos_col);
 bool isValidPawnMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col);
 bool isValidBishopMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col);

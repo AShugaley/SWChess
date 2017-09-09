@@ -10,5 +10,12 @@
 #define Chess_ConsoleFlowMain_h
 
 #include <stdio.h>
-
+#include "Chess_def.h"
+#include "Chess_gameParser.h"
+#include "Chess_gameUtils.h"
+#include "Chess_gameSettingsParser.h"
+#include "Chess_FlowTwoPlayers.h"
+#include "Chess_FlowOnePlayer.h"
+void consoleMode();
+void settingsStateConsole();
 #endif /* Chess_ConsoleFlowMain_h */

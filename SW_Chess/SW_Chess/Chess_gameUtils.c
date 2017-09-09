@@ -16,7 +16,7 @@
 
 
 
-chessGame* createChessGame(int historySize, GAME_MODE mode, int difficulty)
+chessGame* createChessGame(int historySize, GAME_MODE_PLAYER mode, PLAYER_COLOR humanColor, int difficulty)
 {
 
     if (historySize <= 0)
@@ -28,6 +28,7 @@ chessGame* createChessGame(int historySize, GAME_MODE mode, int difficulty)
     gameSt->difficulty = difficulty;
 
     gameSt->currentPlayer = WHITES;
+    gameSt->humanPlayerColor = humanColor;
    // gameSt->historyArray = spArrayListCreate(historySize);
     gameSt->gameMode = mode;
     
@@ -104,7 +105,7 @@ bool isValidMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_po
     
     char figure = src->gameBoard[prev_pos_row][prev_pos_col];
     assert(figure != EMPTY_BOARD_POS);
-    CURRENT_PLAYER player;
+    PLAYER_COLOR player;
     
     
     if(isWhiteFigure(figure))
@@ -243,19 +244,17 @@ void get_moves(chessGame* src, int row, int col){
         printf("Invalid position on the board\n");
         return;
     }
-    int humanPlayer;
-    if(src->gameMode ==ONE_PLAYER_WHITES)
-        humanPlayer = 1;
-    else
-        humanPlayer = 0;
-    if((humanPlayer == 0)&&(!isBlackFigure(src->gameBoard[row][col]))){
-        printf("The specified position does not contain black player piece\n");
-        return;
-    }
-    if((humanPlayer == 1)&&(!isWhiteFigure(src->gameBoard[row][col]))){
+    if((src->currentPlayer == WHITES) && (!isWhiteFigure(src->gameBoard[row][col]))){
         printf("The specified position does not contain white player piece\n");
         return;
     }
+    
+    
+    if((src->currentPlayer == BLACKS) && (!isBlackFigure(src->gameBoard[row][col]))){
+        printf("The specified position does not contain black player piece\n");
+        return;
+    }
+
     movesArray* moves = allPossibleMoves(src, row, col);
     int counter = 0;
     char columnChar;
@@ -279,19 +278,21 @@ void get_moves(chessGame* src, int row, int col){
 bool saveGame(chessGame* src, const char* filename){
 
     FILE *file = fopen(filename, "w+");
-    if(file == NULL)
+    if(file == NULL){
+        printf("File cannot be created or modified\n");
         return false;
+    }
     fprintf(file, "<?xml version=""1.0""encoding=""UTF-8""?>\n<game>\n");
     if(src->currentPlayer == WHITES)
         fprintf(file, "<current_turn>%s</current_turn>\n", "1");
     else
         fprintf(file, "<current_turn>%s</current_turn>\n", "0");
-    if(src->gameMode == ONE_PLAYER_BLACKS){
+    if((src->gameMode == ONE_PLAYER) && (src->humanPlayerColor == BLACKS)){
         fprintf(file, "<game_mode>%s</game_mode>\n", "1");
         fprintf(file, "<user_color>%s</user_color>\n", "0");
         fprintf(file, "<difficulty>%d</difficulty>\n", src->difficulty);
     }
-    if(src->gameMode == ONE_PLAYER_WHITES){
+    if((src->gameMode == ONE_PLAYER) && (src->humanPlayerColor == WHITES)){
         fprintf(file, "<game_mode>%s</game_mode>\n", "1");
         fprintf(file, "<user_color>%s</user_color>\n", "1");
         fprintf(file, "<difficulty>%d</difficulty>\n",src->difficulty);
@@ -300,9 +301,6 @@ bool saveGame(chessGame* src, const char* filename){
         fprintf(file, "<game_mode>%s</game_mode>\n", "2");
         fprintf(file, "<user_color></user_color>\n");
     }
-        
-
-    
     
     fprintf(file, "<board>\n");
     for(int i = BOARD_SIZE; i >0; i--){
@@ -323,4 +321,27 @@ char* getCurrentPlayerStringName(chessGame* src){
     if(src->currentPlayer == WHITES)
         return "White";
     return "Black";
+}
+
+
+void checkGameEnd(chessGame* src){
+    if(isStalemate(src)){
+        printf("The game is tied\n");
+        terminateGame(src);
+    }
+    if(isCheckmate(src)){
+        if(src->currentPlayer == WHITES)
+            printf("Checkmate! Black player wins the game\n");
+        if(src->currentPlayer == BLACKS)
+             printf("Checkmate! White player wins the game\n");
+        terminateGame(src);
+    }
+    if(isCheck(src))
+        printf("Check: %s King is threatened!\n",getCurrentPlayerStringName(src));
+}
+
+
+
+void terminateGame(chessGame* src){
+    destroyChessGame(src);
 }

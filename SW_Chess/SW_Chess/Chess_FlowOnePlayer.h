@@ -14,5 +14,5 @@
 #include "Chess_gameParser.h"
 #include "Chess_gameUtils.h"
 
-
+GAME_STATUS onePlayerGameFlow(chessGame* src);
 #endif /* Chess_FlowOnePlayer_h */

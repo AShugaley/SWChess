@@ -17,7 +17,7 @@
 //#include "Chess_ArrayList.h"
 
 
-chessGame* createChessGame(int historySize, GAME_MODE_PLAYER mode, int difficulty); //D
+chessGame* createChessGame(int historySize, GAME_MODE_PLAYER mode, PLAYER_COLOR humanColor, int difficulty); //D
 
 chessGame* copyChessGame(chessGame* src); //D Not Tested
 
@@ -47,4 +47,7 @@ void get_moves(chessGame* src, int row, int col);
 
 char* getCurrentPlayerStringName(chessGame* src);
 
+void checkGameEnd(chessGame* src);
+
+void terminateGame(chessGame* src);
 #endif /* Chess_gameUtils_h */

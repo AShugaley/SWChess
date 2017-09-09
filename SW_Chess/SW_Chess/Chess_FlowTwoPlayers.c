@@ -9,28 +9,51 @@
 #include "Chess_FlowTwoPlayers.h"
 
 
-GAME_STATUS two_players_flow(chessGame* src){
+GAME_STATUS twoPlayersGameFlow(chessGame* src){
     bool printBoard = true;
-     GAME_STATUS status = NULL;
+    GAME_STATUS status = EMPTY;
+    CHESSCommand cmd;
+    char input[SP_MAX_LINE_LENGTH];
     while (true){
+        checkGameEnd(src);
         if(printBoard)
             chessConsolePrintBoard(src);
         else
             printBoard = true;
         printf("%s player - enter your move:\n", getCurrentPlayerStringName(src));
-        char input[SP_MAX_LINE_LENGTH];
         fgets(input,  SP_MAX_LINE_LENGTH, stdin);
-        CHESSCommand cmd = spParserLine(input);
+        cmd = spParserLine(input);
+        if(cmd.cmd == CHESS_QUIT){
+            printf("Exiting...\n");
+            terminateGame(src);
+        }
+        if(cmd.cmd == CHESS_RESTART){
+            printf("Restarting...\n");
+            return status;
+        }
+        if(cmd.cmd == CHESS_INVALID_LINE){
+            printf("Illigal command");
+            printBoard = false;
+            continue;
+        }
+        if(cmd.cmd == CHESS_SAVE){
+            saveGame(src, input); //tochange to cmd.arg
+            printBoard = false;
+            continue;
+        }
+        if(cmd.cmd == CHESS_MOVE){
+            //todo
+        }
+        if(cmd.cmd == CHESS_UNDO_MOVE){
+            //todo
+        }
+        
+    }
+    return status;
+}
         /*
-         quit -> RETURN QUIT
-         reset -> RETURN RESET
-         invalidline -> printboard = false + continue
          undo_move -> error + printboard = false + continur
-         CHESS_SAVE -> func saveGame(input), if true/false, printboard = false + continue,
          CHESS_MOVE -> func checkmove(isvalidmove + ERRORS), if true -> setMove; else -> printboard false + continue
-         chck if checkmate -> print check + return GAMEOVER
-         check if tie -> print +return GAMEOVER
-         check is check -> print check // all three in one func
     }
          
         */
@@ -44,12 +67,6 @@ GAME_STATUS two_players_flow(chessGame* src){
      
      
      
-     */
-  
-    return status;
-    
-}
-
 
 
 
