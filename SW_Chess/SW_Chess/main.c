@@ -137,7 +137,7 @@ static bool spArrayListBasicGetTest() {
 	SPArrayList* list = spArrayListCreate(CAPACITY_SIZE);
 	ASSERT_TRUE(list != NULL);
 	for (int i = 0; i < CAPACITY_SIZE; i++) {
-		ASSERT_TRUE(spArrayListAddLast(list, i, i,i,i ) == SP_ARRAY_LIST_SUCCESS);
+		ASSERT_TRUE(spArrayListAddLast(list, i, i,i,i,'b' ) == SP_ARRAY_LIST_SUCCESS);
 	}
 	for (int i = 0; i < CAPACITY_SIZE; i++) {
 		ASSERT_TRUE(spArrayListGetAt(list, i)->current_pos_row == i);
@@ -154,7 +154,7 @@ static bool spArrayListBasicCopyTest() {
 	SPArrayList* list = spArrayListCreate(CAPACITY_SIZE);
 	ASSERT_TRUE(list != NULL);
 	for (int i = 0; i < CAPACITY_SIZE; i++) {
-		ASSERT_TRUE(spArrayListAddFirst(list, i,i,i,i) == SP_ARRAY_LIST_SUCCESS);
+		ASSERT_TRUE(spArrayListAddFirst(list, i,i,i,i,'h') == SP_ARRAY_LIST_SUCCESS);
 	}
 	SPArrayList* copyList = spArrayListCopy(list);
 	for (int i = 0; i < CAPACITY_SIZE; i++) {
@@ -172,7 +172,7 @@ static bool spArrayListBasicRemoveTest() {
 	SPArrayList* list = spArrayListCreate(CAPACITY_SIZE);
 	ASSERT_TRUE(list != NULL);
 	for (int i = 0; i < CAPACITY_SIZE; i++) {
-		ASSERT_TRUE(spArrayListAddFirst(list, i,i,i,i) == SP_ARRAY_LIST_SUCCESS);
+		ASSERT_TRUE(spArrayListAddFirst(list, i,i,i,i,'h') == SP_ARRAY_LIST_SUCCESS);
 	}
 	ASSERT_TRUE(spArrayListSize(list) == CAPACITY_SIZE);
 	for (int i = 0; i < CAPACITY_SIZE; i++) {
@@ -188,7 +188,7 @@ static bool spArrayListBasicAddTest() {
 	SPArrayList* list = spArrayListCreate(CAPACITY_SIZE);
 	ASSERT_TRUE(list != NULL);
 	for (int i = 0; i < CAPACITY_SIZE; i++) {
-		ASSERT_TRUE(spArrayListAddFirst(list, i,i,i,i) == SP_ARRAY_LIST_SUCCESS);
+		ASSERT_TRUE(spArrayListAddFirst(list, i,i,i,i,'h') == SP_ARRAY_LIST_SUCCESS);
 		ASSERT_TRUE(spArrayListSize(list) == i + 1);
 	}
 	ASSERT_TRUE(spArrayListSize(list) == CAPACITY_SIZE);

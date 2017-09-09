@@ -46,6 +46,23 @@ typedef enum chessGameMessage{
     CHESS_GAME_SUCCESS,
 } CHESS_GAME_MESSAGE;
 
+
+typedef struct sp_array_list_node {
+    int current_pos_row;
+    int current_pos_col;
+    int prev_pos_row;
+    int prev_pos_col;
+    char prev_pos_fig;
+} SPArrayListNode;
+
+
+typedef struct sp_array_list_t {
+    SPArrayListNode* elements;
+    int actualSize;
+    int maxSize;
+} SPArrayList;
+
+
 typedef struct chess_game {
     char gameBoard[BOARD_SIZE][BOARD_SIZE];
     GAME_MODE_PLAYER gameMode;

@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-
+#include "Chess_def.h"
 /**
  * SPArrayList summary:
  *
@@ -39,20 +39,6 @@
  * spArrayListIsEmpty      - Returns true if the array list contains no elements.
  */
 
-typedef struct sp_array_list_node {
-    int current_pos_row;
-    int current_pos_col;
-    int prev_pos_row;
-    int prev_pos_col;
-    char prev_pos_fig;
-} SPArrayListNode;
-
-
-typedef struct sp_array_list_t {
-    SPArrayListNode* elements;		
-    int actualSize;
-    int maxSize;
-} SPArrayList;
 
 
 /**

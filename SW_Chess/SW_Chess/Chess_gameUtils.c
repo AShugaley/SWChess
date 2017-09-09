@@ -154,7 +154,7 @@ CHESS_GAME_MESSAGE setChessMove(chessGame* src, int prev_pos_row, int prev_pos_c
     switchCurrentPlayer(src);
     if(spArrayListIsFull(src->historyArray))
         spArrayListRemoveLast(src->historyArray);
-    spArrayListAddFirst(src->historyArray, next_pos_row, next_pos_col, prev_pos_row, prev_pos_col)
+    spArrayListAddLast(src->historyArray, next_pos_row, next_pos_col, prev_pos_row, prev_pos_col,src->gameBoard[prev_pos_row][prev_pos_col]);
     return CHESS_GAME_SUCCESS;
 }
 
@@ -190,6 +190,8 @@ bool isStalemate(chessGame* src){
                         under_pressure = isUnderPressure(src, i, j);
                     }
                     has_valid_move = hasValidMove(src, i, j);
+                    if(has_valid_move)
+                        return false;
                 }
             }
         }
@@ -203,22 +205,25 @@ bool isStalemate(chessGame* src){
                     }
                 has_valid_move = hasValidMove(src, i, j);
                 }
+                if(has_valid_move)
+                    return false;
             }
         }
     }
-    return (!under_pressure && !has_valid_move);
+    return (!under_pressure);
             
         
 }
 
-CHESS_GAME_MESSAGE undoChessPrevMove(chessGame* src){
+CHESS_GAME_MESSAGE undoChessPrevMove(chessGame* src, bool shouldPrint){
     if(spArrayListIsEmpty(src->historyArray))
         return CHESS_GAME_NO_HISTORY;
     SPArrayListNode* move = spArrayListGetLast(src->historyArray);
     spArrayListRemoveLast(src->historyArray);
-    src->gameBoard[move->prev_pos_row][move->prev_pos_row] = src->gameBoard[move->current_pos_row][move->current_pos_col];
+    src->gameBoard[move->prev_pos_row][move->prev_pos_col] = src->gameBoard[move->current_pos_row][move->current_pos_col];
     src->gameBoard[move->current_pos_row][move->current_pos_col] = move->prev_pos_fig;
     switchCurrentPlayer(src);
+    printf("Undo move for player %s : <%d,%c> -> <%d,%c>\n",getCurrentPlayerStringName(src),move->prev_pos_row + 1, getColumnChar(move->prev_pos_col),move->current_pos_row + 1, getColumnChar(move->current_pos_col));
     return CHESS_GAME_SUCCESS;
     
 }

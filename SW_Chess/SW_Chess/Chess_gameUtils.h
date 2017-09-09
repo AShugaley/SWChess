@@ -12,7 +12,7 @@
 
 
 #include "Chess_gameUtilsAux.h"
-#inclure "Chess_ArrayList.h"
+#include "Chess_ArrayList.h"
 
 #include <stdbool.h>
 //#include "Chess_ArrayList.h"
@@ -63,7 +63,7 @@ bool isValidMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_po
  *
  * @return message representing the result of the command (sucess, invalid move etc)
  */
-CHESS_GAME_MESSAGE undoChessPrevMove(chessGame* src); //NT
+CHESS_GAME_MESSAGE undoChessPrevMove(chessGame* src, bool shouldPrint); //NT
 
 /**
  * Checks if the figure located at <x,y> has any legal moves

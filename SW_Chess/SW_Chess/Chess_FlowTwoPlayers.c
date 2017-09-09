@@ -47,6 +47,8 @@ GAME_STATUS twoPlayersGameFlow(chessGame* src){
         }
         if(cmd.cmd == CHESS_UNDO_MOVE){
             printf("Undo command not available in 2 players mode\n");
+            undoChessPrevMove(src, true); //todelete
+            chessConsolePrintBoard(src);
             continue;
         }
     }

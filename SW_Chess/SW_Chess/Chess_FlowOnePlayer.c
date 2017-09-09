@@ -50,7 +50,10 @@ GAME_STATUS onePlayerGameFlow(chessGame* src){
             continue;
         }
         if(cmd.cmd == CHESS_UNDO_MOVE){
-            //todo
+            if(undoChessPrevMove(src, true) == CHESS_GAME_NO_HISTORY)
+                printf("Empty history, move cannot be undone\n");
+            if(undoChessPrevMove(src, true) == CHESS_GAME_NO_HISTORY)
+                printf("Empty history, move cannot be undone\n");
             continue;
         }
     }
@@ -91,11 +94,10 @@ todo:
 1. documentation
 2. compMove
 3. MinMax check
-4. verify history array - we need to save both comp and player moves, and undoX2. Anyway we need to double historySize.
-5. add CHESS_UNDO_MOVE
+4. verify history array - we need to save both comp and player moves, and undoX2. Anyway we need to double historySize
+5. change getAllmoves in order to use the arrayList + listnode system. Rewrite minmax accordingly :(
 6. add load game
-7. improve parser to include path arg
-8. verify that both full and relative paths are fine by fopen
+7. improve savegame to include path arg
 9. check isStealmate, isCheckmate, isCheck
 10. 
 
