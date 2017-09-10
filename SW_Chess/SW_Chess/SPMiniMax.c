@@ -1,11 +1,3 @@
-//
-//  SPMiniMax.c
-//  SW_Chess
-//
-//  Created by Alexander Shugaley on 19/08/2017.
-//  Copyright © 2017 Alexander Shugaley. All rights reserved.
-//
-
 #include "Chess_gameUtils.h"
 #include "SPMiniMax.h"
 #include <stdio.h>

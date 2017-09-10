@@ -1,11 +1,3 @@
-//
-//  SPMiniMax.h
-//  SW_Chess
-//
-//  Created by Alexander Shugaley on 19/08/2017.
-//  Copyright © 2017 Alexander Shugaley. All rights reserved.
-//
-
 #ifndef SPMiniMax_h
 #define SPMiniMax_h
 
