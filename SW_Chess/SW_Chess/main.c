@@ -11,6 +11,9 @@
 #include "Chess_gameSettingsParser.h"
 #include "Chess_ArrayList.h"
 
+#include <SDL.h>
+#include <SDL_video.h>
+
 /////////////////////////////Testers declerations////////////////////////////////////
 
 /////ALEX/////
@@ -237,14 +240,33 @@ int main(int argc, const char * argv[]) {
 
 	///////////////////////////////////////////////
 	//////////////////check - MOR//////////////////
-	RUN_TEST(spParserCheckParseLine);
+	/*RUN_TEST(spParserCheckParseLine);
 	RUN_TEST(spParserCheckIsInt);
 
 	RUN_TEST(spArrayListCreateTest);
 	RUN_TEST(spArrayListBasicAddTest);
 	RUN_TEST(spArrayListBasicRemoveTest);
 	RUN_TEST(spArrayListBasicGetTest);
-	RUN_TEST(spArrayListBasicCopyTest);
+	RUN_TEST(spArrayListBasicCopyTest);*/
+
+
+
+	//////////////////////SDL - GUI /////////////////////////
+	if (SDL_Init(SDL_INIT_VIDEO) < 0)
+	{
+		printf("ERROR: unable to init SDL: %s\n", SDL_GetError());
+
+	}
+	else
+	{
+		printf("hi\n");
+	}
+
+
+	SDL_Quit();
+
+
+
 	///////////////////////////////////////////////////
 	///////////////////////////////////////////////////
     
