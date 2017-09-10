@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-
+#include "Chess_def.h"
 /**
  * SPArrayList summary:
  *
@@ -39,19 +39,6 @@
  * spArrayListIsEmpty      - Returns true if the array list contains no elements.
  */
 
-typedef struct sp_array_list_node {
-    int current_pos_row;
-    int current_pos_col;
-    int prev_pos_row;
-    int prev_pos_col;
-} SPArrayListNode;
-
-
-typedef struct sp_array_list_t {
-    SPArrayListNode* elements;		
-    int actualSize;
-    int maxSize;
-} SPArrayList;
 
 
 /**
@@ -115,7 +102,7 @@ SP_ARRAY_LIST_MESSAGE spArrayListClear(SPArrayList* src);
  * SP_ARRAY_LIST_FULL - if the source array list reached its maximum capacity
  * SP_ARRAY_LIST_SUCCESS - otherwise
  */
-SP_ARRAY_LIST_MESSAGE spArrayListAddFirst(SPArrayList* src,int current_pos_row, int current_pos_col, int prev_pos_row, int prev_pos_col);
+SP_ARRAY_LIST_MESSAGE spArrayListAddFirst(SPArrayList* src,int current_pos_row, int current_pos_col, int prev_pos_row, int prev_pos_col,  char pre_pos_fig);
 
 /**
  * Inserts element at a the end of the source element. If the array list
@@ -128,7 +115,7 @@ SP_ARRAY_LIST_MESSAGE spArrayListAddFirst(SPArrayList* src,int current_pos_row, 
  * SP_ARRAY_LIST_FULL - if the source array list reached its maximum capacity
  * SP_ARRAY_LIST_SUCCESS - otherwise
  */
-SP_ARRAY_LIST_MESSAGE spArrayListAddLast(SPArrayList* src,int current_pos_row, int current_pos_col, int prev_pos_row, int prev_pos_col);
+SP_ARRAY_LIST_MESSAGE spArrayListAddLast(SPArrayList* src,int current_pos_row, int current_pos_col, int prev_pos_row, int prev_pos_col,  char pre_pos_fig);
 
 /**
  * Removes an element from a specified index. The elements residing after the

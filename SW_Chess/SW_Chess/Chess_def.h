@@ -18,29 +18,58 @@ typedef enum ui_mode {
 
 
 typedef enum game_mode {
-    ONE_PLAYER_WHITES,
-    ONE_PLAYER_BLACKS,
+    ONE_PLAYER,
     TWO_PLAYERS,
-} GAME_MODE;
+} GAME_MODE_PLAYER;
 
-typedef enum current_player {
+typedef enum game_status {
+    GAME_OVER_P1_WINS,
+    GAME_OVER_P2_WINS,
+    GAME_OVER_TIE,
+    GAME_CHECK,
+    GAME_CHECKMATE,
+    GAME_RESTART,
+    EMPTY,
+} GAME_STATUS;
+
+
+typedef enum color {
     WHITES,
     BLACKS,
-} CURRENT_PLAYER;
+} PLAYER_COLOR;
 
 typedef enum chessGameMessage{
     CHESS_GAME_INVALID_MOVE,
     CHESS_GAME_INVALID_ARGUMENT,
+    CHESS_GAME_INVALID_POSITION,
     CHESS_GAME_NO_HISTORY,
     CHESS_GAME_SUCCESS,
 } CHESS_GAME_MESSAGE;
 
+
+typedef struct sp_array_list_node {
+    int current_pos_row;
+    int current_pos_col;
+    int prev_pos_row;
+    int prev_pos_col;
+    char prev_pos_fig;
+} SPArrayListNode;
+
+
+typedef struct sp_array_list_t {
+    SPArrayListNode* elements;
+    int actualSize;
+    int maxSize;
+} SPArrayList;
+
+
 typedef struct chess_game {
     char gameBoard[BOARD_SIZE][BOARD_SIZE];
-    GAME_MODE gameMode;
+    GAME_MODE_PLAYER gameMode;
     int difficulty;
-    CURRENT_PLAYER currentPlayer;
-    //  SPArrayList *historyArray;
+    PLAYER_COLOR currentPlayer;
+    PLAYER_COLOR humanPlayerColor;
+    SPArrayList *historyArray;
     int currentMove;
     UI_MODE uiMode;
 } chessGame;
