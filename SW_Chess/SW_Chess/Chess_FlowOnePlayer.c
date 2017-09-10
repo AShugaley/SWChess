@@ -105,7 +105,7 @@ todo:
 
 known bugs:
  1. when doing the move command, <E,3> does not produce an error (despite being in the wrong format, the digit should be first).
- 
+ 2. console flow line 98 - 2 identical "if"  - change the last to chess_quit 
  
  
  
