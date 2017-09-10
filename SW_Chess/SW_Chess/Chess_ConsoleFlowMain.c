@@ -17,7 +17,7 @@ void consoleMode(){
 
 void settingsStateConsole(){
     printf("Specify game setting or type 'start' to begin a game with the current setting:\n");
-    chessGame* src = createChessGame(4, ONE_PLAYER, WHITES, 2); // default arg
+    chessGame* src = createChessGame(6, ONE_PLAYER, WHITES, 2); // default arg
     char input[SP_MAX_LINE_LENGTH];
     CHESSSettingCommand setcmd;
     while(true){

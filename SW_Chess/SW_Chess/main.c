@@ -5,11 +5,14 @@
 #include "SPMiniMax.h"
 #include "Chess_FlowTwoPlayers.h"
 #include <stdbool.h>
+#include <SDL.h>
+#include <SDL_video.h>
 
 #include "unitTest.h"
 #include "Chess_gameParser.h"
 #include "Chess_gameSettingsParser.h"
 #include "Chess_ArrayList.h"
+#include "Chess_GUIFlowMain.h"
 
 /////////////////////////////Testers declerations////////////////////////////////////
 
@@ -17,13 +20,13 @@
 //void TestBoard(chessGame* src);
 
 /////MOR/////
-static bool spParserCheckIsInt();
-static bool spParserCheckParseLine();
-static bool spArrayListBasicGetTest();
-static bool spArrayListBasicCopyTest();
-static bool spArrayListBasicRemoveTest();
-static bool spArrayListBasicAddTest();
-static bool spArrayListCreateTest();
+//static bool spParserCheckIsInt();
+//static bool spParserCheckParseLine();
+//static bool spArrayListBasicGetTest();
+//static bool spArrayListBasicCopyTest();
+//static bool spArrayListBasicRemoveTest();
+//static bool spArrayListBasicAddTest();
+//static bool spArrayListCreateTest();
 ////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -76,7 +79,7 @@ src->gameBoard[2][7] = BISHOP_BLACK;
 ////////////////////////////////////////////////
 //////////////////check - MOR//////////////////
 ////////////////////////////////////////////////
-
+/*
 static bool spParserCheckIsInt()
 {
 	ASSERT_TRUE(spParserIsInt("1"));
@@ -200,7 +203,7 @@ static bool spArrayListCreateTest() {
 	ASSERT_TRUE(list != NULL);
 	spArrayListDestroy(list);
 	return true;
-}
+}*/
 ////////////////////////////////////////////////
 //////////////////check - MOR - end/////////////
 ////////////////////////////////////////////////
@@ -231,8 +234,12 @@ int main(int argc, const char * argv[]) {
 	//printf("\n%d\n", saveGame(src,"/Users/alexs/dev/SWChess/test2.xml"));
     */
 
+
+	// chessGame* src = createChessGame(5, TWO_PLAYERS, WHITES, 3);
+	// consoleMode();
+
 	///////////////////////////////////////////////////
-	///////////////////////////////////////////////////
+	/////////////check - ALEX - end//////////////////////////////////////
 
 
 	///////////////////////////////////////////////
@@ -249,26 +256,13 @@ int main(int argc, const char * argv[]) {
 
 
 	//////////////////////SDL - GUI /////////////////////////
-	if (SDL_Init(SDL_INIT_VIDEO) < 0)
-	{
-		printf("ERROR: unable to init SDL: %s\n", SDL_GetError());
-
-	}
-	else
-	{
-		printf("hi\n");
-	}
+	return GUIMain();
 
 
-	SDL_Quit();
-
-
-
-	///////////////////////////////////////////////////
-	///////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////
+	//////////////////check - MOR - end/////////////////////////////////
     
-   // chessGame* src = createChessGame(5, TWO_PLAYERS, WHITES, 3);
-    consoleMode();
+   
 	
 	return 0;
 }

@@ -1,19 +1,17 @@
-//
-//  Chess_def.h
-//  SW_Chess
-//
-//  Created by Alexander Shugaley on 19/08/2017.
-//  Copyright © 2017 Alexander Shugaley. All rights reserved.
-//
+#ifndef CHESS_DEF_H
+#define CHESS_DEF_H
 
-#ifndef Chess_def_h
-#define Chess_def_h
+
+#include <stdio.h>
+#include <stdbool.h>
+#include <SDL.h>
+#include <SDL_video.h>
 
 #define BOARD_SIZE 8
 
 typedef enum ui_mode {
     CONSOLE,
-    GUI
+    GUI,
 } UI_MODE;
 
 
@@ -65,12 +63,13 @@ typedef struct sp_array_list_t {
 
 typedef struct chess_game {
     char gameBoard[BOARD_SIZE][BOARD_SIZE];
+	SDL_Rect gameGUIBoard[BOARD_SIZE][BOARD_SIZE]; 
     GAME_MODE_PLAYER gameMode;
     int difficulty;
     PLAYER_COLOR currentPlayer;
     PLAYER_COLOR humanPlayerColor;
     SPArrayList *historyArray;
-    int currentMove;
+    int MovesCounter;
     UI_MODE uiMode;
 } chessGame;
 
@@ -78,12 +77,6 @@ typedef struct moves_array {
     int moves[64][4];
     
 } movesArray;
-
-
-
-
-#include <stdio.h>
-#include <stdbool.h>
 
 
 #define PAWN_WHITE 'm'
