@@ -12,7 +12,7 @@ static const settings_height = 700;
 #define ONEP 3
 #define TWOP 4
 #define NOOB 5
-#define EAZY 6
+#define EASY 6
 #define MODERATE 7
 #define HARD 8
 #define WHITE 9
@@ -55,7 +55,7 @@ Widget** createSettingsWindowConstWidgets(SDL_Renderer* renderer)
 	widgets[4] = createButton(renderer, &twop, "./button_base.bmp", CHESS_TWOPLAYERS_BUTTON);
 
 	widgets[5] = createButton(renderer, &noob, "./button_base.bmp", CHESS_NOOB_BUTTON);
-	widgets[6] = createButton(renderer, &eazy, "./button_base.bmp", CHESS_EAZY_BUTTON);
+	widgets[6] = createButton(renderer, &eazy, "./button_base.bmp", CHESS_EASY_BUTTON);
 	widgets[7] = createButton(renderer, &moderate, "./button_base.bmp", CHESS_MODERATE_BUTTON);
 	widgets[8] = createButton(renderer, &hard, "./button_base.bmp", CHESS_HARD_BUTTON);
 
@@ -100,9 +100,14 @@ ChessWindow* createSettingsWindow(Uint32 winMode)
 	data->setType = CHESS_MODE_SET;
 	data->window = window;
 	data->windowRenderer = renderer;
-	//set isVisible 
-
-
+	
+	for (int i = 0; i < data->numOfWidgets; i++)
+		data->Widgets[i]->isVisible = false; 
+	
+	data->Widgets[NEXT]->isVisible = true;
+	data->Widgets[BACK]->isVisible = true;
+	data->Widgets[ONEP]->isVisible = true;
+	data->Widgets[TWOP]->isVisible = true;
 
 	res->data = (void*)data;
 	res->destroyWindow = destroySettingsWindow;
@@ -177,7 +182,7 @@ WINDOW_EVENT handleEventSettingsWindow(ChessWindow* src, SDL_Event* event)
 	chessSettingsWindow* windata = (chessSettingsWindow*)src->data;
 	WINDOW_EVENT eventType = CHESS_EMPTY_WINDOWEVENT;
 	int i=0;
-	for (int i = 0; i<windata->numOfWidgets; i=((i+1)% windata->numOfWidgets))
+	for (int i = 0; i<windata->numOfWidgets; i++)//=((i+1) % windata->numOfWidgets))
 	{
 		windata->Widgets[i]->handleEvent(windata->Widgets[i], event);
 		if (windata->Widgets[i]->isActive)//windata->widgets[i]->data->isPressed)
@@ -185,46 +190,100 @@ WINDOW_EVENT handleEventSettingsWindow(ChessWindow* src, SDL_Event* event)
 			switch (windata->Widgets[i]->widget_type)
 			{
 			case CHESS_EMPTY_BUTTON:
-			{
-				eventType = CHESS_EMPTY_WINDOWEVENT;
-				break;
-			}
+				return CHESS_EMPTY_WINDOWEVENT;
+			
 			case CHESS_START_BUTTON:
-			{
 				return CHESS_STARTGAME_WINDOWEVENT;
-			}
+			
 			case CHESS_BACK_BUTTON:
-			{
 				return CHESS_HOME_WINDOWEVENT;
-				//break;
-			}
+	
 			case CHESS_NEXT_BUTTON:
-			{
-				//need to take care of the isVisible here (for example : next ->visible, start->not visible ... ) 
 				if (windata->setType == CHESS_MODE_SET)
 				{
 					windata->setType = CHESS_DIFFICULTY_SET;
+					for (int j = 0; j < windata->numOfWidgets; j++)
+						windata->Widgets[i]->isVisible = false; 
 					windata->Widgets[BACK]->isVisible = true; 
-					//and so on ... 
+					windata->Widgets[NEXT]->isVisible = true;
+					windata->Widgets[NOOB]->isVisible = true;
+					windata->Widgets[EASY]->isVisible = true;
+					windata->Widgets[MODERATE]->isVisible = true;
+					windata->Widgets[HARD]->isVisible = true;
 
 					drawSettingsWindow(src);
 				}
 				else if (windata->setType == CHESS_DIFFICULTY_SET)
 				{
 					windata->setType = CHESS_COLOR_SET;
-
-					//set isVisible 
-
+					for (int j = 0; j < windata->numOfWidgets; j++)
+						windata->Widgets[i]->isVisible = false;
+					windata->Widgets[BACK]->isVisible = true;
+					windata->Widgets[START]->isVisible = true;
+					windata->Widgets[WHITE]->isVisible = true;
+					windata->Widgets[BLACK]->isVisible = true;
 					drawSettingsWindow(src);
 				}
 				break;
-			}
+			
+			case CHESS_ONEPLAYER_BUTTON:
+				updateButtonTexture(windata->Widgets[TWOP], "./twoPlayer_active.bmp");
+				windata->Widgets[NEXT]->isVisible = true;
+				windata->Widgets[START]->isVisible = false;
+				//drawSettingsWindow(src);
+				break;
+			
+			case CHESS_TWOPLAYERS_BUTTON:
+				updateButtonTexture(windata->Widgets[ONEP], "./onePlayer_active.bmp");
+				windata->Widgets[NEXT]->isVisible = false;
+				windata->Widgets[START]->isVisible = true;
+				//drawSettingsWindow(src);
+				break;
+				
+				//if I pressed "noob" and then "easy" I want the noob button to go back to the active texture, 
+				//and not pressed texture 
+			
+			case CHESS_NOOB_BUTTON:
+				updateButtonTexture(windata->Widgets[EASY], "./button_base.bmp");	//the active texture 
+				updateButtonTexture(windata->Widgets[MODERATE], "./button_base.bmp");
+				updateButtonTexture(windata->Widgets[HARD], "./button_base.bmp");
+				//drawSettingsWindow(src);
+				break;
+			
+			case CHESS_EASY_BUTTON:
+				updateButtonTexture(windata->Widgets[NOOB], "./button_base.bmp");//the active texture 
+				updateButtonTexture(windata->Widgets[MODERATE], "./button_base.bmp");
+				updateButtonTexture(windata->Widgets[HARD], "./button_base.bmp");
+				//drawSettingsWindow(src);
+				break;
+			
+			case CHESS_MODERATE_BUTTON:
+				updateButtonTexture(windata->Widgets[NOOB], "./button_base.bmp");//the active texture 
+				updateButtonTexture(windata->Widgets[EASY], "./button_base.bmp");
+				updateButtonTexture(windata->Widgets[HARD], "./button_base.bmp");
+				//drawSettingsWindow(src);
+				break;
+			
+			case CHESS_HARD_BUTTON:
+				updateButtonTexture(windata->Widgets[NOOB], "./button_base.bmp");//the active texture 
+				updateButtonTexture(windata->Widgets[EASY], "./button_base.bmp");
+				updateButtonTexture(windata->Widgets[MODERATE], "./button_base.bmp");
+			//	drawSettingsWindow(src);
+				break;
+			
+			case CHESS_WHITE_BUTTON:
+				updateButtonTexture(windata->Widgets[BLACK], "./button_base.bmp");//the active texture
+				//drawSettingsWindow(src);
+				break;
+			
+			case CHESS_BLACK_BUTTON:
+				updateButtonTexture(windata->Widgets[WHITE], "./button_base.bmp");//the active texture
+				//drawSettingsWindow(src);
+				break;
 			
 			default:
-			{
 				eventType = CHESS_EMPTY_WINDOWEVENT;
 				break;
-			}
 			}
 		}
 	}

@@ -12,7 +12,8 @@ Widget** createMainWindowWidgets(SDL_Renderer* renderer)
 		return NULL ;
 	}
 	Widget** widgets = malloc(sizeof(Widget*) * 3);
-	if (widgets == NULL ) {
+	if (widgets == NULL ) 
+	{
 		return NULL ;
 	}
 	
@@ -21,8 +22,8 @@ Widget** createMainWindowWidgets(SDL_Renderer* renderer)
 	SDL_Rect quit =		{ .x = 125, .y = 310, .h = 80, .w = 200 };
 		
 	widgets[0] = createButton(renderer, &newGame,		"./start_active.bmp", CHESS_NEWGAME_BUTTON);
-	widgets[1] = createButton(renderer, &loadGame,		"./load_active.bmp", CHESS_LOAD_BUTTON);
-	widgets[2] = createButton(renderer, &quit,			"./exit_active.bmp", CHESS_QUIT_BUTTON);
+	widgets[1] = createButton(renderer, &loadGame,		"./load_active.bmp" , CHESS_LOAD_BUTTON);
+	widgets[2] = createButton(renderer, &quit,			"./exit_active.bmp" , CHESS_QUIT_BUTTON);
 
 	if (widgets[0] == NULL || widgets[1] == NULL || widgets[2] == NULL) 
 	{
@@ -84,15 +85,14 @@ void destroyMainWindow(ChessWindow* src)
 	SDL_DestroyWindow(data->window);
 	free(data);
 	free(src);
-	///src->isDestroyed = true; 
 }
 
 
 void drawMainWindow(ChessWindow* src)
 {
-	if (src == NULL ) {
+	if (src == NULL ) 
 		return;
-	}
+
 	chessMainWindow* data = (chessMainWindow*) src->data;
 	SDL_RenderClear(data->windowRenderer);
 
@@ -110,9 +110,7 @@ void drawMainWindow(ChessWindow* src)
 	{
 		printf("ERROR: unable to blend background texture: %s\n", SDL_GetError());
 	}
-//	SDL_SetRenderTarget(data->windowRenderer, background);
-//	SDL_RenderPresent(data->windowRenderer);
-//	SDL_SetRenderTarget(data->windowRenderer, NULL);
+
 	SDL_RenderCopy(data->windowRenderer, background, NULL, NULL);
 	SDL_DestroyTexture(background);
 	
@@ -135,8 +133,7 @@ WINDOW_EVENT handleEventMainWindow(ChessWindow* src, SDL_Event* event)
 	chessMainWindow* windata = (chessMainWindow*)src->data;
 	
 	WINDOW_EVENT eventType = CHESS_EMPTY_WINDOWEVENT;
-	//WIDGET_TYPE widgetType;
-	for(int i=0; i<windata->numOfWidgets;i++)
+	for(int i=0; i<windata->numOfWidgets; i++)
 	{
 		windata->widgets[i]->handleEvent(windata->widgets[i], event);
 		SDL_RenderPresent(windata->windowRenderer);

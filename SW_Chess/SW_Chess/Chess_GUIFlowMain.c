@@ -33,9 +33,8 @@ int GUIMain()
 		switch (windowEvent)
 		{
 		case CHESS_EMPTY_WINDOWEVENT:
-		{
 			break;
-		}
+		
 		case CHESS_STARTGAME_WINDOWEVENT:
 		{
 
@@ -78,7 +77,8 @@ int GUIMain()
 		case CHESS_SETTINGS_WINDOWEVENT:
 		{
 			currentWindow = swapWindows(currentWindow, CHESS_SETTINGS_WINDOW);
-			currentWindow->prevWindow = createWindow(CHESS_MAIN_WINDOW, SDL_WINDOW_HIDDEN);
+		//need to work on it
+			//currentWindow->prevWindow = createWindow(CHESS_MAIN_WINDOW, SDL_WINDOW_HIDDEN);
 			break;
 		}
 		case CHESS_LOAD_WINDOWEVENT:
@@ -180,7 +180,7 @@ when dropping a piece it will return the mouse location
 
 
 GUI flow -
-what I alrready wrote + somehow update the game ! ???
+what I alrready wrote + update the game 
 
 
 */

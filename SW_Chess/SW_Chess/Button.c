@@ -81,7 +81,7 @@ void updateButtonTexture(Widget* src, const char* image)
 
 void updateButtonLocation(Widget* src, int x, int y)
 {
-	if (src == NULL || x == NULL || y==NULL)
+	if (src == NULL)
 		return;
 	Button* castedData = (Button*)src->data;
 	castedData->location->x = x;
@@ -110,42 +110,41 @@ void handleButtonEvent(Widget* src, SDL_Event* event)
 			switch (buttonType)
 			{
 			case CHESS_EMPTY_BUTTON:
-			{
 				break;
-			}
 			case CHESS_NEWGAME_BUTTON:
 			case CHESS_START_BUTTON:
-			{
 				updateButtonTexture(src, "./start_pressed.bmp");
 				break;
-			}
 			case CHESS_QUIT_BUTTON:
-			{
 				updateButtonTexture(src, "./exit_pressed.bmp");
 				break;
-			}
 			case CHESS_LOAD_BUTTON:
 			case CHESS_LOADER_INSIDE_BUTTON:
-			{
 				if(src->isActivateLegal)
 					updateButtonTexture(src, "./load_pressed.bmp");
 				break;
-			}
 			case CHESS_BACK_BUTTON:
-			{
 				updateButtonTexture(src, "./back_pressed.bmp");
 				break;
-			}
 			case CHESS_UNDO_BUTTON:
-			{
 				if (src->isActivateLegal)
 					updateButtonTexture(src, "./undo_pressed.bmp");
 				break;
-			}
 			case CHESS_NEXT_BUTTON:
-			{
 				updateButtonTexture(src, "./next_pressed.bmp");
-			}
+				break;
+			case CHESS_ONEPLAYER_BUTTON:
+				updateButtonTexture(src, "./button_base.bmp");
+				break;
+			case CHESS_TWOPLAYERS_BUTTON:
+				updateButtonTexture(src, "./button_base.bmp");
+				break;
+			case CHESS_WHITE_BUTTON:
+				updateButtonTexture(src, "./button_base.bmp");
+				break;
+			case CHESS_BLACK_BUTTON:
+				updateButtonTexture(src, "./button_base.bmp");
+				break;
 		/*	case CHESS_SLOT1_BUTTON:
 			{
 				if (src->isActivateLegal)
@@ -157,10 +156,10 @@ void handleButtonEvent(Widget* src, SDL_Event* event)
 			}
 			src->isActive = true;
 		}
-
+		else
+			return;
 	}
-	else
-		return;
+	
 
 	//release the mouse 
 	if (event->type == SDL_MOUSEBUTTONUP && event->button.button == SDL_BUTTON_LEFT) //if there was a click
