@@ -105,7 +105,7 @@ void handleButtonEvent(Widget* src, SDL_Event* event)
 		SDL_Point point;
 		point.x = event->button.x;
 		point.y = event->button.y;
-		if (SDL_PointInRect(&point, castData->location))
+		if (src->isVisible && SDL_PointInRect(&point, castData->location))
 		{
 			switch (buttonType)
 			{

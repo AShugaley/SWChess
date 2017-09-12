@@ -69,14 +69,14 @@ void drawGameBoard(chessGameWindow* win, chessGame* game)
 			currentRect.h = 60;
 			currentRect.x = (i * currentRect.w) + leftUpCornerX;
 			currentRect.y = (j * currentRect.h) + leftUpCornerY;
-			//if (SDL_RenderDrawRect(win.windowRenderer, &currentRect) < 0)
-				//printf("ERROR: unable to init SDL: %s\n", SDL_GetError());
+			if (SDL_RenderDrawRect(win->windowRenderer, &currentRect) < 0)
+				printf("ERROR: unable to draw rect: %s\n", SDL_GetError());
 			if ((i % 2 == 0 && j % 2 == 0) || (i % 2 != 0 && j % 2 != 0))
 				SDL_SetRenderDrawColor(win->windowRenderer, 0, 255, 0, 255);
 			else
 				SDL_SetRenderDrawColor(win->windowRenderer, 0, 0, 255, 255);
 			if (SDL_RenderFillRect(win->windowRenderer, &currentRect) < 0)
-				printf("ERROR: unable to init SDL: %s\n", SDL_GetError());
+				printf("ERROR: unable to fill rect: %s\n", SDL_GetError());
 		}
 	}
 }

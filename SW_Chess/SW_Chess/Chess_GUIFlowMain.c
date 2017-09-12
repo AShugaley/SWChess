@@ -37,7 +37,8 @@ int GUIMain()
 		
 		case CHESS_STARTGAME_WINDOWEVENT:
 		{
-
+			currentWindow = swapWindows(currentWindow, CHESS_GAME_WINDOW);
+			break;
 		}
 		case CHESS_RESTART_WINDOWEVENT:
 		{
@@ -54,10 +55,13 @@ int GUIMain()
 			gameWindow->drawWindow(gameWindow);*/
 
 			//want to save the previous settings
+			if (currentWindow->game == NULL)
+				printf("there is no initial game");
+			
 			int prevdiff = currentWindow->game->difficulty;
 			GAME_MODE_PLAYER prevmode = currentWindow->game->gameMode;
 			PLAYER_COLOR prevcolor = currentWindow->game->humanPlayerColor;
-			
+		
 			currentWindow = swapWindows(currentWindow, CHESS_GAME_WINDOW);
 
 			currentWindow->game->difficulty = prevdiff;
