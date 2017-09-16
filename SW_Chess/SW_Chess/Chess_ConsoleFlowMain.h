@@ -16,6 +16,19 @@
 #include "Chess_gameSettingsParser.h"
 #include "Chess_FlowTwoPlayers.h"
 #include "Chess_FlowOnePlayer.h"
+
+/**
+ * Init the console mode (calls the settingsStateConsole func)
+ *
+ * @returns nothing
+ */
 void consoleMode();
+
+/**
+ * Init the setting mode of the console game - eventually may call onePlayer or twoPlayer
+ * event loops, thus starting the game stage.
+ *
+ * @returns nothing
+ */
 void settingsStateConsole();
 #endif /* Chess_ConsoleFlowMain_h */

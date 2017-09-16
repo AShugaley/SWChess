@@ -7,6 +7,10 @@
 //
 
 #include "Chess_testingSimulations.h"
+
+
+//play comp vs comp, d1 - white comp difficulty, d2 - black comp difficulty
+
 void testSimulation(int d1,int d2){
     runTestSim(d1,d2);
 }

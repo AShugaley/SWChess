@@ -15,6 +15,12 @@
 
 
 #include <stdio.h>
+
+/**
+ * The main event loop for twoPlayer game, when using the console mode
+ *
+ * @return an enum represnting the game outcome.
+ */
 GAME_STATUS twoPlayersGameFlow(chessGame* src);
 
 

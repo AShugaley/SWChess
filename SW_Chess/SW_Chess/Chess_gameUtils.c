@@ -86,7 +86,7 @@ SPArrayList* allPossibleMoves(chessGame* src, int row, int col){
     int index = 0;
     for(int i = 0; i < BOARD_SIZE; i++){
         for(int j = 0; j<BOARD_SIZE; j++){
-            if(isValidMove(src, row, col, i, j)){
+            if(isLegalMove(src, row, col, i, j)){
                 //printf("%d,%d,%d,%d\n", row,col,i,j);
                 spArrayListAddFirst(array, i, j, row, col, src->gameBoard[i][j]);
                 index++;
@@ -97,12 +97,22 @@ SPArrayList* allPossibleMoves(chessGame* src, int row, int col){
 }
 
 
-bool isValidMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col){
+bool isLegalMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col){
+    if(!isValidMove(src, prev_pos_row,  prev_pos_col,  next_pos_row,  next_pos_col))
+        return false;
+    if(isCheck(src))
+        return checkAvoided(src, prev_pos_row, prev_pos_col, next_pos_row, next_pos_col);
+    else
+        return true;
+
     
+}
+
+bool isValidMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col){
+
     char figure = src->gameBoard[prev_pos_row][prev_pos_col];
     assert(figure != EMPTY_BOARD_POS);
     PLAYER_COLOR player;
-    
     
     if(isWhiteFigure(figure))
         player = WHITES;
@@ -116,26 +126,34 @@ bool isValidMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_po
     switch(figure){
         case PAWN_BLACK:
         case PAWN_WHITE:
-              return isValidPawnMove(src, prev_pos_row, prev_pos_col, next_pos_row, next_pos_col);
+            return isValidPawnMove(src, prev_pos_row, prev_pos_col, next_pos_row, next_pos_col);
+       
         case BISHOP_BLACK:
         case BISHOP_WHITE:
-              return isValidBishopMove(src, prev_pos_row, prev_pos_col, next_pos_row, next_pos_col);
+            return isValidBishopMove(src, prev_pos_row, prev_pos_col, next_pos_row, next_pos_col);
+            
         case KNIGHT_BLACK:
         case KNIGHT_WHITE:
-              return isValidKnightMove(src, prev_pos_row, prev_pos_col, next_pos_row, next_pos_col);
+            return  isValidKnightMove(src, prev_pos_row, prev_pos_col, next_pos_row, next_pos_col);
+         
         case ROOK_BLACK:
         case ROOK_WHITE:
-              return isValidRookMove(src, prev_pos_row, prev_pos_col, next_pos_row, next_pos_col);
+            return isValidRookMove(src, prev_pos_row, prev_pos_col, next_pos_row, next_pos_col);
+           
         case QUEEN_BLACK:
         case QUEEN_WHITE:
-              return isValidQueenMove(src, prev_pos_row, prev_pos_col, next_pos_row, next_pos_col);
+            return isValidQueenMove(src, prev_pos_row, prev_pos_col, next_pos_row, next_pos_col);
+        
         case KING_WHITE:
         case KING_BLACK:
-              return isValidKingMove(src, prev_pos_row, prev_pos_col, next_pos_row, next_pos_col);
+            return isValidKingMove(src, prev_pos_row, prev_pos_col, next_pos_row, next_pos_col);
+           
     }
-    printf("should not get here #453"); // delete
-    return false;
+
+    return true;
 }
+
+
 
 
 CHESS_GAME_MESSAGE setChessMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col){
@@ -143,7 +161,7 @@ CHESS_GAME_MESSAGE setChessMove(chessGame* src, int prev_pos_row, int prev_pos_c
         return CHESS_GAME_INVALID_POSITION;
     if(!isValidBoardPosition(prev_pos_row, prev_pos_col, next_pos_row, next_pos_col))
         return CHESS_GAME_INVALID_ARGUMENT;
-    if(!isValidMove(src, prev_pos_row, prev_pos_col, next_pos_row, next_pos_col))
+    if(!isLegalMove(src, prev_pos_row, prev_pos_col, next_pos_row, next_pos_col))
         return CHESS_GAME_INVALID_MOVE;
     if(spArrayListIsFull(src->historyArray))
         spArrayListRemoveFirst(src->historyArray);

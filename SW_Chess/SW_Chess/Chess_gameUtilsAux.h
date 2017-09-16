@@ -13,6 +13,37 @@
 #include "Chess_def.h"
 #include "Chess_ArrayList.h"
 
+/**
+ * Chess_gameUtilsAux summary:
+ *
+ * A container that includes a vrriety of various auxillary chess functions, that are used by the actual game
+ * functions that appear at gameUtils.h. This is done both to break an otherwise long file into two, and to provide
+ * better modularity to the game.
+ *
+ *
+ *
+ * initChessBoard          - Draws a standart Chess Board (i.e. according to classic rules)
+ * isValidDestenetion      - Checks if a given filed can be filled by a gived player's figure.
+ * isOpponentPosition      - Checks if a certain field is filled by an opponent figure.
+ * isValidBoardPosition    - Checks if a touple ((x,y) -> (v,w)) represents two valid chess positions (i.e
+ * all for ints are between 0 and 7.
+ * isValidPawnMove         - Checks if a touple ((x,y) -> (v,w)) represents a valid pawn move
+ * isValidBishopMove       - Checks if a touple ((x,y) -> (v,w)) represents a valid bishop move
+ * isValidRookMove         - Checks if a touple ((x,y) -> (v,w)) represents a valid rook move
+ * isValidKnightMove       - Checks if a touple ((x,y) -> (v,w)) represents a valid knight move
+ * isValidQueenMove        - Checks if a touple ((x,y) -> (v,w)) represents a valid queen move
+ * isValidKingMove         - Checks if a touple ((x,y) -> (v,w)) represents a valid king move
+ * isWhiteFigure           - Checks if a given char represnts a white figure
+ * isBlackFigure           - Checks if a given char represnts a black figure
+ * switchCurrentPlayer     - Switches current player
+ * isUnderPressure         - Checks if a given field is threatend by the opponent
+ * getColumnChar           - Switches between int and char column represnatation
+ * getIntFromColumnChar    - Switches between char and int column represnatation
+
+ */
+
+
+
 
 /**
  * Sets the board of the given chess game to the default starting position
@@ -145,4 +176,8 @@ char getColumnChar(int col);
  */
 char getIntFromColumnChar(char col);
 
+
+
+
+bool checkAvoided(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col);
 #endif /* Chess_gameUtilsAux_h */

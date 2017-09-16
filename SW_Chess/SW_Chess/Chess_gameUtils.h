@@ -149,4 +149,7 @@ void terminateGame(chessGame* src);
 
 //chessGame* loadGmae(const char* filename);
 
+bool isLegalMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col);
+
+
 #endif /* Chess_gameUtils_h */

@@ -244,4 +244,4 @@ int minFunc(int a, int b){
         return a;
     return b;
 }
->>>>>>> minmax v1 + other fixes, console mode works
+

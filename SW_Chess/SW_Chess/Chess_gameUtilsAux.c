@@ -335,5 +335,23 @@ bool isUnderPressure(chessGame* src, int row, int col){
 
 
 
+/* this is used in case a check existed before this move. In such case, it means that:
+ *   a) There is no checkmate (otherwise the game would terminate)
+ *   b) The only legal move would be one preventing the check, i.e. a check cannot remain
+ * thus we first check if there was a check, and if yes, we create a copy of the game, submit this new move
+ * (that by now we know is legal from figure movment prespective), and check again if there's a check)
+ */
+bool checkAvoided(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col){
+    bool ret = true;
+    chessGame* copyGame = copyChessGame(src);
+    copyGame->gameBoard[next_pos_row][next_pos_col] = copyGame->gameBoard[prev_pos_row][prev_pos_col];
+    copyGame->gameBoard[prev_pos_row][prev_pos_col] = EMPTY_BOARD_POS;
+    if(isCheck(copyGame))
+        ret = false;
+    destroyChessGame(copyGame);
+    return ret;
+}
+
+
 ///TEST
 

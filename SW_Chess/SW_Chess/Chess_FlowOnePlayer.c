@@ -103,15 +103,11 @@ todo:
 
 known bugs:
  1. when doing the move command, <E,3> does not produce an error (despite being in the wrong format, the digit should be first).
-<<<<<<< HEAD
- 
-=======
- 2. if isCheck -> everyotherMove is unvalid!
+ 2. if isCheck -> everyotherMove is unvalid! -> this was not fixed compVcomp still takes king!
  4. Cna't take the king. Fix this by unvalidating evreyothermove.
  3. MinMax tends to come to a loop - maybe add a randomization factor? Generally it works I think. Give some people a chance to play against it and see if a basic improvment needed.
- 5. there's a memory leak - not sure where, but it appears in testSim, maybe elsewehere as well.
->>>>>>> minmax v1 + other fixes, console mode works
- 
+ 5. there's a memory leak - not sure where, but it appears in compVcomp, maybe in mainGame as well.
+
  
  
 bonuses:
