@@ -17,6 +17,7 @@
 		DBE111A31F62737F004A99D7 /* Chess_FlowTwoPlayers.c in Sources */ = {isa = PBXBuildFile; fileRef = DBE111A11F62737F004A99D7 /* Chess_FlowTwoPlayers.c */; };
 		DBE111A61F628230004A99D7 /* Chess_FlowOnePlayer.c in Sources */ = {isa = PBXBuildFile; fileRef = DBE111A41F628230004A99D7 /* Chess_FlowOnePlayer.c */; };
 		DBE111A91F6285FE004A99D7 /* Chess_ConsoleFlowMain.c in Sources */ = {isa = PBXBuildFile; fileRef = DBE111A71F6285FE004A99D7 /* Chess_ConsoleFlowMain.c */; };
+		DBE111AC1F6D4FB8004A99D7 /* Chess_testingSimulations.c in Sources */ = {isa = PBXBuildFile; fileRef = DBE111AA1F6D4FB8004A99D7 /* Chess_testingSimulations.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -53,6 +54,8 @@
 		DBE111A51F628230004A99D7 /* Chess_FlowOnePlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Chess_FlowOnePlayer.h; sourceTree = "<group>"; };
 		DBE111A71F6285FE004A99D7 /* Chess_ConsoleFlowMain.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Chess_ConsoleFlowMain.c; sourceTree = "<group>"; };
 		DBE111A81F6285FE004A99D7 /* Chess_ConsoleFlowMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Chess_ConsoleFlowMain.h; sourceTree = "<group>"; };
+		DBE111AA1F6D4FB8004A99D7 /* Chess_testingSimulations.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Chess_testingSimulations.c; sourceTree = "<group>"; };
+		DBE111AB1F6D4FB8004A99D7 /* Chess_testingSimulations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Chess_testingSimulations.h; sourceTree = "<group>"; };
 		DBED57551F488B4200877397 /* Chess_def.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Chess_def.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -107,6 +110,8 @@
 				DBE111A51F628230004A99D7 /* Chess_FlowOnePlayer.h */,
 				DBE111A71F6285FE004A99D7 /* Chess_ConsoleFlowMain.c */,
 				DBE111A81F6285FE004A99D7 /* Chess_ConsoleFlowMain.h */,
+				DBE111AA1F6D4FB8004A99D7 /* Chess_testingSimulations.c */,
+				DBE111AB1F6D4FB8004A99D7 /* Chess_testingSimulations.h */,
 			);
 			path = SW_Chess;
 			sourceTree = "<group>";
@@ -174,6 +179,7 @@
 				DB798CEC1F51E568005619B6 /* Chess_gameParser.c in Sources */,
 				DB798CED1F51E568005619B6 /* Chess_gameSettingsParser.c in Sources */,
 				DBE111A61F628230004A99D7 /* Chess_FlowOnePlayer.c in Sources */,
+				DBE111AC1F6D4FB8004A99D7 /* Chess_testingSimulations.c in Sources */,
 				DB7B096E1F486B3C00A8243D /* SPMiniMax.c in Sources */,
 				DBE111A31F62737F004A99D7 /* Chess_FlowTwoPlayers.c in Sources */,
 				DB7B096B1F4855AB00A8243D /* Chess_gameUtilsAux.c in Sources */,

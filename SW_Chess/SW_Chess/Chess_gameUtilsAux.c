@@ -23,14 +23,14 @@ bool isValidPawnMove(chessGame* src, int prev_pos_row, int prev_pos_col, int nex
     }
     //printf("%d,%d,%d,%d,%d,%d",prev_pos_row,prev_pos_col,next_pos_row,next_pos_col,operator,operator);
     if (prev_pos_col != next_pos_col){
-        if((next_pos_row == prev_pos_row+(1*operator))&&((prev_pos_col+1 == next_pos_col)||(prev_pos_col-1==next_pos_col)))
+        if((next_pos_row == prev_pos_row+(1*operator))&&(src->gameBoard[next_pos_row][next_pos_col] != EMPTY_BOARD_POS)&&((prev_pos_col+1 == next_pos_col)||(prev_pos_col-1==next_pos_col)))
             return true;
         else
             return false;
     }
-    if (prev_pos_row+(1*operator) == next_pos_row) // reg move
+    if ((prev_pos_row+(1*operator) == next_pos_row)&&(src->gameBoard[next_pos_row][next_pos_col] == EMPTY_BOARD_POS)) // reg move
         return true;
-    if ((prev_pos_row == first_row+(1*operator)) && (prev_pos_row+(2*operator) == next_pos_row) && (src->gameBoard[prev_pos_row+(1*operator)][prev_pos_col] == EMPTY_BOARD_POS)) // first move
+    if ((prev_pos_row == first_row+(1*operator)) && (prev_pos_row+(2*operator) == next_pos_row) && (src->gameBoard[prev_pos_row+(1*operator)][prev_pos_col] == EMPTY_BOARD_POS) &&(src->gameBoard[next_pos_row][next_pos_col] == EMPTY_BOARD_POS)) // first move
         return true;
     return false;
 }

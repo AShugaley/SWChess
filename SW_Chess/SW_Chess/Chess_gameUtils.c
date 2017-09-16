@@ -15,7 +15,6 @@
 
 
 
-
 chessGame* createChessGame(int historySize, GAME_MODE_PLAYER mode, PLAYER_COLOR humanColor, int difficulty)
 {
 
@@ -81,22 +80,19 @@ CHESS_GAME_MESSAGE chessConsolePrintBoard(chessGame* src) {
 }
 
 
-movesArray* allPossibleMoves(chessGame* src, int row, int col){
-    movesArray* array = (movesArray *)malloc(sizeof(movesArray));
+SPArrayList* allPossibleMoves(chessGame* src, int row, int col){
+    SPArrayList* array = spArrayListCreate(64);
     
     int index = 0;
     for(int i = 0; i < BOARD_SIZE; i++){
         for(int j = 0; j<BOARD_SIZE; j++){
             if(isValidMove(src, row, col, i, j)){
-                array->moves[index][0] =  row;
-                array->moves[index][1] = col;
-                array->moves[index][2] = i;
-                array->moves[index][3] = j;
+                //printf("%d,%d,%d,%d\n", row,col,i,j);
+                spArrayListAddFirst(array, i, j, row, col, src->gameBoard[i][j]);
                 index++;
             }
         }
     }
-    array->moves[index][0] = -1;
     return array;
 }
 
@@ -149,23 +145,80 @@ CHESS_GAME_MESSAGE setChessMove(chessGame* src, int prev_pos_row, int prev_pos_c
         return CHESS_GAME_INVALID_ARGUMENT;
     if(!isValidMove(src, prev_pos_row, prev_pos_col, next_pos_row, next_pos_col))
         return CHESS_GAME_INVALID_MOVE;
+    if(spArrayListIsFull(src->historyArray))
+        spArrayListRemoveFirst(src->historyArray);
+    spArrayListAddLast(src->historyArray, next_pos_row, next_pos_col, prev_pos_row, prev_pos_col,src->gameBoard[next_pos_row][next_pos_col]);
     src->gameBoard[next_pos_row][next_pos_col] = src->gameBoard[prev_pos_row][prev_pos_col];
     src->gameBoard[prev_pos_row][prev_pos_col] = EMPTY_BOARD_POS;
     switchCurrentPlayer(src);
-    if(spArrayListIsFull(src->historyArray))
-        spArrayListRemoveLast(src->historyArray);
-    spArrayListAddLast(src->historyArray, next_pos_row, next_pos_col, prev_pos_row, prev_pos_col,src->gameBoard[prev_pos_row][prev_pos_col]);
     return CHESS_GAME_SUCCESS;
 }
 
 
 bool isCheckmate(chessGame* src){
-    bool checkmate = false;
-    switchCurrentPlayer(src);
-    if(isCheck(src))
-       checkmate = true;
-    switchCurrentPlayer(src);
-    return checkmate;
+    int king_row = -1, king_col = -1;
+    for(int i = 0; i< BOARD_SIZE; i++){
+        for(int j = 0; j<BOARD_SIZE; j++){
+            if(src->currentPlayer == WHITES){
+                if(src->gameBoard[i][j] == KING_WHITE){
+                    king_row = i;
+                    king_col = j;
+                }
+            }
+            else{
+                
+                if(src->gameBoard[i][j] == KING_BLACK){
+                    king_row = i;
+                    king_col = j;
+                }
+            }
+        }
+    }
+    if(!isUnderPressure(src, king_row, king_col))
+        return false;
+    SPArrayListNode* move;
+    chessGame* gameCopy = copyChessGame(src);
+    for(int i = 0; i< BOARD_SIZE; i++){
+        for(int j = 0; j<BOARD_SIZE; j++){
+            if(gameCopy->currentPlayer == WHITES){
+                if(isWhiteFigure(gameCopy->gameBoard[i][j])){
+                    SPArrayList* moves = allPossibleMoves(gameCopy, i, j);
+                    while(!spArrayListIsEmpty(moves)){
+                        move = spArrayListGetFirst(moves);
+                        setChessMove(gameCopy, move->prev_pos_row, move->prev_pos_col, move->current_pos_row, move->current_pos_col);
+                        if(!isUnderPressure(gameCopy, king_row, king_col)){
+                            spArrayListDestroy(moves);
+                            destroyChessGame(gameCopy);
+                            return false;
+                        }
+                        undoChessPrevMove(gameCopy, false);
+                        spArrayListRemoveFirst(moves);
+                    }
+                    spArrayListDestroy(moves);
+                }
+            }
+            else{
+                if(isBlackFigure(gameCopy->gameBoard[i][j])){
+                    SPArrayList* moves = allPossibleMoves(gameCopy, i, j);
+                    while(!spArrayListIsEmpty(moves)){
+                        move = spArrayListGetFirst(moves);
+                        setChessMove(gameCopy, move->prev_pos_row, move->prev_pos_col, move->current_pos_row, move->current_pos_col);
+                        if(!isUnderPressure(gameCopy, king_row, king_col)){
+                            spArrayListDestroy(moves);
+                            destroyChessGame(gameCopy);
+                            return false;
+                        }
+                        undoChessPrevMove(gameCopy, false);
+                        spArrayListRemoveFirst(moves);
+                    }
+                    spArrayListDestroy(moves);
+                }
+            }
+        }
+    }
+    destroyChessGame(gameCopy);
+   // assert((king_col != -1) && (king_row != -1));
+    return (isUnderPressure(src, king_row, king_col) && !hasValidMove(src, king_row, king_col));
 }
 
 bool hasValidMove(chessGame* src, int row, int col){
@@ -180,39 +233,34 @@ bool hasValidMove(chessGame* src, int row, int col){
 
 
 bool isStalemate(chessGame* src){
-    bool has_valid_move = false;
-    bool under_pressure = false;
-    if(src->currentPlayer == WHITES){
-        for(int i = 0; i<BOARD_SIZE; i++){
-            for(int j = 0; j<BOARD_SIZE; j++){
+    int king_row = -1, king_col = -1;
+    for(int i = 0; i< BOARD_SIZE; i++){
+        for(int j = 0; j<BOARD_SIZE; j++){
+            if(src->currentPlayer == WHITES){
                 if(isWhiteFigure(src->gameBoard[i][j])){
                     if(src->gameBoard[i][j] == KING_WHITE){
-                        under_pressure = isUnderPressure(src, i, j);
+                        king_row = i;
+                        king_col = j;
                     }
-                    has_valid_move = hasValidMove(src, i, j);
-                    if(has_valid_move)
+                    if(hasValidMove(src, i, j))
                         return false;
                 }
             }
-        }
-    }
-    else{
-        for(int i = 0; i<BOARD_SIZE; i++){
-            for(int j = 0; j<BOARD_SIZE; j++){
-                if(isWhiteFigure(src->gameBoard[i][j])){
-                    if(src->gameBoard[i][j] == KING_WHITE){
-                        under_pressure = isUnderPressure(src, i, j);
-                    }
-                has_valid_move = hasValidMove(src, i, j);
-                }
-                if(has_valid_move)
-                    return false;
+            else{
+                 if(isBlackFigure(src->gameBoard[i][j])){
+                     if(src->gameBoard[i][j] == KING_BLACK){
+                         king_row = i;
+                         king_col = j;
+                     }
+                     if(hasValidMove(src, i, j))
+                         return false;
+                 }
             }
         }
     }
-    return (!under_pressure);
-            
-        
+   // assert((king_col != -1) && (king_row != -1));
+    return (!isUnderPressure(src, king_row, king_col) && !hasValidMove(src, king_row, king_col));
+    
 }
 
 CHESS_GAME_MESSAGE undoChessPrevMove(chessGame* src, bool shouldPrint){
@@ -223,7 +271,8 @@ CHESS_GAME_MESSAGE undoChessPrevMove(chessGame* src, bool shouldPrint){
     src->gameBoard[move->prev_pos_row][move->prev_pos_col] = src->gameBoard[move->current_pos_row][move->current_pos_col];
     src->gameBoard[move->current_pos_row][move->current_pos_col] = move->prev_pos_fig;
     switchCurrentPlayer(src);
-    printf("Undo move for player %s : <%d,%c> -> <%d,%c>\n",getCurrentPlayerStringName(src),move->prev_pos_row + 1, getColumnChar(move->prev_pos_col),move->current_pos_row + 1, getColumnChar(move->current_pos_col));
+    if(shouldPrint)
+        printf("Undo move for player %s : <%d,%c> -> <%d,%c>\n",getCurrentPlayerStringName(src),move->prev_pos_row + 1, getColumnChar(move->prev_pos_col),move->current_pos_row + 1, getColumnChar(move->current_pos_col));
     return CHESS_GAME_SUCCESS;
     
 }
@@ -248,9 +297,8 @@ bool isCheck(chessGame* src){
             }
         }
     }
-    
-    
-    assert((king_col != -1) && (king_row != -1));
+
+    //assert((king_col != -1) && (king_row != -1));
     return (isUnderPressure(src, king_row, king_col));
 
 }
@@ -272,27 +320,131 @@ void get_moves(chessGame* src, int row, int col){
         return;
     }
 
-    movesArray* moves = allPossibleMoves(src, row, col);
-    int counter = 0;
-    char columnChar;
+    SPArrayList* moves = allPossibleMoves(src, row, col);
     bool needHelpPrints;
+    SPArrayListNode* node;
     if((src->difficulty == 1)||(src->difficulty == 2))
         needHelpPrints = true;
     else
         needHelpPrints = false;
-    while(moves->moves[counter][0] != -1){
-        columnChar = getColumnChar(moves->moves[counter][3]);
-        printf("<%d,%c>", moves->moves[counter][2], columnChar);
+    while(!spArrayListIsEmpty(moves)){
+        node = spArrayListGetLast(moves);
+        
+        
+        //printf("<%d,%c>", node->current_pos_row + 1, getColumnChar(node->current_pos_col));
         //add * if threatend
         //add ^ if enemyfield
-        printf("\n");
-        counter++;
+        //printf("\n");
+        spArrayListRemoveLast(moves);
     }
+    spArrayListDestroy(moves);
     
 }
 
 
+//chessGame* loadGmae(const char* filename){
+//    chessGame* src = createChessGame(6, 2, 1, 1);
+//    if(strstr(filename, "load ") != 0) {
+//        filename += 5;
+//    }
+//    FILE *file = fopen(filename, "r+");
+//    if(file == NULL){
+//        printf("File cannot be opened\n");
+//        return NULL;
+//    }
+//    char* p = NULL;
+//    char c[1];
+//    char input[128][64];
+//    int  i = 0;
+//    int j = 0;
+//    int row_number;
+//    while (c != EOF){
+//       
+//        fgets( c, 1, file);
+//        
+//        printf("AA %c AA",c);
+//        c = p[0];
+//        printf("one\n");
+//        printf("AA %c AA",c);
+//       
+//        if(c == '<'){
+//            printf("two\n");
+//            j = 0;
+//            while(c != '>'){
+//                printf("three\n");
+//                c = fgetc(file);
+//                input[i][j] = c;
+//                j++;
+//            }
+//            i++;
+//        }
+//    }
+//    for(int index =0 ; index < i+1; index++){
+//        printf("%s\n", input[index]);
+//    }
+//    for(int index =0 ; index < i+1; index++){
+//        if(strstr(input[index], "current_turn") != NULL){
+//            if(input[index+1][0] == '1'){
+//                src->currentPlayer = WHITES;
+//                index++;
+//                continue;
+//            }
+//            if(input[index+1][0] == '0'){
+//                src->currentPlayer = BLACKS;
+//                index++;
+//                continue;
+//            }
+//            printf("ERROR LOADGAME #1");
+//        }
+//        if(strstr(input[index], "game_mode") != NULL){
+//            if(input[index+1][0] == '1'){
+//                src->gameMode = ONE_PLAYER;
+//                index++;
+//                continue;
+//            }
+//            if(input[index+1][0] == '2'){
+//                 src->gameMode = TWO_PLAYERS;
+//                index++;
+//                continue;
+//            }
+//            printf("ERROR LOADGAME #2");
+//        }
+//        if(strstr(input[index], "user_color") != NULL){
+//            if(input[index+1][0] == '1'){
+//                src->humanPlayerColor = WHITES;
+//                index++;
+//                continue;
+//            }
+//            if(input[index+1][0] == '2'){
+//                src->humanPlayerColor = BLACKS;
+//
+//                index++;
+//                continue;
+//            }
+//            printf("ERROR LOADGAME #3");
+//        }
+//        if(strstr(input[index], "difficulty") != NULL){
+//            src->difficulty =  input[index+1][0] - '0';
+//            index++;
+//            continue;
+//
+//        }
+//        if(strstr(input[index], "row") != NULL){
+//            
+//            row_number =  input[index][4] - '0';
+//            index++;
+//            for(int k = 0; k < 8; k++)
+//                src->gameBoard[row_number][k] = input[index][k];
+//            continue;
+//        }
+//    }
+//    return src;
+//}
+
 bool saveGame(chessGame* src, const char* filename){
+    if(strstr(filename, "save ") != 0) {
+        filename += 5;
+    }
 
     FILE *file = fopen(filename, "w+");
     if(file == NULL){

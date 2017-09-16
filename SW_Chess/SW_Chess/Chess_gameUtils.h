@@ -9,7 +9,7 @@
 #ifndef Chess_gameUtils_h
 #define Chess_gameUtils_h
 #include <stdio.h>
-
+#include <string.h>
 
 #include "Chess_gameUtilsAux.h"
 #include "Chess_ArrayList.h"
@@ -92,7 +92,7 @@ bool isCheck(chessGame* src); // D tested
  *
  * @return a two demensional array representing all moved
  */
-movesArray* allPossibleMoves(chessGame* src, int row, int col); //D Not Tested
+SPArrayList* allPossibleMoves(chessGame* src, int row, int col); //D Not Tested
 
 /**
  * Checks if there's a checkmate.
@@ -147,6 +147,6 @@ void checkGameEnd(chessGame* src);
  */
 void terminateGame(chessGame* src);
 
-
+//chessGame* loadGmae(const char* filename);
 
 #endif /* Chess_gameUtils_h */

@@ -16,7 +16,7 @@ GAME_STATUS onePlayerGameFlow(chessGame* src){
     while (true){
         checkGameEnd(src);
         if(src->currentPlayer != src->humanPlayerColor){
-            //compMove(src); // todo
+            compMove(src);
             continue;
         }
         if(printBoard)
@@ -74,14 +74,18 @@ bool humanMove(chessGame* src, CHESSCommand cmd){
     return false;
 }
 
-        /*
-         undo_move -> undomove
-         CHESS_SAVE -> func saveGame(input), if true/false, printboard = false + continue,
-         CHESS_MOVE -> func checkmove(isvalidmove + ERRORS), if true -> setMove; else -> printboard false + continue
 
-         }
+bool compMove(chessGame* src){
+    SPArrayListNode* move = suggestMove(src, src->difficulty);
+    if(move == NULL){
+        printf("ERROR");
+        return false;
+    }
+    setChessMove(src, move->prev_pos_row, move->prev_pos_col, move->current_pos_row, move->current_pos_col);
+    free(move);
+    return false;
+}
 
-*/
 
 
 
@@ -92,21 +96,21 @@ bool humanMove(chessGame* src, CHESSCommand cmd){
 todo:
 
 1. documentation
-2. compMove
-3. MinMax check
-4. verify history array - we need to save both comp and player moves, and undoX2. Anyway we need to double historySize
-5. change getAllmoves in order to use the arrayList + listnode system. Rewrite minmax accordingly :(
-6. add load game
-7. improve savegame to include path arg
-9. check isStealmate, isCheckmate, isCheck
-10. 
+3. MinMax check - mostly done
+6. add/fix load game
 
 
 
 known bugs:
  1. when doing the move command, <E,3> does not produce an error (despite being in the wrong format, the digit should be first).
- 2. console flow line 98 - 2 identical "if"  - change the last to chess_quit 
+<<<<<<< HEAD
  
+=======
+ 2. if isCheck -> everyotherMove is unvalid!
+ 4. Cna't take the king. Fix this by unvalidating evreyothermove.
+ 3. MinMax tends to come to a loop - maybe add a randomization factor? Generally it works I think. Give some people a chance to play against it and see if a basic improvment needed.
+ 5. there's a memory leak - not sure where, but it appears in testSim, maybe elsewehere as well.
+>>>>>>> minmax v1 + other fixes, console mode works
  
  
  
@@ -115,6 +119,7 @@ bonuses:
 2. add CROWNINNG
 3. add GET_ALL_MOVES FUNC - already have printing in format, just add where applicable
 5. add better minmax
+6. conbine isStealmate && isCheckmate && isCheck
 
 
 */

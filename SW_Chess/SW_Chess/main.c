@@ -203,11 +203,43 @@ static bool spArrayListCreateTest() {
 	ASSERT_TRUE(list != NULL);
 	spArrayListDestroy(list);
 	return true;
+<<<<<<< HEAD
 }*/
+=======
+}
+
+
+chessGame* TestBoard(chessGame* src) {
+    for (int i = 0; i<BOARD_SIZE; i++)
+        for (int j = 0; j <BOARD_SIZE; j++)
+            src->gameBoard[i][j] = EMPTY_BOARD_POS;
+    
+    
+    //whites
+    src->gameBoard[3][5] = ROOK_WHITE;
+    src->gameBoard[4][5] = ROOK_WHITE;
+    src->gameBoard[7][7] = PAWN_WHITE;
+    src->gameBoard[1][1] = KING_WHITE;
+       src->gameBoard[5][7] = BISHOP_WHITE;
+       src->gameBoard[1][7] = QUEEN_WHITE;
+    //    src->gameBoard[0][4] = KING_WHITE;
+    //    src->gameBoard[0][5] = BISHOP_WHITE;
+    //    src->gameBoard[0][6] = KNIGHT_WHITE;
+        src->gameBoard[1][4] = ROOK_WHITE;
+    
+    
+    
+    //blacks
+    src->gameBoard[3][3] = KING_BLACK;
+    src->gameBoard[2][3] = QUEEN_BLACK;
+   //     src->gameBoard[0][1] = PAWN_BLACK;
+    src->gameBoard[2][7] = ROOK_BLACK;
+>>>>>>> minmax v1 + other fixes, console mode works
 ////////////////////////////////////////////////
 //////////////////check - MOR - end/////////////
 ////////////////////////////////////////////////
-
+    return src;
+}
 
 int main(int argc, const char * argv[]) {
 	/*
@@ -262,9 +294,32 @@ int main(int argc, const char * argv[]) {
 	////////////////////////////////////////////////////////////////////
 	//////////////////check - MOR - end/////////////////////////////////
     
+<<<<<<< HEAD
    
 	
 	//return 0;
+=======
+   // chessGame* src = createChessGame(5, TWO_PLAYERS, WHITES, 3);
+    //consoleMode();
+	//chessGame* src = createChessGame(5, TWO_PLAYERS, WHITES, 3);
+    //printf("%d,%d,%d,%d\n",src->currentPlayer, src->humanPlayerColor, src->gameMode, src->difficulty);
+    //rintf("\n%d\n", saveGame(src,"save /Users/alexs/dev/SWChess/text2.xml"));
+    //chessGame* src2 = loadGmae("load /Users/alexs/dev/SWChess/text2.xml");
+   // printf("%d,%d,%d,%d\n",src2->currentPlayer, src2->humanPlayerColor, src2->gameMode, src2->difficulty);
+    //chessConsolePrintBoard(src2);
+//    chessGame* src = createChessGame(2, 2, 1, 2);
+//    TestBoard(src);
+//    src->currentPlayer = BLACKS;
+//    chessConsolePrintBoard(src);
+//    printf("%d\n", isCheck(src));
+//    printf("%d\n", isCheckmate(src));
+//    printf("%d\n", isStalemate(src));
+   // printf("%d,%d\n", suggestMove(src, 4)->current_pos_row,suggestMove(src, 4)->current_pos_col );
+    //get_moves(src,0,1);
+    runTestSim(4,1);
+    
+	return 0;
+>>>>>>> minmax v1 + other fixes, console mode works
 }
 
 
