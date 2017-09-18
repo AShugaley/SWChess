@@ -61,7 +61,7 @@ GAME_STATUS onePlayerGameFlow(chessGame* src){
 
 
 bool humanMove(chessGame* src, CHESSCommand cmd){
-    CHESS_GAME_MESSAGE message = setChessMove(src, (cmd.sourceRow -1), getIntFromColumnChar(cmd.sourceColl), (cmd.targertRow -1), getIntFromColumnChar(cmd.targetColl));
+    CHESS_GAME_MESSAGE message = setChessMove(src, (cmd.sourceRow -1), getIntFromColumnChar(cmd.sourceColl), (cmd.targertRow -1), getIntFromColumnChar(cmd.targetColl), true);
     if(message == CHESS_GAME_SUCCESS){
         return true;
     }
@@ -81,7 +81,7 @@ bool compMove(chessGame* src){
         printf("ERROR");
         return false;
     }
-    setChessMove(src, move->prev_pos_row, move->prev_pos_col, move->current_pos_row, move->current_pos_col);
+    setChessMove(src, move->prev_pos_row, move->prev_pos_col, move->current_pos_row, move->current_pos_col, false);
     free(move);
     return false;
 }
@@ -103,8 +103,6 @@ todo:
 
 known bugs:
  1. when doing the move command, <E,3> does not produce an error (despite being in the wrong format, the digit should be first).
- 2. if isCheck -> everyotherMove is unvalid! -> this was not fixed compVcomp still takes king!
- 4. Cna't take the king. Fix this by unvalidating evreyothermove.
  3. MinMax tends to come to a loop - maybe add a randomization factor? Generally it works I think. Give some people a chance to play against it and see if a basic improvment needed.
  5. there's a memory leak - not sure where, but it appears in compVcomp, maybe in mainGame as well.
 

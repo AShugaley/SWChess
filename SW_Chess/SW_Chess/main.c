@@ -215,8 +215,9 @@ chessGame* TestBoard(chessGame* src) {
     
     
     //whites
-    src->gameBoard[3][5] = ROOK_WHITE;
+    //src->gameBoard[3][5] = ROOK_WHITE;
     src->gameBoard[4][5] = ROOK_WHITE;
+    src->gameBoard[2][5] = ROOK_WHITE;
     src->gameBoard[7][7] = PAWN_WHITE;
     src->gameBoard[1][1] = KING_WHITE;
        src->gameBoard[5][7] = BISHOP_WHITE;
@@ -224,13 +225,13 @@ chessGame* TestBoard(chessGame* src) {
     //    src->gameBoard[0][4] = KING_WHITE;
     //    src->gameBoard[0][5] = BISHOP_WHITE;
     //    src->gameBoard[0][6] = KNIGHT_WHITE;
-        src->gameBoard[1][4] = ROOK_WHITE;
+        src->gameBoard[3][4] = QUEEN_WHITE;
     
     
     
     //blacks
     src->gameBoard[3][3] = KING_BLACK;
-    src->gameBoard[2][3] = QUEEN_BLACK;
+    //src->gameBoard[2][3] = QUEEN_BLACK;
         src->gameBoard[6][0] = PAWN_BLACK;
     src->gameBoard[2][7] = ROOK_BLACK;
 
@@ -302,17 +303,20 @@ int main(int argc, const char * argv[]) {
    // printf("%d,%d,%d,%d\n",src2->currentPlayer, src2->humanPlayerColor, src2->gameMode, src2->difficulty);
     //chessConsolePrintBoard(src2);
     chessGame* src = createChessGame(2, 2, 1, 2);
-    TestBoard(src);
-    src->currentPlayer = BLACKS;
-    chessConsolePrintBoard(src);
-    printf("%d\n", isCheck(src));
-    printf("%d\n", isCheckmate(src));
-    printf("%d\n", isStalemate(src));
-     printf("%d\n", isLegalMove(src, 2, 3, 3, 4));
-    //printf("%d,%d\n", suggestMove(src, 4)->current_pos_row,suggestMove(src, 4)->current_pos_col );
+    //TestBoard(src);
+    //src->currentPlayer = BLACKS;
+    //chessConsolePrintBoard(src);
+    //printf("%d\n", isCheck(src));
+    // printf("SsF\n");
+   // printf("%d\n", isCheckmate(src));
+    //printf("%d\n", isStalemate(src));
+    // printf("%d\n", isLegalMove(src, 6, 0, 5, 0));
+   // printf("%d\n", isValidMove(src, 6, 0, 5, 0));
+   // printf("%d,%d\n", suggestMove(src, 4)->current_pos_row,suggestMove(src, 4)->current_pos_col );
    // get_moves(src,0,1);
- //   runTestSim(3,1);
-    //consoleMode();
+    runTestSim(4,1);
+    
+//consoleMode();
     
 	return 0;
 }

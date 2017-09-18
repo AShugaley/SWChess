@@ -200,23 +200,9 @@ bool isValidQueenMove(chessGame* src, int prev_pos_row, int prev_pos_col, int ne
 
 
 bool isValidKingMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col){
-    bool isNotCheck = true;
     if (!(((prev_pos_col <= next_pos_col + 1)&&(prev_pos_col >= next_pos_col - 1))&&((prev_pos_row <= next_pos_row + 1)&&(prev_pos_row >= next_pos_row - 1)))) // king can move one cell
          return false;
-    
-    char destenationCellFigure = src->gameBoard[next_pos_row][next_pos_col];
-    src->gameBoard[next_pos_row][next_pos_col] = src->gameBoard[prev_pos_row][prev_pos_col];
-    src->gameBoard[prev_pos_row][prev_pos_col] = EMPTY_BOARD_POS;
-    
-    if(isUnderPressure(src, next_pos_row, next_pos_col)){
-        isNotCheck = false;
-    }
-    
-    src->gameBoard[prev_pos_row][prev_pos_col] =src->gameBoard[next_pos_row][next_pos_col];
-    src->gameBoard[next_pos_row][next_pos_col] = destenationCellFigure;
-
-    
-    return isNotCheck;
+    return true;
 }
 
 bool isValidDestenetion(PLAYER_COLOR player, char figure){
@@ -313,23 +299,38 @@ bool isUnderPressure(chessGame* src, int row, int col){
            
             if(isWhiteFigure(src->gameBoard[row][col])){
                 if(isBlackFigure(src->gameBoard[i][j])){
-                    if(isValidMove(src, i, j, row, col)){
-                        return true;
+                    if(!(src->gameBoard[row][col] == KING_WHITE)){
+                        if(isLegalMove(src, i, j, row, col)){
+                            return true;
+                        }
                     }
-                    
+                    else{
+                        if(isValidMove(src, i, j, row, col))
+                            return true;
+                    }
                 }
             }
             
             if(isBlackFigure(src->gameBoard[row][col])){
                 if(isWhiteFigure(src->gameBoard[i][j])){
-                    if(isValidMove(src, i, j, row, col))
-                        return true;
+                    if(!(src->gameBoard[row][col] == KING_BLACK)){
+                        if(isLegalMove(src, i, j, row, col)){
+                         //    printf("ddo it?\n");
+                            return true;
+                        }
+                    }
+                    else{
+                       // printf("ddo it?%d,%d\n", i,j);
+                        if(isValidMove(src, i, j, row, col))
+                            return true;
+                        
+                    }
                 }
             }
         }
     }
     
-   // printf("Just checked empty filed - why did you do it?\n"); //delete
+  // printf("Just checked empty filed - why did you do it?%d,%d\n", row,col); //delete
     return false;
 }
 
@@ -342,14 +343,15 @@ bool isUnderPressure(chessGame* src, int row, int col){
  * (that by now we know is legal from figure movment prespective), and check again if there's a check)
  */
 bool checkAvoided(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col){
-    bool ret = true;
-    chessGame* copyGame = copyChessGame(src);
-    copyGame->gameBoard[next_pos_row][next_pos_col] = copyGame->gameBoard[prev_pos_row][prev_pos_col];
-    copyGame->gameBoard[prev_pos_row][prev_pos_col] = EMPTY_BOARD_POS;
-    if(isCheck(copyGame))
-        ret = false;
-    destroyChessGame(copyGame);
-    return ret;
+    char prev_pos = src->gameBoard[next_pos_row][next_pos_col];
+    src->gameBoard[next_pos_row][next_pos_col] = src->gameBoard[prev_pos_row][prev_pos_col];
+    src->gameBoard[prev_pos_row][prev_pos_col] = EMPTY_BOARD_POS;
+    //switchCurrentPlayer(src);
+    bool check = isCheck(src);
+    //switchCurrentPlayer(src);
+    src->gameBoard[prev_pos_row][prev_pos_col] = src->gameBoard[next_pos_row][next_pos_col];
+    src->gameBoard[next_pos_row][next_pos_col] = prev_pos;
+    return !check;
 }
 
 

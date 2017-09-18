@@ -82,12 +82,12 @@ CHESS_GAME_MESSAGE chessConsolePrintBoard(chessGame* src) {
 
 SPArrayList* allPossibleMoves(chessGame* src, int row, int col){
     SPArrayList* array = spArrayListCreate(64);
-    
+   // printf("HELLO");
     int index = 0;
     for(int i = 0; i < BOARD_SIZE; i++){
         for(int j = 0; j<BOARD_SIZE; j++){
             if(isLegalMove(src, row, col, i, j)){
-                //printf("%d,%d,%d,%d\n", row,col,i,j);
+               // printf("%d,%d,%d,%d\n", row,col,i,j);
                 spArrayListAddFirst(array, i, j, row, col, src->gameBoard[i][j]);
                 index++;
             }
@@ -98,30 +98,34 @@ SPArrayList* allPossibleMoves(chessGame* src, int row, int col){
 
 
 bool isLegalMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col){
-    if(!isValidMove(src, prev_pos_row,  prev_pos_col,  next_pos_row,  next_pos_col))
-        return false;
-    if(isCheck(src))
-        return checkAvoided(src, prev_pos_row, prev_pos_col, next_pos_row, next_pos_col);
-    else
-        return true;
-
-    
-}
-
-bool isValidMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col){
-
     char figure = src->gameBoard[prev_pos_row][prev_pos_col];
-    assert(figure != EMPTY_BOARD_POS);
+    //assert(figure != EMPTY_BOARD_POS);
     PLAYER_COLOR player;
     
     if(isWhiteFigure(figure))
         player = WHITES;
     else
         player = BLACKS;
-  
+    
     
     if(!isValidDestenetion(player, src->gameBoard[next_pos_row][next_pos_col]))
         return false;
+    //printf("JAJA\n");
+    if(!isValidMove(src, prev_pos_row,  prev_pos_col,  next_pos_row,  next_pos_col)) //check if move is valid stuturally.
+        return false;
+    //printf("EMP\n");
+    if(checkAvoided(src, prev_pos_row, prev_pos_col, next_pos_row, next_pos_col))
+        return true;
+    else
+        return false;
+
+    
+}
+
+bool isValidMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col){
+    char figure = src->gameBoard[prev_pos_row][prev_pos_col];
+   // assert(figure != EMPTY_BOARD_POS);
+
     
     switch(figure){
         case PAWN_BLACK:
@@ -156,15 +160,18 @@ bool isValidMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_po
 
 
 
-CHESS_GAME_MESSAGE setChessMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col){
-    if(src->gameBoard[prev_pos_row][prev_pos_col] == EMPTY_BOARD_POS)
-        return CHESS_GAME_INVALID_POSITION;
-    if(!isValidBoardPosition(prev_pos_row, prev_pos_col, next_pos_row, next_pos_col))
-        return CHESS_GAME_INVALID_ARGUMENT;
-    if(!isLegalMove(src, prev_pos_row, prev_pos_col, next_pos_row, next_pos_col))
-        return CHESS_GAME_INVALID_MOVE;
+CHESS_GAME_MESSAGE setChessMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col, bool needToCheckMoveValidiy){
+    if(needToCheckMoveValidiy){
+        if(src->gameBoard[prev_pos_row][prev_pos_col] == EMPTY_BOARD_POS)
+            return CHESS_GAME_INVALID_POSITION;
+        if(!isValidBoardPosition(prev_pos_row, prev_pos_col, next_pos_row, next_pos_col))
+            return CHESS_GAME_INVALID_ARGUMENT;
+        if(!isLegalMove(src, prev_pos_row, prev_pos_col, next_pos_row, next_pos_col))
+            return CHESS_GAME_INVALID_MOVE;
+    }
     if(spArrayListIsFull(src->historyArray))
         spArrayListRemoveFirst(src->historyArray);
+        
     spArrayListAddLast(src->historyArray, next_pos_row, next_pos_col, prev_pos_row, prev_pos_col,src->gameBoard[next_pos_row][next_pos_col]);
     src->gameBoard[next_pos_row][next_pos_col] = src->gameBoard[prev_pos_row][prev_pos_col];
     src->gameBoard[prev_pos_row][prev_pos_col] = EMPTY_BOARD_POS;
@@ -195,15 +202,17 @@ bool isCheckmate(chessGame* src){
     if(!isUnderPressure(src, king_row, king_col))
         return false;
     SPArrayListNode* move;
+     //printf("SasdF\n");
     chessGame* gameCopy = copyChessGame(src);
     for(int i = 0; i< BOARD_SIZE; i++){
         for(int j = 0; j<BOARD_SIZE; j++){
+             //printf("SggF\n");
             if(gameCopy->currentPlayer == WHITES){
                 if(isWhiteFigure(gameCopy->gameBoard[i][j])){
                     SPArrayList* moves = allPossibleMoves(gameCopy, i, j);
                     while(!spArrayListIsEmpty(moves)){
                         move = spArrayListGetFirst(moves);
-                        setChessMove(gameCopy, move->prev_pos_row, move->prev_pos_col, move->current_pos_row, move->current_pos_col);
+                        setChessMove(gameCopy, move->prev_pos_row, move->prev_pos_col, move->current_pos_row, move->current_pos_col, false);
                         if(!isUnderPressure(gameCopy, king_row, king_col)){
                             spArrayListDestroy(moves);
                             destroyChessGame(gameCopy);
@@ -215,12 +224,17 @@ bool isCheckmate(chessGame* src){
                     spArrayListDestroy(moves);
                 }
             }
+           
             else{
+                 //printf("SF\n");
                 if(isBlackFigure(gameCopy->gameBoard[i][j])){
                     SPArrayList* moves = allPossibleMoves(gameCopy, i, j);
                     while(!spArrayListIsEmpty(moves)){
                         move = spArrayListGetFirst(moves);
-                        setChessMove(gameCopy, move->prev_pos_row, move->prev_pos_col, move->current_pos_row, move->current_pos_col);
+                        //printf("S");
+                        
+                        setChessMove(gameCopy, move->prev_pos_row, move->prev_pos_col, move->current_pos_row, move->current_pos_col, false);
+                       // printf("E");
                         if(!isUnderPressure(gameCopy, king_row, king_col)){
                             spArrayListDestroy(moves);
                             destroyChessGame(gameCopy);
@@ -236,7 +250,8 @@ bool isCheckmate(chessGame* src){
     }
     destroyChessGame(gameCopy);
    // assert((king_col != -1) && (king_row != -1));
-    return (isUnderPressure(src, king_row, king_col) && !hasValidMove(src, king_row, king_col));
+    //printf("HOLE");
+    return true;
 }
 
 bool hasValidMove(chessGame* src, int row, int col){

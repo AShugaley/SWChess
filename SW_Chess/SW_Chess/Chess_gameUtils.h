@@ -48,7 +48,7 @@ void destroyChessGame(chessGame* src); // D Not Tested
  *
  * @return message representing the result of the command (sucess, invalid move etc)
  */
-CHESS_GAME_MESSAGE setChessMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col); // D Not Tested
+CHESS_GAME_MESSAGE setChessMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col, bool needToCheckMoveValidiy); // D Not Tested
 
 /**
  * Checks if move <x,y> -> <v,w> is legal (accoring to chess rules)
