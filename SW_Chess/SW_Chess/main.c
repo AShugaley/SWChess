@@ -314,9 +314,9 @@ int main(int argc, const char * argv[]) {
    // printf("%d\n", isValidMove(src, 6, 0, 5, 0));
    // printf("%d,%d\n", suggestMove(src, 4)->current_pos_row,suggestMove(src, 4)->current_pos_col );
    // get_moves(src,0,1);
-    runTestSim(4,1);
+    //runTestSim(4,1);
     
-//consoleMode();
+consoleMode();
     
 	return 0;
 }

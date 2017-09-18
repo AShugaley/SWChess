@@ -39,7 +39,7 @@
  * isUnderPressure         - Checks if a given field is threatend by the opponent
  * getColumnChar           - Switches between int and char column represnatation
  * getIntFromColumnChar    - Switches between char and int column represnatation
-
+ * checkAvoided            - Checks we do a move ((x,y) -> (v,w)), we do not create a check for the owner of <x,y> figure
  */
 
 
@@ -178,6 +178,15 @@ char getIntFromColumnChar(char col);
 
 
 
-
+/**
+ * Given a set of (x,y) -> (v,w)
+ * 
+ * Verifyes that we do not create a check (for the owner of <x,y> figure) if we submit the move.
+ * Does not verify that the input is legal (i.e represents a valid position, two figures of opponents and so on)
+ *
+ * Returns true if check isn't created, false otherwise
+ */
 bool checkAvoided(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col);
+
+
 #endif /* Chess_gameUtilsAux_h */

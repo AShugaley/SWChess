@@ -16,10 +16,12 @@ void consoleMode(){
 
 
 void settingsStateConsole(){
-    printf("Specify game setting or type 'start' to begin a game with the current setting:\n");
+
     chessGame* src = createChessGame(6, ONE_PLAYER, WHITES, 2); // default arg
     char input[SP_MAX_LINE_LENGTH];
     CHESSSettingCommand setcmd;
+reset:
+    printf("Specify game setting or type 'start' to begin a game with the current setting:\n");
     while(true){
         fgets(input,  SP_MAX_LINE_LENGTH, stdin);
         setcmd = spParserSettingLine(input);
@@ -28,7 +30,10 @@ void settingsStateConsole(){
                 onePlayerGameFlow(src);
             else
                 twoPlayersGameFlow(src);
-            break;
+            initChessBoard(src);
+            spArrayListDestroy(src->historyArray);
+            src->historyArray = spArrayListCreate(6);
+            goto reset;
         }
         if(setcmd.cmd == CHESS_DIFFICULTY){
             if(src->gameMode == TWO_PLAYERS){

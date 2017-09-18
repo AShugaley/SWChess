@@ -46,12 +46,15 @@ void destroyChessGame(chessGame* src); // D Not Tested
  * Sets move <x,y> -> <v,w>
  * Checks if it is a legal move, updates the board.
  *
+ * @param needToCheckMoveValidiy a special boolen used to simplfy tasks - in some cases we know that a certian rule is valid (as it was
+ * already check somewhere along the stack tree), and hence we can skip those checks (and improve the running time)
+ *
  * @return message representing the result of the command (sucess, invalid move etc)
  */
 CHESS_GAME_MESSAGE setChessMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col, bool needToCheckMoveValidiy); // D Not Tested
 
 /**
- * Checks if move <x,y> -> <v,w> is legal (accoring to chess rules)
+ * Checks if move <x,y> -> <v,w> is valid, from the perspective of how the figures move (accoring to chess rules)
  *
  * @return true if yes, no otherwise
  */
@@ -147,8 +150,16 @@ void checkGameEnd(chessGame* src);
  */
 void terminateGame(chessGame* src);
 
-//chessGame* loadGmae(const char* filename);
-
+/**
+ * Checks if a given (x,y) -> (v,w) is legal (incl all chess rules):
+ * If all 4 ints are between 0 and 7
+ * If (v,w) represents a valid destenation for the figure in (x,y)
+ * If the figure in (x,y) can do this move (is it valid)
+ * If no other rules are broken (e.g. no check created for the moving player
+ *
+ *
+ * returns nothing
+ */
 bool isLegalMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col);
 
 
