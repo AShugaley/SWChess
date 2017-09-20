@@ -1,10 +1,3 @@
-//
-//  Chess_gameUtils.h
-//  SW_Chess
-//
-//  Created by Alexander Shugaley on 19/08/2017.
-//  Copyright © 2017 Alexander Shugaley. All rights reserved.
-//
 
 #ifndef Chess_gameUtils_h
 #define Chess_gameUtils_h
@@ -15,7 +8,35 @@
 #include "Chess_ArrayList.h"
 
 #include <stdbool.h>
-//#include "Chess_ArrayList.h"
+
+/**
+ * Chess_gameUtils summary:
+ *
+ * A container that includes the major set of functuins used during the chess game. Uses the gameUtilsAux as
+ * an auxiliary extension file.
+ *
+ *
+ * createChessGame             - Creates a chess game
+ * copyChessGame               - Copies a chess game
+ * destroyChessGame            - Destroies a chess game
+ * setChessMove                - Sets the move ((x,y) -> (v,w))
+ * isValidMove                 - Checks if a move ((x,y) -> (v,w)) is valid (from chess figure movments perspective.
+ * hasValidMove                - Checks if a figure has any legal move
+ * chessConsolePrintBoard      - Prints the game board in console mode
+ * isCheck                     - Checks for a chess check
+ * allPossibleMoves            - Returns all legal moves for a figure
+ * isCheckmate                 - Checks for a chess checkmate
+ * isStalemate                 - Checks for a chess tie
+ * saveGame                    - saves the game to XML file
+ * loadGame                    - loads a game from XML file
+ * get_moves                   - Prints all the moves from allPossibleMoves func in a readble format
+ * getCurrentPlayerStringName  - Retunes a string represenitg the current player (white/black)
+ * checkGameEnd                - Checks if there's a check\tie\checkmate
+ * terminateGame               - Ends the game
+ * isLegalMove                 - Checks if a move ((x,y) -> (v,w)) is legal - both valid and not against chess rules (like
+ avoding a check and so on).
+ */
+
 
 /**
  * Creates a new chess game with the following params: historySize, mode (1 or 2 players)
@@ -51,7 +72,7 @@ void destroyChessGame(chessGame* src); // D Not Tested
  *
  * @return message representing the result of the command (sucess, invalid move etc)
  */
-CHESS_GAME_MESSAGE setChessMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col, bool needToCheckMoveValidiy); // D Not Tested
+CHESS_GAME_MESSAGE setChessMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col, bool needToCheckMoveValidiy, bool isValidForCrowning); // D Not Tested
 
 /**
  * Checks if move <x,y> -> <v,w> is valid, from the perspective of how the figures move (accoring to chess rules)
@@ -162,5 +183,6 @@ void terminateGame(chessGame* src);
  */
 bool isLegalMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col);
 
+void crowning(chessGame* src,int row,int col);
 
 #endif /* Chess_gameUtils_h */

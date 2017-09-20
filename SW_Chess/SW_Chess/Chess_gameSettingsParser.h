@@ -5,16 +5,21 @@
 #include <stdlib.h>
 #include <string.h>
 
-//default 
-//print_setting
-//quit
-//start
+/**
+ * Chess_gameParser summary:
+ *
+ * A container that includes a set of structures and functions that used
+ * to read and parse human commands in console mode during the settings stage.
+ *
+ * spParserSettingIsInt          - Checks if a string is an int.
+ * spParserSettingLine           - Given a string checks if it is a valid command, and if yes
+ * parses it for further use.
+ */
 
-//specify the maximum line length
+/* sepcifies the maximum input length */
 #define SP_MAX_LINE_LENGTH 1024
 
-//a type used to represent a command
-typedef enum {
+/* Enum representing the possible human commands in the settings stage */typedef enum {
 	CHESS_INVALID_SETTING_LINE,
 	CHESS_MODE,
 	CHESS_DIFFICULTY,
@@ -27,7 +32,13 @@ typedef enum {
 } CHESS_SETTING;
 
 
-// a new type that is used to encapsulate a parsed line
+/* Struct that represents a various human commands in the settings stage
+ *
+ * @param - command type.
+ * @param isValidArg - is the passed argument (such as difficulty level) valid.
+ * @param arg - the passed argument.
+ *
+ */
 typedef struct commandSet_t {
 	CHESS_SETTING cmd;
 	bool isValidArg; //is set to true if the command needs a number and the user entered a valid number

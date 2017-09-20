@@ -8,6 +8,21 @@
 
 
 /**
+ * SP_MiniMax summary:
+ *
+ * A container that includes the various functions of the minimax algorithem, used by the AI in order
+ * to play the chess game.
+ *
+ * suggestMove    - A function that given a chess game suggests the best possible move
+ * comFunc        - Computes the MinMax algoritem scoring function.
+ * initMinmaxTree - Initiates the MiniMax tree
+ * minmaxTree     - The minimax tree internal calls
+ * maxFunc        - Maximum of two ints
+ * minFunc        - Minimum of two ints
+ *
+ */
+
+/**
  * Receives a ChessGame and a difficulry level (the depth of the minmax algoritem), and creates the call
  * of the minmax tree, calculating the best move (given the depth).
  *
@@ -17,8 +32,8 @@ SPArrayListNode* suggestMove(chessGame* src, int depth);
 
 /**
  * Computes the MinMax algoritem scoring function. 
- * King = 100
- * Queen = 10
+ * King = 200
+ * Queen = 9
  * Rook = 5
  * Bishop = 3
  * Knight = 3

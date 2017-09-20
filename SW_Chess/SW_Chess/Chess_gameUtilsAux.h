@@ -1,10 +1,3 @@
-//
-//  Chess_gameUtilsAux.h
-//  SW_Chess
-//
-//  Created by Alexander Shugaley on 19/08/2017.
-//  Copyright © 2017 Alexander Shugaley. All rights reserved.
-//
 
 #ifndef Chess_gameUtilsAux_h
 #define Chess_gameUtilsAux_h

@@ -29,7 +29,7 @@ bool spParserIsValidOrederedPair(const char* currentToken, char* delimiter, CHES
 {
 	char chToken;
 	char currentstr[2] = { '\0' };
-	if (currentToken[0] != '<')  //currentToken[0] should be "<"
+	if ((currentToken[0] != '<'))  //currentToken[0] should be "<"
 		return false;
 
 	//should be an int
@@ -93,7 +93,11 @@ CHESSCommand spParserLine(const char* str)
 	//MOVEArg argstruct;
 	
 
-	currentToken = strtok(currentStr, delimiter);	//curtoken is the first part of the string 
+	currentToken = strtok(currentStr, delimiter);	//curtoken is the first part of the string
+    if(currentToken == NULL){
+        command.cmd = CHESS_INVALID_LINE;
+        return command;
+    }
 	if (currentToken == '\0')	//doesn't suppose to get here, just in case ...
 	{
 		command.cmd = CHESS_INVALID_LINE;
@@ -124,10 +128,20 @@ CHESSCommand spParserLine(const char* str)
 	{
 		command.cmd = CHESS_MOVE;
 		currentToken = strtok(NULL, delimiter);
+        if(currentToken == NULL){
+            command.cmd = CHESS_INVALID_LINE;
+            return command;
+        }
+
 
 		command.isValidFirstPair = spParserIsValidOrederedPair(currentToken, delimiter,&command, CHESS_SOURCE_MOVE);
 		
 		currentToken = strtok(NULL, delimiter);
+        if(currentToken == NULL){
+            command.cmd = CHESS_INVALID_LINE;
+            return command;
+        }
+
 		if (!strcmp(currentToken, "to"))
 		{
 			currentToken = strtok(NULL, delimiter);

@@ -59,7 +59,7 @@ SP_ARRAY_LIST_MESSAGE spArrayListClear(SPArrayList* src)
 }
 
 
-SP_ARRAY_LIST_MESSAGE spArrayListAddFirst(SPArrayList* src, int current_pos_row, int current_pos_col, int prev_pos_row, int prev_pos_col, char pre_pos_fig)
+SP_ARRAY_LIST_MESSAGE spArrayListAddFirst(SPArrayList* src, int current_pos_row, int current_pos_col, int prev_pos_row, int prev_pos_col, char pre_pos_fig,char moving_fig)
 {
     int i = 0;
     if (src == NULL)
@@ -80,14 +80,14 @@ SP_ARRAY_LIST_MESSAGE spArrayListAddFirst(SPArrayList* src, int current_pos_row,
 	src->elements[0].prev_pos_row = prev_pos_row;
 	src->elements[0].prev_pos_col = prev_pos_col;
     src->elements[0].prev_pos_fig = pre_pos_fig;
-   
+    src->elements[0].moving_figure = moving_fig;
     src->actualSize++;
     
     return SP_ARRAY_LIST_SUCCESS; 
 }
 
 
-SP_ARRAY_LIST_MESSAGE spArrayListAddLast(SPArrayList* src, int current_pos_row, int current_pos_col, int prev_pos_row, int prev_pos_col, char pre_pos_fig)
+SP_ARRAY_LIST_MESSAGE spArrayListAddLast(SPArrayList* src, int current_pos_row, int current_pos_col, int prev_pos_row, int prev_pos_col, char pre_pos_fig,char moving_fig)
 {
     if (src == NULL)
         return SP_ARRAY_LIST_INVALID_ARGUMENT;
@@ -100,6 +100,8 @@ SP_ARRAY_LIST_MESSAGE spArrayListAddLast(SPArrayList* src, int current_pos_row, 
 	src->elements[src->actualSize].prev_pos_row = prev_pos_row;
 	src->elements[src->actualSize].prev_pos_col = prev_pos_col;
     src->elements[src->actualSize].prev_pos_fig = pre_pos_fig;
+    src->elements[src->actualSize].moving_figure = moving_fig;
+
     src->actualSize++;
     
     return SP_ARRAY_LIST_SUCCESS;  

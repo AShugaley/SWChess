@@ -1,11 +1,3 @@
-//
-//  Chess_gameUtilsAux.c
-//  SW_Chess
-//
-//  Created by Alexander Shugaley on 19/08/2017.
-//  Copyright © 2017 Alexander Shugaley. All rights reserved.
-//
-
 
 
 #include "Chess_gameUtilsAux.h"
@@ -15,14 +7,23 @@
 //we assume that the arguments are legal - i.e. 0<=pos<=7 => need to check it elsewhere! - the comp will do so by himself, and we will check arguments from the user at input.
 
 bool isValidPawnMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col){
+    //printf("VEY");
     int first_row = 0;
     int operator = 1;
-    if (src->currentPlayer == BLACKS){
+    if (src->gameBoard[prev_pos_row][prev_pos_col] == PAWN_BLACK){
         first_row = 7;
         operator = -1;
     }
     //printf("%d,%d,%d,%d,%d,%d",prev_pos_row,prev_pos_col,next_pos_row,next_pos_col,operator,operator);
     if (prev_pos_col != next_pos_col){
+//        printf("%d\n",next_pos_row);
+//         printf("%d\n",prev_pos_row);
+//         printf("%d\n",prev_pos_row+(1*operator));
+//        printf("%d\n",next_pos_row == (prev_pos_row+(1*operator)));
+//        printf("%d\n",src->gameBoard[next_pos_row][next_pos_col] != EMPTY_BOARD_POS);
+//        printf("%d\n",prev_pos_col+1 == next_pos_col);
+//        printf("%d\n",prev_pos_col-1==next_pos_col);
+      
         if((next_pos_row == prev_pos_row+(1*operator))&&(src->gameBoard[next_pos_row][next_pos_col] != EMPTY_BOARD_POS)&&((prev_pos_col+1 == next_pos_col)||(prev_pos_col-1==next_pos_col)))
             return true;
         else
@@ -32,6 +33,7 @@ bool isValidPawnMove(chessGame* src, int prev_pos_row, int prev_pos_col, int nex
         return true;
     if ((prev_pos_row == first_row+(1*operator)) && (prev_pos_row+(2*operator) == next_pos_row) && (src->gameBoard[prev_pos_row+(1*operator)][prev_pos_col] == EMPTY_BOARD_POS) &&(src->gameBoard[next_pos_row][next_pos_col] == EMPTY_BOARD_POS)) // first move
         return true;
+   // printf("NEY");
     return false;
 }
 
@@ -320,9 +322,10 @@ bool isUnderPressure(chessGame* src, int row, int col){
                         }
                     }
                     else{
-                       // printf("ddo it?%d,%d\n", i,j);
+                     //  printf("ddho it?%d,%d\n", i,j);
                         if(isValidMove(src, i, j, row, col))
                             return true;
+                      //  printf("YES");
                         
                     }
                 }

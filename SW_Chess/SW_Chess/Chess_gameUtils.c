@@ -1,11 +1,3 @@
-//
-//  Chess_gameUtils.c
-//  SW_Chess
-//
-//  Created by Alexander Shugaley on 19/08/2017.
-//  Copyright © 2017 Alexander Shugaley. All rights reserved.
-// bla bla
-
 
 
 #include <assert.h>
@@ -88,7 +80,7 @@ SPArrayList* allPossibleMoves(chessGame* src, int row, int col){
         for(int j = 0; j<BOARD_SIZE; j++){
             if(isLegalMove(src, row, col, i, j)){
                // printf("%d,%d,%d,%d\n", row,col,i,j);
-                spArrayListAddFirst(array, i, j, row, col, src->gameBoard[i][j]);
+                spArrayListAddFirst(array, i, j, row, col, src->gameBoard[i][j],src->gameBoard[row][col]);
                 index++;
             }
         }
@@ -160,7 +152,7 @@ bool isValidMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_po
 
 
 
-CHESS_GAME_MESSAGE setChessMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col, bool needToCheckMoveValidiy){
+CHESS_GAME_MESSAGE setChessMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col, bool needToCheckMoveValidiy, bool isValidForCrowning){
     if(needToCheckMoveValidiy){
         if(src->gameBoard[prev_pos_row][prev_pos_col] == EMPTY_BOARD_POS)
             return CHESS_GAME_INVALID_POSITION;
@@ -172,13 +164,32 @@ CHESS_GAME_MESSAGE setChessMove(chessGame* src, int prev_pos_row, int prev_pos_c
     if(spArrayListIsFull(src->historyArray))
         spArrayListRemoveFirst(src->historyArray);
         
-    spArrayListAddLast(src->historyArray, next_pos_row, next_pos_col, prev_pos_row, prev_pos_col,src->gameBoard[next_pos_row][next_pos_col]);
+    spArrayListAddLast(src->historyArray, next_pos_row, next_pos_col, prev_pos_row, prev_pos_col,src->gameBoard[next_pos_row][next_pos_col],src->gameBoard[prev_pos_row][prev_pos_col]);
     src->gameBoard[next_pos_row][next_pos_col] = src->gameBoard[prev_pos_row][prev_pos_col];
     src->gameBoard[prev_pos_row][prev_pos_col] = EMPTY_BOARD_POS;
+//    if(isValidForCrowning)
+//        crowning(src,next_pos_row,next_pos_col);
     switchCurrentPlayer(src);
     return CHESS_GAME_SUCCESS;
 }
 
+void crowning(chessGame* src,int row,int col){
+    
+    if((src->gameBoard[row][col] != PAWN_BLACK) && (src->gameBoard[row][col] != PAWN_WHITE))
+        return; /* no crowning */
+    if(!(((src->currentPlayer == WHITES)&&(row == 7))||((src->currentPlayer == BLACKS)&&(row == 0))))
+        return; /* no crowning */
+    if((src->gameMode == TWO_PLAYERS)||(src->currentPlayer == src->humanPlayerColor)){
+        return;
+           //human crowning
+    }
+    /* if we are here - this is a computer crowning, just put a queen */
+    if(src->currentPlayer == BLACKS)
+        src->gameBoard[row][col] = QUEEN_BLACK;
+    else
+        src->gameBoard[row][col] = QUEEN_WHITE;
+    return;
+}
 
 bool isCheckmate(chessGame* src){
     int king_row = -1, king_col = -1;
@@ -212,7 +223,7 @@ bool isCheckmate(chessGame* src){
                     SPArrayList* moves = allPossibleMoves(gameCopy, i, j);
                     while(!spArrayListIsEmpty(moves)){
                         move = spArrayListGetFirst(moves);
-                        setChessMove(gameCopy, move->prev_pos_row, move->prev_pos_col, move->current_pos_row, move->current_pos_col, false);
+                        setChessMove(gameCopy, move->prev_pos_row, move->prev_pos_col, move->current_pos_row, move->current_pos_col, false, false);
                         if(!isUnderPressure(gameCopy, king_row, king_col)){
                             spArrayListDestroy(moves);
                             destroyChessGame(gameCopy);
@@ -233,7 +244,7 @@ bool isCheckmate(chessGame* src){
                         move = spArrayListGetFirst(moves);
                         //printf("S");
                         
-                        setChessMove(gameCopy, move->prev_pos_row, move->prev_pos_col, move->current_pos_row, move->current_pos_col, false);
+                        setChessMove(gameCopy, move->prev_pos_row, move->prev_pos_col, move->current_pos_row, move->current_pos_col, false, false);
                        // printf("E");
                         if(!isUnderPressure(gameCopy, king_row, king_col)){
                             spArrayListDestroy(moves);
@@ -301,7 +312,7 @@ CHESS_GAME_MESSAGE undoChessPrevMove(chessGame* src, bool shouldPrint){
         return CHESS_GAME_NO_HISTORY;
     SPArrayListNode* move = spArrayListGetLast(src->historyArray);
     spArrayListRemoveLast(src->historyArray);
-    src->gameBoard[move->prev_pos_row][move->prev_pos_col] = src->gameBoard[move->current_pos_row][move->current_pos_col];
+    src->gameBoard[move->prev_pos_row][move->prev_pos_col] = move->moving_figure;
     src->gameBoard[move->current_pos_row][move->current_pos_col] = move->prev_pos_fig;
     switchCurrentPlayer(src);
     if(shouldPrint)
@@ -475,6 +486,7 @@ void get_moves(chessGame* src, int row, int col){
 //}
 
 bool saveGame(chessGame* src, const char* filename){
+    printf("HEL");
     if(strstr(filename, "save ") != 0) {
         filename += 5;
     }

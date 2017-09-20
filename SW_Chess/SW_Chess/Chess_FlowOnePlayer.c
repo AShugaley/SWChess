@@ -1,10 +1,3 @@
-//
-//  Chess_FlowOnePlayer.c
-//  SW_Chess
-//
-//  Created by Alexander Shugaley on 08/09/2017.
-//  Copyright © 2017 Alexander Shugaley. All rights reserved.
-//
 
 #include "Chess_FlowOnePlayer.h"
 
@@ -46,6 +39,11 @@ GAME_STATUS onePlayerGameFlow(chessGame* src){
             continue;
         }
         if(cmd.cmd == CHESS_MOVE){
+            if((!cmd.isValidFirstPair) || (!cmd.isValidSecondPair)){
+                printf("Illigal argument\n");
+                printBoard = false;
+                continue;
+            }
             printBoard = humanMove(src, cmd);
             continue;
         }
@@ -61,7 +59,7 @@ GAME_STATUS onePlayerGameFlow(chessGame* src){
 
 
 bool humanMove(chessGame* src, CHESSCommand cmd){
-    CHESS_GAME_MESSAGE message = setChessMove(src, (cmd.sourceRow -1), getIntFromColumnChar(cmd.sourceColl), (cmd.targertRow -1), getIntFromColumnChar(cmd.targetColl), true);
+    CHESS_GAME_MESSAGE message = setChessMove(src, (cmd.sourceRow -1), getIntFromColumnChar(cmd.sourceColl), (cmd.targertRow -1), getIntFromColumnChar(cmd.targetColl), true, true);
     if(message == CHESS_GAME_SUCCESS){
         return true;
     }
@@ -81,7 +79,7 @@ bool compMove(chessGame* src){
         printf("ERROR");
         return false;
     }
-    setChessMove(src, move->prev_pos_row, move->prev_pos_col, move->current_pos_row, move->current_pos_col, false);
+    setChessMove(src, move->prev_pos_row, move->prev_pos_col, move->current_pos_row, move->current_pos_col, false, true);
     free(move);
     return false;
 }
@@ -95,17 +93,18 @@ bool compMove(chessGame* src){
 /*
 todo:
 
-1. documentation
+1. documentation - Chess_arraylist, otherwise done
+2. Verify that all prints and such are accordint to their req
+3. Clean code
 3. MinMax check - mostly done
 6. add/fix load game
 
 
 
 known bugs:
- 1. when doing the move command, <E,3> does not produce an error (despite being in the wrong format, the digit should be first).
  3. MinMax tends to come to a loop - maybe add a randomization factor? Generally it works I think. Give some people a chance to play against it and see if a basic improvment needed.
  5. there's a memory leak - not sure where, but it appears in compVcomp, maybe in mainGame as well.
- 6. spParserIsValidOrederedPair - when I just enter move (game stage) - prgram is teminated. 
+ 6. save with an empty path does not result in error
  
  
 bonuses:

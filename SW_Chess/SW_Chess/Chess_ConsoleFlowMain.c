@@ -1,10 +1,3 @@
-//
-//  Chess_ConsoleFlowMain.c
-//  SW_Chess
-//
-//  Created by Alexander Shugaley on 08/09/2017.
-//  Copyright © 2017 Alexander Shugaley. All rights reserved.
-//
 
 #include "Chess_ConsoleFlowMain.h"
 
@@ -36,8 +29,12 @@ reset:
             goto reset;
         }
         if(setcmd.cmd == CHESS_DIFFICULTY){
-            if(src->gameMode == TWO_PLAYERS){
+            if((src->gameMode == TWO_PLAYERS)){
                 printf("Illigal command\n");
+                continue;
+            }
+            if(!setcmd.isValidArg){
+                printf("Illigal argument\n");
                 continue;
             }
             if((setcmd.arg > 5) || (setcmd.arg < 1)){
@@ -48,6 +45,10 @@ reset:
             continue;
         }
         if(setcmd.cmd == CHESS_MODE){
+            if(!setcmd.isValidArg){
+                printf("Illigal argument\n");
+                continue;
+            }
             if(setcmd.arg == 1){
                 src->gameMode = ONE_PLAYER;
                 printf("Game mode is set to 1 player\n");
@@ -64,6 +65,10 @@ reset:
         if(setcmd.cmd == CHESS_COLOR){
             if(src->gameMode == TWO_PLAYERS){
                 printf("Illigal command\n");
+                continue;
+            }
+            if(!setcmd.isValidArg){
+                printf("Illigal argument\n");
                 continue;
             }
             if(setcmd.arg == 1){
@@ -97,6 +102,10 @@ reset:
             continue;
         }
         if(setcmd.cmd == CHESS_LOAD){
+            if(!setcmd.isValidArg){
+                printf("Illigal argument\n");
+                continue;
+            }
             //toadd
             continue;
         }

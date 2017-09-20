@@ -215,17 +215,17 @@ chessGame* TestBoard(chessGame* src) {
     
     
     //whites
-    //src->gameBoard[3][5] = ROOK_WHITE;
+   src->gameBoard[2][2] = PAWN_WHITE;
     src->gameBoard[4][5] = ROOK_WHITE;
     src->gameBoard[2][5] = ROOK_WHITE;
     src->gameBoard[7][7] = PAWN_WHITE;
     src->gameBoard[1][1] = KING_WHITE;
        src->gameBoard[5][7] = BISHOP_WHITE;
-       src->gameBoard[1][7] = QUEEN_WHITE;
+       //src->gameBoard[1][7] = QUEEN_WHITE;
     //    src->gameBoard[0][4] = KING_WHITE;
     //    src->gameBoard[0][5] = BISHOP_WHITE;
     //    src->gameBoard[0][6] = KNIGHT_WHITE;
-        src->gameBoard[3][4] = QUEEN_WHITE;
+     //   src->gameBoard[3][4] = QUEEN_WHITE;
     
     
     
@@ -302,23 +302,23 @@ int main(int argc, const char * argv[]) {
     //chessGame* src2 = loadGmae("load /Users/alexs/dev/SWChess/text2.xml");
    // printf("%d,%d,%d,%d\n",src2->currentPlayer, src2->humanPlayerColor, src2->gameMode, src2->difficulty);
     //chessConsolePrintBoard(src2);
-    chessGame* src = createChessGame(2, 2, 1, 2);
-    //TestBoard(src);
-    //src->currentPlayer = BLACKS;
-    //chessConsolePrintBoard(src);
-    //printf("%d\n", isCheck(src));
-    // printf("SsF\n");
-   // printf("%d\n", isCheckmate(src));
-    //printf("%d\n", isStalemate(src));
-    // printf("%d\n", isLegalMove(src, 6, 0, 5, 0));
-   // printf("%d\n", isValidMove(src, 6, 0, 5, 0));
-   // printf("%d,%d\n", suggestMove(src, 4)->current_pos_row,suggestMove(src, 4)->current_pos_col );
-   // get_moves(src,0,1);
-    //runTestSim(4,1);
+//    chessGame* src = createChessGame(2, 2, 1, 2);
+//    TestBoard(src);
+//    src->currentPlayer = BLACKS;
+//    chessConsolePrintBoard(src);
+//    printf("%d\n", isCheck(src));
+//     printf("SsF\n");
+//    printf("%d\n", isCheckmate(src));
+//    printf("%d\n", isStalemate(src));
+//     printf("%d\n", isLegalMove(src, 6, 0, 5, 0));
+//    printf("%d\n", isValidMove(src, 6, 0, 5, 0));
+//    printf("%d,%d\n", suggestMove(src, 4)->current_pos_row,suggestMove(src, 4)->current_pos_col );
+//    get_moves(src,0,1);
+    runTestSim(4,3);
     
-consoleMode();
+//consoleMode();
     
-	return 0;
+//	return 0;
 }
 
 

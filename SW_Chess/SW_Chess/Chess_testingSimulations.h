@@ -1,10 +1,3 @@
-//
-//  Chess_testingSimulations.h
-//  SW_Chess
-//
-//  Created by Alexander Shugaley on 16/09/2017.
-//  Copyright © 2017 Alexander Shugaley. All rights reserved.
-//
 
 #ifndef Chess_testingSimulations_h
 #define Chess_testingSimulations_h
