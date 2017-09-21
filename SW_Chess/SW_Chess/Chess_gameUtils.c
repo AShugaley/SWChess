@@ -1,18 +1,8 @@
-//
-//  Chess_gameUtils.c
-//  SW_Chess
-//
-//  Created by Alexander Shugaley on 19/08/2017.
-//  Copyright © 2017 Alexander Shugaley. All rights reserved.
-// bla bla
-
-
-
 #include <assert.h>
 #include "Chess_gameUtils.h"
 #include <stdlib.h>
 #include <string.h>
-
+#include "ChessGUI_Utils.h"
 
 
 
@@ -33,6 +23,7 @@ chessGame* createChessGame(int historySize, GAME_MODE_PLAYER mode, PLAYER_COLOR 
     gameSt->gameMode = mode;
     
     initChessBoard(gameSt);
+	initGameGUIBoard(gameSt);
     
     return gameSt;
     

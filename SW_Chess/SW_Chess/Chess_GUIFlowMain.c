@@ -1,4 +1,5 @@
 #include "Chess_GuiFlowMain.h"
+#include "Chess_gameUtils.h"
 
 
 int GUIMain() 
@@ -10,8 +11,11 @@ int GUIMain()
 	}
 
 	ChessWindow* currentWindow = createWindow(CHESS_MAIN_WINDOW, SDL_WINDOW_OPENGL);
-
-
+	/*chessGame* game = createChessGame(6, ONE_PLAYER, WHITES, 2);
+	if (game == NULL)
+		destroyChessGame(game);
+	currentWindow->game = game;
+*/
 	if (currentWindow == NULL)
 	{
 		SDL_Quit();
@@ -169,6 +173,7 @@ int GUIMain()
 		}
 		}
 	}
+	//SDL_Delay(16);
 	destroyWindow(currentWindow);
 	SDL_Quit();
 	return 0;

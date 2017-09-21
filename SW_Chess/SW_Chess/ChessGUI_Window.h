@@ -37,7 +37,6 @@ struct spwindow_t {
 	WINDOW_TYPE type;
 	ChessWindow* prevWindow;
 	chessGame* game;
-	//You can add more common functions Like exit/hide etc...
 };
 
 //NULL safe FUNCTION

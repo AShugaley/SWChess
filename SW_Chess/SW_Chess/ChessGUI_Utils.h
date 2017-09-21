@@ -9,6 +9,7 @@
 ChessWindow* swapWindows(ChessWindow* oldWindow, WINDOW_TYPE type);
 ChessWindow* copyWindow(ChessWindow* src);
 ChessWindow* createWindow(WINDOW_TYPE wintype, Uint32 winMode);
+void initGameGUIBoard(chessGame* game);
 void drawGameBoard(chessGameWindow* win, chessGame* game);
 
 
