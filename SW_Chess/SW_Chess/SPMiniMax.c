@@ -81,6 +81,8 @@ int comFunc(chessGame* currentGame){
 SPArrayListNode* initMinmaxTree(chessGame* currentGame, int depth){
     SPArrayListNode* bestMaxMove = (SPArrayListNode*)malloc(sizeof(SPArrayListNode));
     SPArrayListNode* bestMinMove = (SPArrayListNode*)malloc(sizeof(SPArrayListNode));
+    if((bestMaxMove == NULL) || (bestMaxMove == NULL)) /* mem alloc failure */
+        return NULL;
     int bestMax = INT_MIN;
     int bestMin = INT_MAX;
     int alpha = INT_MIN;

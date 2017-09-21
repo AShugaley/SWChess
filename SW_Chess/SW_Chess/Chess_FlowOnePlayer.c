@@ -77,7 +77,7 @@ bool humanMove(chessGame* src, CHESSCommand cmd){
 bool compMove(chessGame* src){
     SPArrayListNode* move = suggestMove(src, src->difficulty);
     if(move == NULL){
-        printf("ERROR");
+        printf("ERROR - cannot suggest move");
         return false;
     }
     setChessMove(src, move->prev_pos_row, move->prev_pos_col, move->current_pos_row, move->current_pos_col, false, true);

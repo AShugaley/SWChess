@@ -104,6 +104,7 @@ typedef struct sp_array_list_t {
  * UI_MODE - GUI/console
  * gameGUIBoard - the GUI board.
  *
+ *
  
  */
 typedef struct chess_game {
@@ -114,8 +115,11 @@ typedef struct chess_game {
     PLAYER_COLOR currentPlayer;
     PLAYER_COLOR humanPlayerColor;
     SPArrayList *historyArray;
-   // int MovesCounter;
     UI_MODE uiMode;
+    
+    
+
+    
 } chessGame;
 
 
