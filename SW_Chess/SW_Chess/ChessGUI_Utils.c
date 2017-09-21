@@ -56,32 +56,48 @@ ChessWindow* swapWindows(ChessWindow* oldWindow, WINDOW_TYPE type)
 	return newWindow;
 }
 
-void drawGameBoard(chessGameWindow* win, chessGame* game)
+void initGameGUIBoard(chessGame* game)
 {
-	int leftUpCornerX = 200;
+	int leftUpCornerX = 300;
 	int leftUpCornerY = 90;
+	int width = 60;
+	int height = 60;
+
 	for (int i = 0; i < BOARD_SIZE; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE; j++)
 		{
-			SDL_Rect currentRect = game->gameGUIBoard[i][j];
-			currentRect.w = 60;
-			currentRect.h = 60;
-			currentRect.x = (i * currentRect.w) + leftUpCornerX;
-			currentRect.y = (j * currentRect.h) + leftUpCornerY;
-			if (SDL_RenderDrawRect(win->windowRenderer, &currentRect) < 0)
+			SDL_Rect currentRect = { .x = (j * width)  + leftUpCornerX
+									,.y = (i * height) + leftUpCornerY
+									,.h = 60
+									,.w = 60 };
+			game->gameGUIBoard[i][j] = currentRect;
+		}
+	}
+	
+}
+
+void drawGameBoard(chessGameWindow* win, chessGame* game)
+{
+	for (int i = 0; i < BOARD_SIZE; i++)
+	{
+		for (int j = 0; j < BOARD_SIZE; j++)
+		{
+			
+			if (SDL_RenderDrawRect(win->windowRenderer, &game->gameGUIBoard[i][j]) < 0)
 				printf("ERROR: unable to draw rect: %s\n", SDL_GetError());
 			if ((i % 2 == 0 && j % 2 == 0) || (i % 2 != 0 && j % 2 != 0))
 				SDL_SetRenderDrawColor(win->windowRenderer, 0, 255, 0, 255);
 			else
 				SDL_SetRenderDrawColor(win->windowRenderer, 0, 0, 255, 255);
-			if (SDL_RenderFillRect(win->windowRenderer, &currentRect) < 0)
+			if (SDL_RenderFillRect(win->windowRenderer, &game->gameGUIBoard[i][j]) < 0)
 				printf("ERROR: unable to fill rect: %s\n", SDL_GetError());
+			
 		}
 	}
 }
 	
-	/*add [i][j] member to the pieces
+	/*add [i][j] member to the pieces VVVVV
 rect origin = button location;
 drag&drop - mouse_motion => piece.i += event.motion.xrel , j+=y.rel (update button location)
 mouse_up-> 

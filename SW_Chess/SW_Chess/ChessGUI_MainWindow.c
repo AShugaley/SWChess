@@ -44,14 +44,18 @@ ChessWindow* createMainWindow(Uint32 winMode)
 	chessMainWindow* data = malloc(sizeof(chessMainWindow));
 	SDL_Window* window = SDL_CreateWindow("CHESS!", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, winMode);
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+	chessGame* game = createChessGame(6, ONE_PLAYER, WHITES, 2);
+
 	Widget** widgets = createMainWindowWidgets(renderer);
-		if (res == NULL || data == NULL || window == NULL || renderer == NULL || widgets == NULL )
+		if (res == NULL || data == NULL || window == NULL || renderer == NULL || widgets == NULL || game == NULL)
 	{
 		free(res);
 		free(data);
 		free(widgets);
 		SDL_DestroyRenderer(renderer); //NULL safe
 		SDL_DestroyWindow(window);	  //NULL safe
+		destroyChessGame(game);
+
 		return NULL ;
 	}
 	
@@ -60,12 +64,18 @@ ChessWindow* createMainWindow(Uint32 winMode)
 	data->window = window;
 	data->windowRenderer = renderer;
 
+	for (int i = 0; i < data->numOfWidgets; i++)
+	{
+		data->widgets[i]->isDragLegal = false;
+	}
+
 	res->data = (void*) data;
 	res->destroyWindow = destroyMainWindow;
 	res->drawWindow = drawMainWindow;
 	res->handleEventWindow = handleEventMainWindow;
 	res->type = CHESS_MAIN_WINDOW;
-	
+	res->game = game;
+
 	return res;
 }
 

@@ -58,14 +58,18 @@ ChessWindow* createLoadWindow(Uint32 winMode)
 	chessLoadWindow* data = malloc(sizeof(chessLoadWindow));
 	SDL_Window* window = SDL_CreateWindow("CHESS!", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, load_width, load_height, winMode);
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+	chessGame* game = createChessGame(6, ONE_PLAYER, WHITES, 2);
+
 	Widget** widgets = createLoadWindowWidgets(renderer);
-	if (res == NULL || data == NULL || window == NULL || renderer == NULL || widgets == NULL)
+	if (res == NULL || data == NULL || window == NULL || renderer == NULL || widgets == NULL || game == NULL)
 	{
 		free(res);
 		free(data);
 		free(widgets);
 		SDL_DestroyRenderer(renderer); //NULL safe
 		SDL_DestroyWindow(window);	  //NULL safe
+		destroyChessGame(game);
+
 		return NULL;
 	}
 	data->widgets = widgets;
@@ -73,11 +77,19 @@ ChessWindow* createLoadWindow(Uint32 winMode)
 	data->window = window;
 	data->windowRenderer = renderer;
 
+	for (int i = 0; i < data->numOfWidgets; i++)
+	{
+		data->widgets[i]->isDragLegal = false;
+
+	}
+
 	res->data = (void*)data;
 	res->destroyWindow = destroyLoadWindow;
 	res->drawWindow = drawLoadWindow;
 	res->handleEventWindow = handleEventLoadWindow;
 	res->type = CHESS_LOAD_WINDOW;
+	res->game = game;
+
 	return res;
 }
 

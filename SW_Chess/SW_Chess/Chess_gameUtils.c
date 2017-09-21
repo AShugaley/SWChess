@@ -1,12 +1,17 @@
 
-
 #include <assert.h>
 #include "Chess_gameUtils.h"
 #include <stdlib.h>
 #include <string.h>
 
+
 /* In all functions, we assume that the arguments are legal - e.g. 0<=pos<=7. We check it elsewhere - the comp will do so by himself, and we will check arguments from the user on input or higher on calculation chain.
  */
+
+#include "ChessGUI_Utils.h"
+
+
+
 
 chessGame* createChessGame(int historySize, GAME_MODE_PLAYER mode, PLAYER_COLOR humanColor, int difficulty)
 {
@@ -25,6 +30,7 @@ chessGame* createChessGame(int historySize, GAME_MODE_PLAYER mode, PLAYER_COLOR 
     gameSt->gameMode = mode;
     
     initChessBoard(gameSt);
+	initGameGUIBoard(gameSt);
     
     return gameSt;
     

@@ -248,7 +248,6 @@ bool isValidBoardPosition(prev_pos_row, prev_pos_col, next_pos_row, next_pos_col
 }
 
 
-
 void initChessBoard(chessGame* src){
     for(int i = 0; i<BOARD_SIZE; i++)
         for(int j = 0; j <BOARD_SIZE; j++)
