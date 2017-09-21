@@ -34,9 +34,15 @@
  * checkGameEnd                - Checks if there's a check\tie\checkmate
  * terminateGame               - Ends the game
  * isLegalMove                 - Checks if a move ((x,y) -> (v,w)) is legal - both valid and not against chess rules (like
- avoding a check and so on).
+   avoding a check and so on).
+ * getFigureStringName         - Returns the string name of a figure
  */
 
+
+/* A simple explanation of the words we use here and in other parts of the code:
+ * a VALID move is a move that is OK from figure movment perspective (i.e. rooks move in a straight line, cannot go through figures and have to land on an empty field of an oponnent figure.
+ * on the other hand, a LEGAL move is a move that is both VALID and legal (i.e. does not create a check for the moving player
+ */
 
 /**
  * Creates a new chess game with the following params: historySize, mode (1 or 2 players)
@@ -183,6 +189,25 @@ void terminateGame(chessGame* src);
  */
 bool isLegalMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col);
 
-void crowning(chessGame* src,int row,int col);
+
+void crowning(chessGame* src,int row,int col); //todo
+
+
+/**
+ * Loads a chess game from an XML file at filename
+ *
+ *
+ * returns chess game
+ */
+chessGame* loadGmae(const char* filename);
+
+
+/**
+ * Given the char representation of a figure, returns the string name
+ *
+ *
+ * returns string figure name
+ */
+char* getFigureStringName(char figure);
 
 #endif /* Chess_gameUtils_h */

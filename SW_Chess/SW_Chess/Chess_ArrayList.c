@@ -38,10 +38,7 @@ void spArrayListDestroy(SPArrayList* src)
 {
     if (src != NULL)
     {
-       /* for(int i =0; i<src->maxSize; i++){
-            free(&(src->elements[i]));
-        }*/
-        free(src->elements);	//free to int*
+        free(src->elements);	/* free to int* */
         free(src);
     }
 }
@@ -73,7 +70,6 @@ SP_ARRAY_LIST_MESSAGE spArrayListAddFirst(SPArrayList* src, int current_pos_row,
         src->elements[i] = (src->elements)[i - 1];
     }
     
-   // src->elements = (SPArrayListNode*)malloc(maxSize * sizeof(SPArrayListNode));
     
     src->elements[0].current_pos_row = current_pos_row;
 	src->elements[0].current_pos_col = current_pos_col;
@@ -148,7 +144,7 @@ SP_ARRAY_LIST_MESSAGE spArrayListRemoveLast(SPArrayList* src)
 SPArrayListNode* spArrayListGetAt(SPArrayList* src, int index)
 {
     if (src == NULL || index >= src->actualSize || index < 0)
-        return NULL;				//maybe we should return here node with a field of invalid - Alex what do you think? 
+        return NULL;
     return &(src->elements[index]);
 }
 
@@ -156,7 +152,7 @@ SPArrayListNode* spArrayListGetAt(SPArrayList* src, int index)
 SPArrayListNode* spArrayListGetFirst(SPArrayList* src)
 {
     if (src == NULL || src->actualSize == 0)
-        return NULL;			//maybe we should return here node with a field of invalid 
+        return NULL;
     return &(src->elements[0]);
 }
 
@@ -164,7 +160,7 @@ SPArrayListNode* spArrayListGetFirst(SPArrayList* src)
 SPArrayListNode* spArrayListGetLast(SPArrayList* src)
 {
     if (src == NULL || src->actualSize == 0)
-        return NULL;			//maybe we should return here node with a field of invalid 
+        return NULL;			
     return &(src->elements[src->actualSize - 1]);   
 }
 

@@ -2,7 +2,7 @@
 #include "Chess_FlowOnePlayer.h"
 
 GAME_STATUS onePlayerGameFlow(chessGame* src){
-    bool printBoard = true;
+    bool printBoard = true; /* should we print the game board on next iretation */
     GAME_STATUS status = EMPTY;
     char input[SP_MAX_LINE_LENGTH];
     CHESSCommand cmd;
@@ -15,7 +15,7 @@ GAME_STATUS onePlayerGameFlow(chessGame* src){
         if(printBoard)
             chessConsolePrintBoard(src);
         else
-            printBoard = true;
+            printBoard = true; /* default = true */
         printf("%s player - enter your move:\n", getCurrentPlayerStringName(src));
         fgets(input,  SP_MAX_LINE_LENGTH, stdin);
         cmd = spParserLine(input);
@@ -34,7 +34,7 @@ GAME_STATUS onePlayerGameFlow(chessGame* src){
             continue;
         }
         if(cmd.cmd == CHESS_SAVE){
-            saveGame(src, input); //tochange to cmd.arg
+            saveGame(src, input); 
             printBoard = false;
             continue;
         }
@@ -61,8 +61,9 @@ GAME_STATUS onePlayerGameFlow(chessGame* src){
 bool humanMove(chessGame* src, CHESSCommand cmd){
     CHESS_GAME_MESSAGE message = setChessMove(src, (cmd.sourceRow -1), getIntFromColumnChar(cmd.sourceColl), (cmd.targertRow -1), getIntFromColumnChar(cmd.targetColl), true, true);
     if(message == CHESS_GAME_SUCCESS){
-        return true;
+        return true; /*  perfect! */
     }
+    /* an error took place */
     if(message == CHESS_GAME_INVALID_ARGUMENT)
         printf("Invalid position on the board\n");
     if(message == CHESS_GAME_INVALID_POSITION)
@@ -80,8 +81,12 @@ bool compMove(chessGame* src){
         return false;
     }
     setChessMove(src, move->prev_pos_row, move->prev_pos_col, move->current_pos_row, move->current_pos_col, false, true);
+
+    printf("Computer: move %s at <%d,%c> to <%d,%c>\n",getFigureStringName(src->gameBoard[move->current_pos_row][move->current_pos_col]),move->prev_pos_row+1,getColumnChar(move->prev_pos_col),move->current_pos_row+1,getColumnChar(move->current_pos_col));
+    
     free(move);
-    return false;
+    
+    return true;
 }
 
 
@@ -93,17 +98,13 @@ bool compMove(chessGame* src){
 /*
 todo:
 
-1. documentation - Chess_arraylist, otherwise done
-2. Verify that all prints and such are accordint to their req
-3. Clean code
-3. MinMax check - mostly done
-6. add/fix load game
+
+
 
 
 
 known bugs:
  3. MinMax tends to come to a loop - maybe add a randomization factor? Generally it works I think. Give some people a chance to play against it and see if a basic improvment needed.
- 5. there's a memory leak - not sure where, but it appears in compVcomp, maybe in mainGame as well.
  6. save with an empty path does not result in error
  
  
@@ -112,7 +113,6 @@ bonuses:
 2. add CROWNINNG
 3. add GET_ALL_MOVES FUNC - already have printing in format, just add where applicable
 5. add better minmax
-6. conbine isStealmate && isCheckmate && isCheck
 
 
 */

@@ -5,11 +5,11 @@
 #include <limits.h>
 
 SPArrayListNode* suggestMove(chessGame* src,  int depth){
-    //printf("START MINMAXTREE\n");
+
     chessGame* gameCopy =copyChessGame(src);
     SPArrayListNode* i = initMinmaxTree(gameCopy, depth);
     destroyChessGame(gameCopy);
-    //printf("END MINMAXTREE\n");
+ 
     return i;
 }
 
@@ -71,7 +71,7 @@ int comFunc(chessGame* currentGame){
 
     whiteTotal = whiteArray[0]*1 + whiteArray[1]*3 + whiteArray[2]*5 + whiteArray[3]*9 + whiteArray[4]*100;
     blackTotal = blackArray[0]*1 + blackArray[1]*3 + blackArray[2]*5 + blackArray[3]*9 + blackArray[4]*100;
-    //printf("COMPFUNC %d\n",whiteTotal - blackTotal);
+
     
     return (whiteTotal - blackTotal) ;
 }
@@ -93,24 +93,18 @@ SPArrayListNode* initMinmaxTree(chessGame* currentGame, int depth){
                     SPArrayList* moves = allPossibleMoves(currentGame, i, j);
                     while(!spArrayListIsEmpty(moves)){
                         SPArrayListNode* move = spArrayListGetFirst(moves);
-                        //printf("move %d,%d,%d,%d\n", move->prev_pos_row, move->prev_pos_col, move->current_pos_row, move->current_pos_col);
-                       // printf("constatns %d,%d\n", bestMax, temp);
+            
                         setChessMove(currentGame, move->prev_pos_row, move->prev_pos_col, move->current_pos_row, move->current_pos_col, false,true);
 
                         temp =minmaxTree(currentGame, depth-1, alpha, beta);
-                        //printf("constatns2 %d,%d\n", bestMax, temp);
                         if(temp > bestMax){
-                            //printf("adjuster best move max to move:");
-                           // printf("move %d,%d,%d,%d\n", move->prev_pos_row, move->prev_pos_col, move->current_pos_row, move->current_pos_col);
-
-
                             *bestMaxMove = *move;
                             bestMax = temp;
-                          //  printf("move %d,%d,%d,%d\n", bestMaxMove->prev_pos_row, bestMaxMove->prev_pos_col, bestMaxMove->current_pos_row, bestMaxMove->current_pos_col);
                         }
                         spArrayListRemoveFirst(moves);
                         undoChessPrevMove(currentGame, false);
                     }
+                    spArrayListDestroy(moves);
                 }
 
             }
@@ -126,10 +120,9 @@ SPArrayListNode* initMinmaxTree(chessGame* currentGame, int depth){
                     while(!spArrayListIsEmpty(moves)){
                         SPArrayListNode* move = spArrayListGetFirst(moves);
                        
-                        //printf("move %d,%d,%d,%d\n", move->prev_pos_row, move->prev_pos_col, move->current_pos_row, move->current_pos_col);
                         setChessMove(currentGame, move->prev_pos_row, move->prev_pos_col, move->current_pos_row, move->current_pos_col, false,true);
                         temp = minmaxTree(currentGame, depth-1, alpha, beta);
-                        //printf("constatns3 %d,%d\n", bestMin, temp);
+            
 
                         if(temp < bestMin){
                             *bestMinMove = *move;
@@ -138,6 +131,7 @@ SPArrayListNode* initMinmaxTree(chessGame* currentGame, int depth){
                         spArrayListRemoveFirst(moves);
                         undoChessPrevMove(currentGame, false);
                     }
+                    spArrayListDestroy(moves);
                 }
                 
             }
@@ -159,15 +153,15 @@ SPArrayListNode* initMinmaxTree(chessGame* currentGame, int depth){
 
 
 int minmaxTree(chessGame* currentGame, int depth, int alpha, int beta){
-    if(depth == 0){
-        //printf("depth 0\n");
-        //chessConsolePrintBoard(currentGame);
+    if(depth == 0){ /* terminal node */
+
         return comFunc(currentGame);
     }
-    if(isStalemate(currentGame)||isCheckmate(currentGame)){
-       // printf("check/steal\n");
+    if(isStalemate(currentGame)||isCheckmate(currentGame)){ /* terminal node */
+        
         return comFunc(currentGame);
     }
+    
     if(currentGame->currentPlayer == WHITES){
         int v = INT_MIN;
         for(int i = 0; i< 8; i++){

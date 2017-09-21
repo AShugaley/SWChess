@@ -302,8 +302,29 @@ int main(int argc, const char * argv[]) {
     //chessGame* src2 = loadGmae("load /Users/alexs/dev/SWChess/text2.xml");
    // printf("%d,%d,%d,%d\n",src2->currentPlayer, src2->humanPlayerColor, src2->gameMode, src2->difficulty);
     //chessConsolePrintBoard(src2);
-//    chessGame* src = createChessGame(2, 2, 1, 2);
-//    TestBoard(src);
+//    chessGame* src = createChessGame(6, ONE_PLAYER, BLACKS, 4);
+//    src->currentPlayer = BLACKS;
+//    src->gameBoard[0][0] = QUEEN_BLACK;
+//    src->gameBoard[1][1] = QUEEN_BLACK;
+//    src->gameBoard[2][2] = QUEEN_BLACK;
+//    src->gameBoard[3][3] = QUEEN_BLACK;
+//    src->gameBoard[4][4] = QUEEN_BLACK;
+//    src->gameBoard[5][5] = QUEEN_BLACK;
+//    src->gameBoard[6][6] = QUEEN_BLACK;
+//    src->gameBoard[7][7] = QUEEN_BLACK;
+//    printf("%d\n", src->gameMode);
+//    printf("%d\n", src->humanPlayerColor);
+//    printf("%d\n", src->currentPlayer);
+//    printf("%d\n", src->difficulty);
+//    saveGame(src, "save");
+//    chessGame* src2 = loadGmae("load");
+//    printf("ENDDDDDDD\n");
+//    chessConsolePrintBoard(src2);
+//    printf("%d\n", src2->gameMode);
+//    printf("%d\n", src2->humanPlayerColor);
+//    printf("%d\n", src2->currentPlayer);
+//    printf("%d\n", src2->difficulty);
+        //    TestBoard(src);
 //    src->currentPlayer = BLACKS;
 //    chessConsolePrintBoard(src);
 //    printf("%d\n", isCheck(src));
@@ -315,8 +336,8 @@ int main(int argc, const char * argv[]) {
 //    printf("%d,%d\n", suggestMove(src, 4)->current_pos_row,suggestMove(src, 4)->current_pos_col );
 //    get_moves(src,0,1);
     runTestSim(4,3);
-    
-//consoleMode();
+    //saveGame(src, "<uos><sj><h>");
+ //consoleMode();
     
 //	return 0;
 }

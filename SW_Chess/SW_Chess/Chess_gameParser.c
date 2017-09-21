@@ -4,11 +4,11 @@
 bool spParserIsInt(const char* str)
 {
 	unsigned int i = 0;
-	if (str[0] == '-' || (str[0]<58 && str[0]>47))  //first char is minus or digit 
+	if (str[0] == '-' || (str[0]<58 && str[0]>47))  /* first char is minus or digit  */
 	{
 		for (i = 1; i < strlen(str); i++)
 		{
-			if (str[i] > 57 || str[i] < 48)  // not a digit 
+			if (str[i] > 57 || str[i] < 48)  /* not a digit  */
 				return false;
 		}
 		return true;
@@ -25,14 +25,14 @@ bool spParserIsLetter(const char* str)
 }
 
 
-bool spParserIsValidOrederedPair(const char* currentToken, char* delimiter, CHESSCommand* command, CHESS_MOVE_ARG argPlace)//change to empty delimiter (chech chars and not words!!!!) 
+bool spParserIsValidOrederedPair(const char* currentToken, char* delimiter, CHESSCommand* command, CHESS_MOVE_ARG argPlace)//change to empty delimiter (chech chars and not words!!!!)
 {
 	char chToken;
 	char currentstr[2] = { '\0' };
-	if ((currentToken[0] != '<'))  //currentToken[0] should be "<"
+	if ((currentToken[0] != '<'))  /* currentToken[0] should be "<" */
 		return false;
 
-	//should be an int
+	/* should be an int */
 	chToken = currentToken[1];
 	currentstr[0] = currentToken[1];
 	if (spParserIsInt(currentstr))
@@ -50,12 +50,12 @@ bool spParserIsValidOrederedPair(const char* currentToken, char* delimiter, CHES
 		return false;
 
 	chToken = currentToken[2];
-	//should be ","
+	/* should be "," */
 	if (chToken != ',')
 		return false;
 
 
-	//should be an uppercase letter 
+	/*should be an uppercase letter  */
 	chToken = currentToken[3];
 	currentstr[0] = currentToken[3];
 	if (spParserIsLetter(currentstr))
@@ -71,10 +71,7 @@ bool spParserIsValidOrederedPair(const char* currentToken, char* delimiter, CHES
 	}
 	else
 		return false;
-
-
-	//should be ">"
-	chToken = currentToken[4];
+	chToken = currentToken[4]; /* should be ">" */
 	if (chToken != '>')
 		return false;
 
@@ -84,27 +81,26 @@ bool spParserIsValidOrederedPair(const char* currentToken, char* delimiter, CHES
 CHESSCommand spParserLine(const char* str)
 {
 	CHESSCommand command;
-	command.isValidFirstPair = false;	//true only in case of "move" with valid numbers 
+	command.isValidFirstPair = false;	/* true only in case of "move" with valid numbers */
 	command.isValidSecondPair = false;
 	char currentStr[SP_MAX_LINE_LENGTH] = "\0";
 	strcpy(currentStr, str);
 	char* currentToken;
 	char delimiter[] = " \t\r\n";
-	//MOVEArg argstruct;
 	
 
-	currentToken = strtok(currentStr, delimiter);	//curtoken is the first part of the string
+	currentToken = strtok(currentStr, delimiter);	/* curtoken is the first part of the string */
     if(currentToken == NULL){
         command.cmd = CHESS_INVALID_LINE;
         return command;
     }
-	if (currentToken == '\0')	//doesn't suppose to get here, just in case ...
+	if (currentToken == '\0')	/* doesn't suppose to get here, just in case ... */
 	{
 		command.cmd = CHESS_INVALID_LINE;
 		return command;
 	}
 
-	if (!strcmp(currentToken, "undo"))	//curtoken == undo (strcmp = 0 in this case) 
+	if (!strcmp(currentToken, "undo"))	/* curtoken == undo (strcmp = 0 in this case) */
 	{
 		command.cmd = CHESS_UNDO_MOVE;
 	}
@@ -119,7 +115,7 @@ CHESSCommand spParserLine(const char* str)
 		command.cmd = CHESS_RESTART;
 	}
 
-	else if (!strcmp(currentToken, "save"))	//will check the file path later in the gameUtils functions 
+	else if (!strcmp(currentToken, "save"))	/* will check the file path later in the gameUtils functions */
 	{
 		command.cmd = CHESS_SAVE;
 	}
@@ -161,7 +157,7 @@ CHESSCommand spParserLine(const char* str)
 	}
 
 
-	//if there is additional text after the first& second parts  - invalid 
+	/* if there is additional text after the first& second parts  - invalid  */
 	currentToken = strtok(NULL, delimiter);
 	if (currentToken != NULL)
 	{
