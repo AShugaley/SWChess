@@ -3,6 +3,7 @@
 #define Chess_testingSimulations_h
 
 #include <stdio.h>
+#include <time.h>
 #include "Chess_def.h"
 #include "Chess_gameParser.h"
 #include "Chess_gameUtils.h"
