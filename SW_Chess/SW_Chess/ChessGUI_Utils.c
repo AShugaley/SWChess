@@ -16,7 +16,7 @@ ChessWindow* createWindow(WINDOW_TYPE wintype, Uint32 winMode)
 		res = createGameWindow(winMode);
 	else if (wintype == CHESS_SETTINGS_WINDOW)
 		res = createSettingsWindow(winMode);
-	res->prevWindow = NULL;
+//	res->prevWindow = NULL;
 	return res;
 }
 
@@ -58,8 +58,8 @@ ChessWindow* swapWindows(ChessWindow* oldWindow, WINDOW_TYPE type)
 
 void initGameGUIBoard(chessGame* game)
 {
-	int leftUpCornerX = 300;
-	int leftUpCornerY = 90;
+	int leftUpCornerX = 800;
+	int leftUpCornerY = 520;
 	int width = 60;
 	int height = 60;
 
@@ -67,8 +67,8 @@ void initGameGUIBoard(chessGame* game)
 	{
 		for (int j = 0; j < BOARD_SIZE; j++)
 		{
-			SDL_Rect currentRect = { .x = (j * width)  + leftUpCornerX
-									,.y = (i * height) + leftUpCornerY
+			SDL_Rect currentRect = { .x = -(j * width)  + leftUpCornerX
+									,.y = -(i * height) + leftUpCornerY
 									,.h = 60
 									,.w = 60 };
 			game->gameGUIBoard[i][j] = currentRect;
@@ -79,6 +79,8 @@ void initGameGUIBoard(chessGame* game)
 
 void drawGameBoard(chessGameWindow* win, chessGame* game)
 {
+	SDL_Surface* loadingSurface;
+	SDL_Texture* squareTexture;
 	for (int i = 0; i < BOARD_SIZE; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE; j++)
@@ -87,12 +89,27 @@ void drawGameBoard(chessGameWindow* win, chessGame* game)
 			if (SDL_RenderDrawRect(win->windowRenderer, &game->gameGUIBoard[i][j]) < 0)
 				printf("ERROR: unable to draw rect: %s\n", SDL_GetError());
 			if ((i % 2 == 0 && j % 2 == 0) || (i % 2 != 0 && j % 2 != 0))
-				SDL_SetRenderDrawColor(win->windowRenderer, 0, 255, 0, 255);
+			{
+				loadingSurface = SDL_LoadBMP("./white_sq.bmp"); //We use the surface as a temp var;
+				squareTexture =  SDL_CreateTextureFromSurface(win->windowRenderer, loadingSurface);
+				//SDL_SetRenderDrawColor(win->windowRenderer, 0, 255, 0, 255);
+			}
 			else
-				SDL_SetRenderDrawColor(win->windowRenderer, 0, 0, 255, 255);
-			if (SDL_RenderFillRect(win->windowRenderer, &game->gameGUIBoard[i][j]) < 0)
-				printf("ERROR: unable to fill rect: %s\n", SDL_GetError());
-			
+			{
+				loadingSurface = SDL_LoadBMP("./black_sq.bmp"); //We use the surface as a temp var;
+				squareTexture =  SDL_CreateTextureFromSurface(win->windowRenderer, loadingSurface);
+			}
+						
+			if (loadingSurface == NULL || squareTexture == NULL)
+			{
+				SDL_FreeSurface(loadingSurface); 
+				SDL_DestroyTexture(squareTexture);
+			}
+			else if (SDL_RenderCopy(win->windowRenderer, squareTexture, NULL, &game->gameGUIBoard[i][j]) != 0)
+			{
+				printf("ERROR: unable to draw the square texture: %s\n", SDL_GetError());
+				return;
+			}
 		}
 	}
 }

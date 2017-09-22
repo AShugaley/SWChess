@@ -40,12 +40,12 @@ Widget** createGameWindowWidgets(SDL_Renderer* renderer, ChessWindow* window)
 		return NULL;
 	}
 	//SDL_SetRenderDrawColor(renderer, 255, 0, 255, 255);
-	SDL_Rect restart =  { .x = 50,.y = 50, .h = 72,.w = 180 };
-	SDL_Rect save    =  { .x = 50,.y = 142,.h = 72,.w = 180 };
-	SDL_Rect load	 =  { .x = 50,.y = 234,.h = 72,.w = 180 };
-	SDL_Rect undo	 =  { .x = 50,.y = 326,.h = 72,.w = 180 };
-	SDL_Rect home	 =  { .x = 50,.y = 418,.h = 72,.w = 180 };
-	SDL_Rect exit	 =  { .x = 50,.y = 510,.h = 72,.w = 180 };
+	SDL_Rect restart =  { .x = 80,.y = 70, .h = 72,.w = 180 };
+	SDL_Rect save    =  { .x = 80,.y = 162,.h = 72,.w = 180 };
+	SDL_Rect load	 =  { .x = 80,.y = 254,.h = 72,.w = 180 };
+	SDL_Rect undo	 =  { .x = 80,.y = 346,.h = 72,.w = 180 };
+	SDL_Rect home	 =  { .x = 80,.y = 438,.h = 72,.w = 180 };
+	SDL_Rect exit	 =  { .x = 80,.y = 530,.h = 72,.w = 180 };
 	
 	
 	SDL_Rect rookWhite =	{.x = window->game->gameGUIBoard[0][0].x,.y = window->game->gameGUIBoard[0][0].y,
@@ -97,65 +97,65 @@ Widget** createGameWindowWidgets(SDL_Renderer* renderer, ChessWindow* window)
 	SDL_Rect rookBlack2 =   {.x = window->game->gameGUIBoard[7][7].x,.y = window->game->gameGUIBoard[7][7].y,
 							 .h = window->game->gameGUIBoard[7][7].h,.w = window->game->gameGUIBoard[7][7].w };
 
-	widgets[0]  = createButton(renderer, &restart,     "./button_base.bmp", CHESS_RESTART_BUTTON);
-	widgets[1]  = createButton(renderer, &save,	       "./button_base.bmp", CHESS_SAVE_BUTTON);
-	widgets[2]  = createButton(renderer, &load,	       "./button_base.bmp", CHESS_LOAD_BUTTON);
-	widgets[3]  = createButton(renderer, &undo,        "./button_base.bmp", CHESS_UNDO_BUTTON);
-	widgets[4]  = createButton(renderer, &home,        "./button_base.bmp", CHESS_HOME_BUTTON);
-	widgets[5]  = createButton(renderer, &exit,        "./button_base.bmp", CHESS_QUIT_BUTTON);
+	widgets[0]  = createButton(renderer, &restart,     "./restart_active.bmp", CHESS_RESTART_BUTTON);
+	widgets[1]  = createButton(renderer, &save,	       "./save_active.bmp", CHESS_SAVE_BUTTON);
+	widgets[2]  = createButton(renderer, &load,	       "./load_active.bmp", CHESS_LOAD_BUTTON);
+	widgets[3]  = createButton(renderer, &undo,        "./undo_nonactive.bmp", CHESS_UNDO_BUTTON);
+	widgets[4]  = createButton(renderer, &home,        "./home_active.bmp", CHESS_HOME_BUTTON);
+	widgets[5]  = createButton(renderer, &exit,        "./exit_active.bmp", CHESS_QUIT_BUTTON);
 	
-	widgets[6] = createButton(renderer, &bishopWhite, "./button_base.bmp", CHESS_BISHOP_WHITE_BUTTON);
-	widgets[7] = createButton(renderer, &bishopWhite2, "./button_base.bmp", CHESS_BISHOP_WHITE_BUTTON);
+	widgets[6] = createButton(renderer, &bishopWhite,  "./bishop_white_active.bmp", CHESS_BISHOP_WHITE_BUTTON);
+	widgets[7] = createButton(renderer, &bishopWhite2, "./bishop_white_active.bmp", CHESS_BISHOP_WHITE_BUTTON);
 
 	widgets[6]->row =  0;
 	widgets[6]->coll = 2;
 	widgets[7]->row =  0;
 	widgets[7]->coll = 5;
 
-	widgets[8] = createButton(renderer, &bishopBlack, "./button_base.bmp", CHESS_BISHOP_BLACK_BUTTON);
-	widgets[9] = createButton(renderer, &bishopBlack2, "./button_base.bmp", CHESS_BISHOP_BLACK_BUTTON);
+	widgets[8] = createButton(renderer, &bishopBlack,  "./bishop_black_active.bmp", CHESS_BISHOP_BLACK_BUTTON);
+	widgets[9] = createButton(renderer, &bishopBlack2, "./bishop_black_active.bmp", CHESS_BISHOP_BLACK_BUTTON);
 	
 	widgets[8]->row = 7;
 	widgets[8]->coll = 2;
 	widgets[9]->row = 7;
 	widgets[9]->coll = 5;
 	
-	widgets[10] = createButton(renderer, &rookWhite, "./button_base.bmp",  CHESS_ROOK_WHITE_BUTTON);
-	widgets[11] = createButton(renderer, &rookWhite2, "./button_base.bmp", CHESS_ROOK_WHITE_BUTTON);
+	widgets[10] = createButton(renderer, &rookWhite,  "./rook_white_active.bmp",  CHESS_ROOK_WHITE_BUTTON);
+	widgets[11] = createButton(renderer, &rookWhite2, "./rook_white_active.bmp", CHESS_ROOK_WHITE_BUTTON);
 	
 	widgets[10]->row = 0;
 	widgets[10]->coll = 0;
 	widgets[11]->row = 0;
 	widgets[11]->coll = 7;
 
-	widgets[12] = createButton(renderer, &rookBlack, "./button_base.bmp",  CHESS_ROOK_BLACK_BUTTON);
-	widgets[13] = createButton(renderer, &rookBlack2, "./button_base.bmp", CHESS_ROOK_BLACK_BUTTON);
+	widgets[12] = createButton(renderer, &rookBlack,  "./rook_black_active.bmp",  CHESS_ROOK_BLACK_BUTTON);
+	widgets[13] = createButton(renderer, &rookBlack2, "./rook_black_active.bmp", CHESS_ROOK_BLACK_BUTTON);
 
 	widgets[12]->coll = 0;
 	widgets[12]->row = 7;
 	widgets[13]->row = 7;
 	widgets[13]->coll = 7;
 
-	widgets[14] = createButton(renderer, &knightWhite, "./button_base.bmp",  CHESS_KNIGHT_WHITE_BUTTON);
-	widgets[15] = createButton(renderer, &knightWhite2, "./button_base.bmp", CHESS_KNIGHT_WHITE_BUTTON);
+	widgets[14] = createButton(renderer, &knightWhite,  "./knight_white_active.bmp",  CHESS_KNIGHT_WHITE_BUTTON);
+	widgets[15] = createButton(renderer, &knightWhite2, "./knight_white_active.bmp", CHESS_KNIGHT_WHITE_BUTTON);
 
 	widgets[14]->row = 0;
 	widgets[14]->coll = 1;
 	widgets[15]->row = 0;
 	widgets[15]->coll = 6;
 
-	widgets[16] = createButton(renderer, &knightBlack, "./button_base.bmp",  CHESS_KNIGHT_BLACK_BUTTON);
-	widgets[17] = createButton(renderer, &knightBlack2, "./button_base.bmp", CHESS_KNIGHT_BLACK_BUTTON);
+	widgets[16] = createButton(renderer, &knightBlack,  "./knight_black_active.bmp",  CHESS_KNIGHT_BLACK_BUTTON);
+	widgets[17] = createButton(renderer, &knightBlack2, "./knight_black_active.bmp", CHESS_KNIGHT_BLACK_BUTTON);
 
 	widgets[16]->row = 7;
 	widgets[16]->coll = 1;
 	widgets[17]->row = 7;
 	widgets[17]->coll = 6;
 
-	widgets[18] = createButton(renderer, &queenWhite, "./button_base.bmp", CHESS_QUEEN_WHITE_BUTTON);
-	widgets[19] = createButton(renderer, &queenBlack, "./button_base.bmp", CHESS_QUEEN_BLACK_BUTTON);
-	widgets[20] = createButton(renderer, &kingWhite, "./button_base.bmp", CHESS_KING_WHITE_BUTTON);
-	widgets[21] = createButton(renderer, &kingBlack, "./button_base.bmp", CHESS_KING_BLACK_BUTTON);
+	widgets[18] = createButton(renderer, &queenWhite, "./queen_white_active.bmp", CHESS_QUEEN_WHITE_BUTTON);
+	widgets[19] = createButton(renderer, &queenBlack, "./queen_black_active.bmp", CHESS_QUEEN_BLACK_BUTTON);
+	widgets[20] = createButton(renderer, &kingWhite,  "./king_white_active.bmp", CHESS_KING_WHITE_BUTTON);
+	widgets[21] = createButton(renderer, &kingBlack,  "./king_black_active.bmp", CHESS_KING_BLACK_BUTTON);
 
 	widgets[18]->row = 0;
 	widgets[18]->coll = 3;
@@ -173,11 +173,11 @@ Widget** createGameWindowWidgets(SDL_Renderer* renderer, ChessWindow* window)
 							   .h = window->game->gameGUIBoard[1][i].h,.w = window->game->gameGUIBoard[1][i].w };
 		SDL_Rect pawnBlack =  {.x = window->game->gameGUIBoard[6][i].x,.y = window->game->gameGUIBoard[6][i].y,
 							   .h = window->game->gameGUIBoard[6][i].h,.w = window->game->gameGUIBoard[6][i].w };
-		widgets[place]   = createButton(renderer, &pawnWhite, "./button_base.bmp", CHESS_PAWN_WHITE_BUTTON);
+		widgets[place]   = createButton(renderer, &pawnWhite, "./pawn_white_active.bmp", CHESS_PAWN_WHITE_BUTTON);
 		widgets[place]->row = 1;
 		widgets[place]->coll = i;
 		
-		widgets[place+1] = createButton(renderer, &pawnBlack, "./button_base.bmp", CHESS_PAWN_BLACK_BUTTON);
+		widgets[place+1] = createButton(renderer, &pawnBlack, "./pawn_black_active.bmp", CHESS_PAWN_BLACK_BUTTON);
 		widgets[place+1]->row = 6;
 		widgets[place+1]->coll = i;
 		
@@ -282,7 +282,7 @@ void drawGameWindow(ChessWindow* src)
 	
 
 	//draw background
-	SDL_Surface* surf = SDL_LoadBMP("./main_background.bmp");
+	SDL_Surface* surf = SDL_LoadBMP("./game_background.bmp");
 	SDL_Texture * background = SDL_CreateTextureFromSurface(data->windowRenderer, surf);
 	if (surf == NULL || background == NULL)
 	{
@@ -306,6 +306,9 @@ void drawGameWindow(ChessWindow* src)
 	{
 		if (data->widgets[i]->isVisible)
 			data->widgets[i]->drawWidget(data->widgets[i]);
+		if ((data->widgets[i]->isVisible) && (data->widgets[i]->widget_type == CHESS_UNDO_BUTTON)
+			&& (data->widgets[i]->isActivateLegal))
+			updateButtonTexture(data->widgets[3], "./undo_active.bmp"); //index 3 is undo button in the array 
 	}
 
 	
@@ -349,7 +352,7 @@ WINDOW_EVENT handleEventGameWindow(ChessWindow* src, SDL_Event* event)
 					case CHESS_SAVE_BUTTON:
 						return CHESS_SAVE_WINDOWEVENT;
 					case CHESS_LOAD_BUTTON:
-						return CHESS_LOAD_WINDOWEVENT;
+						return CHESS_LOAD_SCREEN_WINDOWEVENT;
 					case CHESS_UNDO_BUTTON:
 						//taking care here? or in main? i think here 
 						break;
@@ -394,6 +397,8 @@ WINDOW_EVENT handleEventGameWindow(ChessWindow* src, SDL_Event* event)
 						//}
 						if (windata->widgets[i]->endOfDrag)
 						{
+							windata->widgets[3]->isActivateLegal = true;
+
 							SDL_GetMouseState(&mouseX, &mouseY);
 							//check valid move + update location - origin or event 
 							if (isValidPlace(mouseX, mouseY, src->game))

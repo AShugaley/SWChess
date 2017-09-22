@@ -13,6 +13,7 @@ typedef enum {
 	CHESS_RESTART_WINDOWEVENT,
 	CHESS_SETTINGS_WINDOWEVENT,
 	CHESS_LOAD_WINDOWEVENT,
+	CHESS_LOAD_SCREEN_WINDOWEVENT,
 	CHESS_BACK_WINDOWEVENT,
 	CHESS_HOME_WINDOWEVENT,
 	CHESS_QUIT_WINDOWEVENT,
@@ -36,7 +37,6 @@ struct spwindow_t {
 	WINDOW_EVENT (*handleEventWindow)(ChessWindow* , SDL_Event*);
 	void (*destroyWindow)(ChessWindow* );
 	WINDOW_TYPE type;
-	ChessWindow* prevWindow;
 	chessGame* game;
 };
 

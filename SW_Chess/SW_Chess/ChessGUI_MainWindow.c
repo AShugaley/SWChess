@@ -165,7 +165,7 @@ WINDOW_EVENT handleEventMainWindow(ChessWindow* src, SDL_Event* event)
 			}
 			case CHESS_LOAD_BUTTON:
 			{
-				eventType = CHESS_LOAD_WINDOWEVENT;
+				eventType = CHESS_LOAD_SCREEN_WINDOWEVENT;
 				break;
 			}
 			case CHESS_QUIT_BUTTON:

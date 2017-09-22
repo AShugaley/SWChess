@@ -8,8 +8,8 @@ void destroyWindow(ChessWindow* src)
 	
 	destroyChessGame(src->game);
 
-	if(src->prevWindow)
-		src->destroyWindow(src->prevWindow);
+	//if(src->prevWindow)
+	//	src->destroyWindow(src->prevWindow);
 
 	src->destroyWindow(src);
 }

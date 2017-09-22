@@ -140,7 +140,8 @@ void handleButtonEvent(Widget* src, SDL_Event* event)
 				break;
 			case CHESS_NEWGAME_BUTTON:
 			case CHESS_START_BUTTON:
-				updateButtonTexture(src, "./start_pressed.bmp");
+				if (src->isActivateLegal)
+					updateButtonTexture(src, "./start_pressed.bmp");
 				break;
 			case CHESS_QUIT_BUTTON:
 				updateButtonTexture(src, "./exit_pressed.bmp");
@@ -185,15 +186,41 @@ void handleButtonEvent(Widget* src, SDL_Event* event)
 			case CHESS_HARD_BUTTON:
 				updateButtonTexture(src, "./hard_pressed.bmp");
 				break;
-			case CHESS_PAWN_WHITE_BUTTON:
-				updateButtonTexture(src, "./hard_pressed.bmp");
-				/*	case CHESS_SLOT1_BUTTON:
-					{
-						if (src->isActivateLegal)
-							updateButtonTexture(src, "./load_pressed.bmp");
-						break;
-					}
-					add the other slots !!!!!!!!!!!!!!!!!!!!!!!*/
+			case CHESS_EXPERT_BUTTON:
+				updateButtonTexture(src, "./expert_pressed.bmp");
+				break;
+			//case CHESS_PAWN_WHITE_BUTTON:
+			//	updateButtonTexture(src, "./hard_pressed.bmp");
+			case CHESS_SLOT1_BUTTON:
+				updateButtonTexture(src, "./slot1_pressed.bmp ");
+				break;
+			case CHESS_SLOT2_BUTTON:
+				updateButtonTexture(src, "./slot2_pressed.bmp");
+				break;
+
+			case CHESS_SLOT3_BUTTON:
+				updateButtonTexture(src, "./slot3_pressed.bmp");
+				break;
+
+			case CHESS_SLOT4_BUTTON:
+				updateButtonTexture(src, "./slot4_pressed.bmp");
+				break;
+
+			case CHESS_SLOT5_BUTTON:
+				updateButtonTexture(src, "./slot5_pressed.bmp");
+				break;
+			case CHESS_RESTART_BUTTON:
+				updateButtonTexture(src, "./restart_pressed.bmp");
+				break;
+			case CHESS_SAVE_BUTTON:
+				updateButtonTexture(src, "./save_pressed.bmp");
+				break;
+			case CHESS_HOME_BUTTON:
+				updateButtonTexture(src, "./home_pressed.bmp");
+				break;
+				
+				
+
 
 			}
 			src->isActive = true;
@@ -210,23 +237,19 @@ void handleButtonEvent(Widget* src, SDL_Event* event)
 		point.y = event->button.y;
 		//if (SDL_PointInRect(&point, castData->location)) //if the click was inside the button 
 	//	{
-	//	if(src->isMoving)
-		printf("up!!");
+	
 		//	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Title",
 		//		"We did it", NULL);
 		
 			
 			if (src->isDragLegal && src->isMoving)
 			{
-				//src->isDragLegal = false;
 				src->endOfDrag = true;
 				src->isMoving = false;
 				return;
 			}
 			src->isActive = false;
 			src->isMoving = false;
-			
-		//}
 		return;
 	}
 
@@ -239,25 +262,10 @@ void handleButtonEvent(Widget* src, SDL_Event* event)
 			SDL_Point point;
 			point.x = event->button.x;
 			point.y = event->button.y;
-
-		//	if (SDL_PointInRect(&point, castData->location)) //if the click was inside the button 
-			//{
 				
-				updateButtonLocation(src, event->motion.x, event->motion.y);
-				src->isMoving = true;
-				//if (timer > 60)
-				//{
-				//	timer = 0;
-				////	destroyButton(castData);
-				//	//createButton()
-				//	return CHESS_PAWN_WHITE_BUTTON;
-				//	//updateButtonLocation(src, point.x, point.y);
-				//}
-				//timer++;
-		//	}
-		//	else
-				return;
-				//return CHESS_PAWN_WHITE_BUTTON;
+			updateButtonLocation(src, event->motion.x, event->motion.y);
+			src->isMoving = true;
+			return;
 		}
 	}
 }
@@ -265,9 +273,9 @@ void handleButtonEvent(Widget* src, SDL_Event* event)
 
 void drawButton(Widget* src)
 {
-	if (src == NULL ) {
+	if (src == NULL )
 		return;
-	}
+
 	Button* castData = (Button*) src->data;
 
 	if (SDL_RenderCopy(castData->windowRenderer, castData->buttonTexture, NULL, castData->location) != 0)

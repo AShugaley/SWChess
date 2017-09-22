@@ -6,6 +6,15 @@
 static const load_width = 550;
 static const load_height = 700;
 
+#define LOAD 0 
+#define BACK 1
+#define SLOT1 2
+#define SLOT2 3
+#define SLOT3 4
+#define SLOT4 5
+#define SLOT5 6
+
+
 //create buttons
 Widget** createLoadWindowWidgets(SDL_Renderer* renderer)
 {
@@ -18,22 +27,22 @@ Widget** createLoadWindowWidgets(SDL_Renderer* renderer)
 		return NULL;
 	}
 
-	SDL_Rect loadGame = { .x = 300,.y = 500, .h = 72, .w = 180 };
-	SDL_Rect back     = { .x = 70, .y = 500, .h = 72, .w = 180 };
-	SDL_Rect slot1    =	{ .x = 200,.y = 150,.h = 72,.w = 180 };
+	SDL_Rect loadGame = { .x = 300,.y = 550, .h = 72, .w = 180 };
+	SDL_Rect back     = { .x = 70, .y = 550, .h = 72, .w = 180 };
+	SDL_Rect slot1    =	{ .x = 200,.y = 50,.h = 72,.w = 180 };
 	SDL_Rect slot2	  = { .x = 200,.y = 150,.h = 72,.w = 180 };
 	SDL_Rect slot3    = { .x = 200,.y = 250,.h = 72,.w = 180 };
 	SDL_Rect slot4    = { .x = 200,.y = 350,.h = 72,.w = 180 };
 	SDL_Rect slot5    = { .x = 200,.y = 450,.h = 72,.w = 180 };
 
 
-	widgets[0] = createButton(renderer, &loadGame,  "./load_inactive.bmp", CHESS_LOAD_BUTTON);
+	widgets[0] = createButton(renderer, &loadGame,  "./load_inactive.bmp", CHESS_LOADER_INSIDE_BUTTON);
 	widgets[1] = createButton(renderer, &back,	    "./back_active.bmp"  , CHESS_BACK_BUTTON);
-	widgets[2] = createButton(renderer, &slot1,     "./... "             , CHESS_SLOT1_BUTTON);
-	widgets[3] = createButton(renderer, &slot2,     "./... "             , CHESS_SLOT2_BUTTON);
-	widgets[4] = createButton(renderer, &slot3,     "./... "             , CHESS_SLOT3_BUTTON);
-	widgets[5] = createButton(renderer, &slot4,     "./... "             , CHESS_SLOT4_BUTTON);
-	widgets[6] = createButton(renderer, &slot5,     "./... "             , CHESS_SLOT5_BUTTON);
+	widgets[2] = createButton(renderer, &slot1,     "./slot1_active.bmp " , CHESS_SLOT1_BUTTON);
+	widgets[3] = createButton(renderer, &slot2,     "./slot2_active.bmp " , CHESS_SLOT2_BUTTON);
+	widgets[4] = createButton(renderer, &slot3,     "./slot3_active.bmp " , CHESS_SLOT3_BUTTON);
+	widgets[5] = createButton(renderer, &slot4,     "./slot4_active.bmp " , CHESS_SLOT4_BUTTON);
+	widgets[6] = createButton(renderer, &slot5,     "./slot5_active.bmp " , CHESS_SLOT5_BUTTON);
 
 
 	for (int i = 0; i < 7; i++)
@@ -80,8 +89,8 @@ ChessWindow* createLoadWindow(Uint32 winMode)
 	for (int i = 0; i < data->numOfWidgets; i++)
 	{
 		data->widgets[i]->isDragLegal = false;
-
 	}
+	data->widgets[LOAD]->isActivateLegal = false;
 
 	res->data = (void*)data;
 	res->destroyWindow = destroyLoadWindow;
@@ -138,10 +147,13 @@ void drawLoadWindow(ChessWindow* src)
 	SDL_DestroyTexture(background);
 	
 	//Draw window
-	for (int i=0; i < data->numOfWidgets; i++) ////////////////////numofwidgets check
+	for (int i=0; i < data->numOfWidgets; i++)
 	{
 		if (data->widgets[i]->isVisible)
 			data->widgets[i]->drawWidget(data->widgets[i]);
+		if ((data->widgets[i]->isVisible) && (data->widgets[i]->widget_type == CHESS_LOADER_INSIDE_BUTTON)
+			&& (data->widgets[i]->isActivateLegal))
+			updateButtonTexture(data->widgets[i], "./load_active.bmp");
 	}
 
 	SDL_RenderPresent(data->windowRenderer);
@@ -156,70 +168,71 @@ WINDOW_EVENT handleEventLoadWindow(ChessWindow* src, SDL_Event* event)
 	chessLoadWindow* windata = (chessLoadWindow*)src->data;
 
 	WINDOW_EVENT eventType = CHESS_EMPTY_WINDOWEVENT;
-	//WIDGET_TYPE widgetType;
-	for (int i = 0; i<windata->numOfWidgets; i = ((i + 1) % windata->numOfWidgets))
+
+
+
+	while (1)
 	{
-		windata->widgets[i]->handleEvent(windata->widgets[i], event);
-		if (windata->widgets[i]->isActive)
+		while (SDL_PollEvent(event))
 		{
-			switch (windata->widgets[i]->widget_type)
+			for (int i = 0; i < windata->numOfWidgets; i++)
 			{
-			case CHESS_EMPTY_BUTTON:
-			{
-				eventType = CHESS_EMPTY_WINDOWEVENT;
-				break;
+				//	bool refresh = false; 
+				windata->widgets[i]->handleEvent(windata->widgets[i], event);
+				SDL_RenderPresent(windata->windowRenderer);
+				if (windata->widgets[i]->isActive && windata->widgets[i]->isActivateLegal)
+				{
+					switch (windata->widgets[i]->widget_type)
+					{
+					case CHESS_EMPTY_BUTTON:
+						return CHESS_EMPTY_WINDOWEVENT;
+					case CHESS_BACK_BUTTON:
+						return CHESS_BACK_WINDOWEVENT;
+					case CHESS_LOADER_INSIDE_BUTTON:
+						return CHESS_LOAD_WINDOWEVENT;
+					case CHESS_SLOT1_BUTTON:
+						updateButtonTexture(windata->widgets[SLOT2], "./slot2_active.bmp");
+						updateButtonTexture(windata->widgets[SLOT3], "./slot3_active.bmp");
+						updateButtonTexture(windata->widgets[SLOT4], "./slot4_active.bmp");
+						updateButtonTexture(windata->widgets[SLOT5], "./slot5_active.bmp");
+						windata->widgets[LOAD]->isActivateLegal = true;
+						break;					
+					case CHESS_SLOT2_BUTTON:
+						updateButtonTexture(windata->widgets[SLOT1], "./slot1_active.bmp");
+						updateButtonTexture(windata->widgets[SLOT3], "./slot3_active.bmp");
+						updateButtonTexture(windata->widgets[SLOT4], "./slot4_active.bmp");
+						updateButtonTexture(windata->widgets[SLOT5], "./slot5_active.bmp");
+						windata->widgets[LOAD]->isActivateLegal = true;
+						break;
+					case CHESS_SLOT3_BUTTON:
+						updateButtonTexture(windata->widgets[SLOT1], "./slot1_active.bmp");
+						updateButtonTexture(windata->widgets[SLOT2], "./slot2_active.bmp");
+						updateButtonTexture(windata->widgets[SLOT4], "./slot4_active.bmp");
+						updateButtonTexture(windata->widgets[SLOT5], "./slot5_active.bmp");
+						windata->widgets[LOAD]->isActivateLegal = true;
+						break;
+					case CHESS_SLOT4_BUTTON:
+						updateButtonTexture(windata->widgets[SLOT2], "./slot2_active.bmp");
+						updateButtonTexture(windata->widgets[SLOT3], "./slot3_active.bmp");
+						updateButtonTexture(windata->widgets[SLOT1], "./slot1_active.bmp");
+						updateButtonTexture(windata->widgets[SLOT5], "./slot5_active.bmp");
+						windata->widgets[LOAD]->isActivateLegal = true;
+						break;
+					case CHESS_SLOT5_BUTTON:
+						updateButtonTexture(windata->widgets[SLOT2], "./slot2_active.bmp");
+						updateButtonTexture(windata->widgets[SLOT3], "./slot3_active.bmp");
+						updateButtonTexture(windata->widgets[SLOT4], "./slot4_active.bmp");
+						updateButtonTexture(windata->widgets[SLOT1], "./slot1_active.bmp");
+						windata->widgets[LOAD]->isActivateLegal = true;
+						break;
+					}
+					drawLoadWindow(src);
+				}
 			}
-			case CHESS_BACK_BUTTON:
-			{
-				eventType = CHESS_BACK_WINDOWEVENT;
-				break;
-			}
-			case CHESS_LOADER_INSIDE_BUTTON:
-			{
-				if (!(windata->widgets[i]->isActivateLegal))
-					eventType = CHESS_EMPTY_WINDOWEVENT;
-				else
-					eventType = CHESS_LOAD_WINDOWEVENT;
-				break;
-			}
-			default:
-			{
-				eventType = CHESS_EMPTY_WINDOWEVENT;
-				break;
-			}
-			}
+			break;
 		}
-		
-		
-		//		case CHESS_SLOT1_BUTTON:
-		//		{
-		//			eventType = ;
-		//			break;
-		//		}
-		//		case CHESS_SLOT2_BUTTON:
-		//		{
-		//			eventType = ;
-		//			break;
-		//		}
-		//		case CHESS_SLOT3_BUTTON:
-		//		{
-
-		//		}
-		//		case CHESS_SLOT4_BUTTON:
-		//		{
-
-		//		}
-		//		case CHESS_SLOT5_BUTTON:
-		//		{
-
-		//		}
-		//		default:
-		//		{
-		//			eventType = CHESS_EMPTY_WINDOWEVENT;
-		//			break;
-		//		}
-		//		}
-		//	}
 	}
+		
+		
 	return eventType;
 }

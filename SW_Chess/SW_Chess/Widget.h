@@ -10,7 +10,7 @@ typedef enum {
 	CHESS_EMPTY_BUTTON,
 	CHESS_NEWGAME_BUTTON,		//goes to setting stage
 	CHESS_LOAD_BUTTON,
-	CHESS_LOADER_INSIDE_BUTTON,
+	CHESS_LOADER_INSIDE_BUTTON, //inside the load window 
 	CHESS_QUIT_BUTTON,
 	CHESS_BACK_BUTTON,
 	CHESS_NEXT_BUTTON,
@@ -24,6 +24,7 @@ typedef enum {
 	CHESS_EASY_BUTTON,
 	CHESS_MODERATE_BUTTON,
 	CHESS_HARD_BUTTON,
+	CHESS_EXPERT_BUTTON,
 	CHESS_WHITE_BUTTON,
 	CHESS_BLACK_BUTTON,
 	CHESS_SLOT1_BUTTON,
@@ -57,7 +58,7 @@ struct widget_t {
 	WIDGET_TYPE widget_type; 
 	/*is activeLegal - always true, except: 
 	 -load button in some cases
-	 -back button on the first turn of the game 
+	 -undo button on the first turn of the game 
 	 -next button if no setting has been chosen 
 	*/
 	bool isActivateLegal; 

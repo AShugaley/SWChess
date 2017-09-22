@@ -3,6 +3,7 @@
 #include "ChessGUI_Window.h"
 #include "Widget.h"
 #include <stdio.h>
+#include "Chess_gameUtils.h"
 
 
 typedef struct chess_LoadWindow chessLoadWindow;

@@ -1,5 +1,7 @@
 #include "Chess_GuiFlowMain.h"
 #include "Chess_gameUtils.h"
+#include "ChessGUI_FlowOnePlayer.h"
+#include "ChessGUI_FlowTwoPlayers.h"
 
 
 int GUIMain() 
@@ -23,6 +25,7 @@ int GUIMain()
 	}
 
 	currentWindow->drawWindow(currentWindow);
+	WINDOW_TYPE prev = CHESS_MAIN_WINDOW; //default, just for error cases
 
 	SDL_Event event;
 	WINDOW_EVENT windowEvent;
@@ -41,6 +44,11 @@ int GUIMain()
 		
 		case CHESS_STARTGAME_WINDOWEVENT:
 		{
+			//if (currentWindow->game->gameMode == ONE_PLAYER)
+			//	onePFlow(currentWindow); //inside - swap windows
+			//else
+			//	twoPFlow(currentWindow);//inside - swap windows
+
 			currentWindow = swapWindows(currentWindow, CHESS_GAME_WINDOW);
 			break;
 		}
@@ -79,43 +87,29 @@ int GUIMain()
 		case CHESS_HOME_WINDOWEVENT:
 		{
 			currentWindow = swapWindows(currentWindow, CHESS_MAIN_WINDOW);
-			currentWindow->prevWindow = NULL;
+			//currentWindow->prevWindow = NULL;
 			break;
 		}
 		case CHESS_SETTINGS_WINDOWEVENT:
 		{
 			currentWindow = swapWindows(currentWindow, CHESS_SETTINGS_WINDOW);
-		//need to work on it
-			//currentWindow->prevWindow = createWindow(CHESS_MAIN_WINDOW, SDL_WINDOW_HIDDEN);
+			prev = CHESS_MAIN_WINDOW;
 			break;
 		}
 		case CHESS_LOAD_WINDOWEVENT:
 		{
-			ChessWindow* prev = copyWindow(currentWindow);
-			currentWindow = swapWindows(currentWindow, CHESS_LOAD_WINDOW);
-			currentWindow->prevWindow = prev;
-			//currentWindow = NULL;
 			break;
-
-			//else if (loadWindow)
-			//{
-			//	//create the chosen game window 
-			//}
-			//else if (gameWindow)
-			//{
-			//	ChessWindow* prev = copyWindow(gameWindow);
-			//	loadWindow = swapWindows(gameWindow, CHESS_LOAD_WINDOW);
-			//	loadWindow->prevWindow = prev;
-			//	gameWindow = NULL;
-			//	break;
-			//}
+			//load the chosen game 
 		}
+		case CHESS_LOAD_SCREEN_WINDOWEVENT:
+			prev = currentWindow->type;
+			currentWindow = swapWindows(currentWindow, CHESS_LOAD_WINDOW);
+			
+			break;
+			//take care of prev type 
 		case CHESS_BACK_WINDOWEVENT:
 		{
-			//ChessWindow* prev = copyWindow(currentWindow);
-			currentWindow = swapWindows(currentWindow, currentWindow->prevWindow->type);
-			//currentWindow->prevWindow = prev;
-			//currentWindow = NULL;
+			currentWindow = swapWindows(currentWindow, prev);
 			break;
 		}
 		case CHESS_QUIT_WINDOWEVENT:
