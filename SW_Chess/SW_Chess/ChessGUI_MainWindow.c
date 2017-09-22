@@ -1,6 +1,9 @@
 #include <stdlib.h>
 #include "ChessGUI_MainWindow.h"
 #include "Button.h"
+#include "ChessGUI_Utils.h"
+#include "Chess_gameUtils.h"
+
 
 static const width = 450;
 static const height = 700; 
