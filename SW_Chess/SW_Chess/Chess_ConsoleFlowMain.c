@@ -1,10 +1,3 @@
-//
-//  Chess_ConsoleFlowMain.c
-//  SW_Chess
-//
-//  Created by Alexander Shugaley on 08/09/2017.
-//  Copyright © 2017 Alexander Shugaley. All rights reserved.
-//
 
 #include "Chess_ConsoleFlowMain.h"
 
@@ -16,10 +9,12 @@ void consoleMode(){
 
 
 void settingsStateConsole(){
-    printf("Specify game setting or type 'start' to begin a game with the current setting:\n");
-    chessGame* src = createChessGame(6, ONE_PLAYER, WHITES, 2); // default arg
+
+    chessGame* src = createChessGame(6, ONE_PLAYER, WHITES, 2); /* default */
     char input[SP_MAX_LINE_LENGTH];
     CHESSSettingCommand setcmd;
+reset: /* if we restart */
+    printf("Specify game setting or type 'start' to begin a game with the current setting:\n");
     while(true){
         fgets(input,  SP_MAX_LINE_LENGTH, stdin);
         setcmd = spParserSettingLine(input);
@@ -28,21 +23,34 @@ void settingsStateConsole(){
                 onePlayerGameFlow(src);
             else
                 twoPlayersGameFlow(src);
-            break;
+            /* if we are here - we are restarting. First we need to make a few
+             adjustemnts - reinitate the chess board, new history and so on */
+            initChessBoard(src);
+            spArrayListDestroy(src->historyArray);
+            src->historyArray = spArrayListCreate(6);
+            goto reset;
         }
         if(setcmd.cmd == CHESS_DIFFICULTY){
             if(src->gameMode == TWO_PLAYERS){
-                printf("Illigal command\n");
+                printf("Illigal command\n"); /* nope */
                 continue;
             }
-            if((setcmd.arg > 5) || (setcmd.arg < 1)){
+            if(!setcmd.isValidArg){ /* nope */
+                printf("Illigal argument\n");
+                continue;
+            }
+            if((setcmd.arg > 5) || (setcmd.arg < 1)){ /* nope */
                 printf("Wrong difficulty level. The value should be between 1 to 5\n");
                 continue;
             }
-            src->difficulty = setcmd.arg;
+            src->difficulty = setcmd.arg; /* nice */
             continue;
         }
         if(setcmd.cmd == CHESS_MODE){
+            if(!setcmd.isValidArg){ /* nope */
+                printf("Illigal argument\n");
+                continue;
+            }
             if(setcmd.arg == 1){
                 src->gameMode = ONE_PLAYER;
                 printf("Game mode is set to 1 player\n");
@@ -57,8 +65,12 @@ void settingsStateConsole(){
             continue;
         }
         if(setcmd.cmd == CHESS_COLOR){
-            if(src->gameMode == TWO_PLAYERS){
+            if(src->gameMode == TWO_PLAYERS){ /* nope */
                 printf("Illigal command\n");
+                continue;
+            }
+            if(!setcmd.isValidArg){ /* nope */
+                printf("Illigal argument\n");
                 continue;
             }
             if(setcmd.arg == 1){
@@ -69,7 +81,7 @@ void settingsStateConsole(){
                 src->humanPlayerColor = BLACKS;
                 continue;
             }
-            printf("Illigal color\n");
+            printf("Illigal color\n"); /* nope */
             continue;
         }
         if(setcmd.cmd == CHESS_DEFAULT){
@@ -92,6 +104,10 @@ void settingsStateConsole(){
             continue;
         }
         if(setcmd.cmd == CHESS_LOAD){
+            if(!setcmd.isValidArg){
+                printf("Illigal argument\n");
+                continue;
+            }
             //toadd
             continue;
         }
@@ -99,7 +115,7 @@ void settingsStateConsole(){
             printf("Illigal command\n");
             continue;
         }
-        if(setcmd.cmd == CHESS_INVALID_SETTING_LINE){
+        if(setcmd.cmd == CHESS_QUIT){
             terminateGame(src);
             continue;
         }
@@ -108,7 +124,4 @@ void settingsStateConsole(){
 
     
     
-/*
-main.c -> settings -> one/two -> setMove/compMove/save -> one/two
- one/two(restart) -> settings
-*/
+

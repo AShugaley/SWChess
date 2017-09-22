@@ -2,9 +2,10 @@
 #include "Chess_gameUtils.h"
 #include <stdlib.h>
 #include <string.h>
+
+/* In all functions, we assume that the arguments are legal - e.g. 0<=pos<=7. We check it elsewhere - the comp will do so by himself, and we will check arguments from the user on input or higher on calculation chain.
+ */
 #include "ChessGUI_Utils.h"
-
-
 
 chessGame* createChessGame(int historySize, GAME_MODE_PLAYER mode, PLAYER_COLOR humanColor, int difficulty)
 {
@@ -13,10 +14,10 @@ chessGame* createChessGame(int historySize, GAME_MODE_PLAYER mode, PLAYER_COLOR 
         return NULL;
     
     chessGame *gameSt = (chessGame *)malloc(sizeof(chessGame));
-    if (gameSt == NULL)
+    if (gameSt == NULL) /* mem alloc failure */
         return NULL;
+    
     gameSt->difficulty = difficulty;
-
     gameSt->currentPlayer = WHITES;
     gameSt->humanPlayerColor = humanColor;
     gameSt->historyArray = spArrayListCreate(historySize);
@@ -30,18 +31,21 @@ chessGame* createChessGame(int historySize, GAME_MODE_PLAYER mode, PLAYER_COLOR 
 }
 
 
-chessGame* copyChessGame(chessGame* src){ // INCOMPLETE!!
+chessGame* copyChessGame(chessGame* src){
     chessGame *gameSt = (chessGame *)malloc(sizeof(chessGame));
-    if (gameSt == NULL)
+    if (gameSt == NULL) /* mem alloc failure */
         return NULL;
+    
     for(int i = 0; i<BOARD_SIZE; i++)
         for(int j = 0; j<BOARD_SIZE; j++)
             gameSt->gameBoard[i][j] = src->gameBoard[i][j];
+    
+    
     gameSt->currentPlayer = src->currentPlayer;
-    
+    gameSt->difficulty = src->difficulty;
     gameSt->historyArray = spArrayListCopy(src->historyArray);
-    
     gameSt->gameMode = src->gameMode;
+    gameSt->humanPlayerColor = src->humanPlayerColor;
     
     return gameSt;
     
@@ -57,8 +61,10 @@ void destroyChessGame(chessGame* src){
 
 
 CHESS_GAME_MESSAGE chessConsolePrintBoard(chessGame* src) {
+    
     if (src == NULL)
         return CHESS_GAME_INVALID_ARGUMENT;
+    
     for (int i = BOARD_SIZE - 1; i>-1; i--) {
         printf("%d| ", i+1 );
         for (int j = 0; j<BOARD_SIZE; j++) {
@@ -72,91 +78,206 @@ CHESS_GAME_MESSAGE chessConsolePrintBoard(chessGame* src) {
 }
 
 
-movesArray* allPossibleMoves(chessGame* src, int row, int col){
-    movesArray* array = (movesArray *)malloc(sizeof(movesArray));
+SPArrayList* allPossibleMoves(chessGame* src, int row, int col){
+    SPArrayList* array = spArrayListCreate(64);
+   
     
-    int index = 0;
     for(int i = 0; i < BOARD_SIZE; i++){
         for(int j = 0; j<BOARD_SIZE; j++){
-            if(isValidMove(src, row, col, i, j)){
-                array->moves[index][0] =  row;
-                array->moves[index][1] = col;
-                array->moves[index][2] = i;
-                array->moves[index][3] = j;
-                index++;
+            if(isLegalMove(src, row, col, i, j)){
+                spArrayListAddFirst(array, i, j, row, col, src->gameBoard[i][j],src->gameBoard[row][col]);
             }
         }
     }
-    array->moves[index][0] = -1;
     return array;
 }
 
 
-bool isValidMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col){
-    
+bool isLegalMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col){
     char figure = src->gameBoard[prev_pos_row][prev_pos_col];
-    assert(figure != EMPTY_BOARD_POS);
-    PLAYER_COLOR player;
     
+    PLAYER_COLOR player;
     
     if(isWhiteFigure(figure))
         player = WHITES;
     else
         player = BLACKS;
-  
+    
     
     if(!isValidDestenetion(player, src->gameBoard[next_pos_row][next_pos_col]))
         return false;
     
+    if(!isValidMove(src, prev_pos_row,  prev_pos_col,  next_pos_row,  next_pos_col))
+        return false;
+    
+    if(checkAvoided(src, prev_pos_row, prev_pos_col, next_pos_row, next_pos_col))
+        return true;
+    else
+        return false;
+
+    
+}
+
+bool isValidMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col){
+    char figure = src->gameBoard[prev_pos_row][prev_pos_col];
+   
+
+    
     switch(figure){
         case PAWN_BLACK:
         case PAWN_WHITE:
-              return isValidPawnMove(src, prev_pos_row, prev_pos_col, next_pos_row, next_pos_col);
+            return isValidPawnMove(src, prev_pos_row, prev_pos_col, next_pos_row, next_pos_col);
+       
         case BISHOP_BLACK:
         case BISHOP_WHITE:
-              return isValidBishopMove(src, prev_pos_row, prev_pos_col, next_pos_row, next_pos_col);
+            return isValidBishopMove(src, prev_pos_row, prev_pos_col, next_pos_row, next_pos_col);
+            
         case KNIGHT_BLACK:
         case KNIGHT_WHITE:
-              return isValidKnightMove(src, prev_pos_row, prev_pos_col, next_pos_row, next_pos_col);
+            return  isValidKnightMove(src, prev_pos_row, prev_pos_col, next_pos_row, next_pos_col);
+         
         case ROOK_BLACK:
         case ROOK_WHITE:
-              return isValidRookMove(src, prev_pos_row, prev_pos_col, next_pos_row, next_pos_col);
+            return isValidRookMove(src, prev_pos_row, prev_pos_col, next_pos_row, next_pos_col);
+           
         case QUEEN_BLACK:
         case QUEEN_WHITE:
-              return isValidQueenMove(src, prev_pos_row, prev_pos_col, next_pos_row, next_pos_col);
+            return isValidQueenMove(src, prev_pos_row, prev_pos_col, next_pos_row, next_pos_col);
+        
         case KING_WHITE:
         case KING_BLACK:
-              return isValidKingMove(src, prev_pos_row, prev_pos_col, next_pos_row, next_pos_col);
+            return isValidKingMove(src, prev_pos_row, prev_pos_col, next_pos_row, next_pos_col);
+           
     }
-    printf("should not get here #453"); // delete
-    return false;
+
+    return true;
 }
 
 
-CHESS_GAME_MESSAGE setChessMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col){
-    if(src->gameBoard[prev_pos_row][prev_pos_col] == EMPTY_BOARD_POS)
-        return CHESS_GAME_INVALID_POSITION;
-    if(!isValidBoardPosition(prev_pos_row, prev_pos_col, next_pos_row, next_pos_col))
-        return CHESS_GAME_INVALID_ARGUMENT;
-    if(!isValidMove(src, prev_pos_row, prev_pos_col, next_pos_row, next_pos_col))
-        return CHESS_GAME_INVALID_MOVE;
+
+
+CHESS_GAME_MESSAGE setChessMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col, bool needToCheckMoveValidiy, bool isValidForCrowning){
+    if(needToCheckMoveValidiy){
+        if(src->gameBoard[prev_pos_row][prev_pos_col] == EMPTY_BOARD_POS)
+            return CHESS_GAME_INVALID_POSITION;
+        if(!isValidBoardPosition(prev_pos_row, prev_pos_col, next_pos_row, next_pos_col))
+            return CHESS_GAME_INVALID_ARGUMENT;
+        if(!isLegalMove(src, prev_pos_row, prev_pos_col, next_pos_row, next_pos_col))
+            return CHESS_GAME_INVALID_MOVE;
+    }
+    if(spArrayListIsFull(src->historyArray))
+        spArrayListRemoveFirst(src->historyArray);
+        
+    spArrayListAddLast(src->historyArray, next_pos_row, next_pos_col, prev_pos_row, prev_pos_col,src->gameBoard[next_pos_row][next_pos_col],src->gameBoard[prev_pos_row][prev_pos_col]);
     src->gameBoard[next_pos_row][next_pos_col] = src->gameBoard[prev_pos_row][prev_pos_col];
     src->gameBoard[prev_pos_row][prev_pos_col] = EMPTY_BOARD_POS;
+//    if(isValidForCrowning) //todo //todelete
+//        crowning(src,next_pos_row,next_pos_col);
     switchCurrentPlayer(src);
-    if(spArrayListIsFull(src->historyArray))
-        spArrayListRemoveLast(src->historyArray);
-    spArrayListAddLast(src->historyArray, next_pos_row, next_pos_col, prev_pos_row, prev_pos_col,src->gameBoard[prev_pos_row][prev_pos_col]);
     return CHESS_GAME_SUCCESS;
 }
 
 
+ //todo //todelete
+void crowning(chessGame* src,int row,int col){
+    
+    if((src->gameBoard[row][col] != PAWN_BLACK) && (src->gameBoard[row][col] != PAWN_WHITE))
+        return; /* no crowning */
+    if(!(((src->currentPlayer == WHITES)&&(row == 7))||((src->currentPlayer == BLACKS)&&(row == 0))))
+        return; /* no crowning */
+    if((src->gameMode == TWO_PLAYERS)||(src->currentPlayer == src->humanPlayerColor)){
+        return;
+           //human crowning
+    }
+    /* if we are here - this is a computer crowning, just put a queen */
+    if(src->currentPlayer == BLACKS)
+        src->gameBoard[row][col] = QUEEN_BLACK;
+    else
+        src->gameBoard[row][col] = QUEEN_WHITE;
+    return;
+}
+
+
+
 bool isCheckmate(chessGame* src){
-    bool checkmate = false;
-    switchCurrentPlayer(src);
-    if(isCheck(src))
-       checkmate = true;
-    switchCurrentPlayer(src);
-    return checkmate;
+    int king_row = -1, king_col = -1;
+    /* first find the king */
+    for(int i = 0; i< BOARD_SIZE; i++){
+        for(int j = 0; j<BOARD_SIZE; j++){
+            if(src->currentPlayer == WHITES){
+                if(src->gameBoard[i][j] == KING_WHITE){
+                    king_row = i;
+                    king_col = j;
+                }
+            }
+            else{
+                
+                if(src->gameBoard[i][j] == KING_BLACK){
+                    king_row = i;
+                    king_col = j;
+                }
+            }
+        }
+    }
+    
+    if(!isUnderPressure(src, king_row, king_col)) /* king isn't under attack */
+        return false;
+    SPArrayListNode* move;
+    
+    chessGame* gameCopy = copyChessGame(src);
+    
+    /* If we are here - we have a check. We don't use the 'is check' fucntion because we need to find the king anyway, and that will be 
+     be just of usless code (sending a touple from place to place) - bad programming, as we will have a findKing function, and we'll 
+     have to use in twice. Or have two isCheck functions */
+    
+    /* Now we need to check if this palyer has any move that will eliminate this check (and not result in another one) */
+    
+    for(int i = 0; i< BOARD_SIZE; i++){
+        for(int j = 0; j<BOARD_SIZE; j++){
+            if(gameCopy->currentPlayer == WHITES){
+                if(isWhiteFigure(gameCopy->gameBoard[i][j])){
+                    SPArrayList* moves = allPossibleMoves(gameCopy, i, j);
+                    while(!spArrayListIsEmpty(moves)){
+                        move = spArrayListGetFirst(moves);
+                        setChessMove(gameCopy, move->prev_pos_row, move->prev_pos_col, move->current_pos_row, move->current_pos_col, false, false);
+                        if(!isUnderPressure(gameCopy, king_row, king_col)){
+                            spArrayListDestroy(moves);
+                            destroyChessGame(gameCopy);
+                            return false;
+                        }
+                        undoChessPrevMove(gameCopy, false);
+                        spArrayListRemoveFirst(moves);
+                    }
+                    spArrayListDestroy(moves);
+                }
+            }
+           
+            else{
+                
+                if(isBlackFigure(gameCopy->gameBoard[i][j])){
+                    SPArrayList* moves = allPossibleMoves(gameCopy, i, j);
+                    while(!spArrayListIsEmpty(moves)){
+                        move = spArrayListGetFirst(moves);
+                     
+                        
+                        setChessMove(gameCopy, move->prev_pos_row, move->prev_pos_col, move->current_pos_row, move->current_pos_col, false, false);
+                 
+                        if(!isUnderPressure(gameCopy, king_row, king_col)){
+                            spArrayListDestroy(moves);
+                            destroyChessGame(gameCopy);
+                            return false;
+                        }
+                        undoChessPrevMove(gameCopy, false);
+                        spArrayListRemoveFirst(moves);
+                    }
+                    spArrayListDestroy(moves);
+                }
+            }
+        }
+    }
+    destroyChessGame(gameCopy);
+
+    return true;
 }
 
 bool hasValidMove(chessGame* src, int row, int col){
@@ -171,39 +292,34 @@ bool hasValidMove(chessGame* src, int row, int col){
 
 
 bool isStalemate(chessGame* src){
-    bool has_valid_move = false;
-    bool under_pressure = false;
-    if(src->currentPlayer == WHITES){
-        for(int i = 0; i<BOARD_SIZE; i++){
-            for(int j = 0; j<BOARD_SIZE; j++){
+    int king_row = -1, king_col = -1;
+    for(int i = 0; i< BOARD_SIZE; i++){
+        for(int j = 0; j<BOARD_SIZE; j++){
+            if(src->currentPlayer == WHITES){
                 if(isWhiteFigure(src->gameBoard[i][j])){
                     if(src->gameBoard[i][j] == KING_WHITE){
-                        under_pressure = isUnderPressure(src, i, j);
+                        king_row = i;
+                        king_col = j;
                     }
-                    has_valid_move = hasValidMove(src, i, j);
-                    if(has_valid_move)
+                    if(hasValidMove(src, i, j)) /* ANY figure of this player has a legal move */
                         return false;
                 }
             }
-        }
-    }
-    else{
-        for(int i = 0; i<BOARD_SIZE; i++){
-            for(int j = 0; j<BOARD_SIZE; j++){
-                if(isWhiteFigure(src->gameBoard[i][j])){
-                    if(src->gameBoard[i][j] == KING_WHITE){
-                        under_pressure = isUnderPressure(src, i, j);
-                    }
-                has_valid_move = hasValidMove(src, i, j);
-                }
-                if(has_valid_move)
-                    return false;
+            else{
+                 if(isBlackFigure(src->gameBoard[i][j])){
+                     if(src->gameBoard[i][j] == KING_BLACK){
+                         king_row = i;
+                         king_col = j;
+                     }
+                     if(hasValidMove(src, i, j))
+                         return false; /* ANY figure of this player has a legal move */
+                 }
             }
         }
     }
-    return (!under_pressure);
-            
-        
+   /* Tie: no valid moves, and king NOT under threat */
+    return (!isUnderPressure(src, king_row, king_col) && !hasValidMove(src, king_row, king_col));
+    
 }
 
 CHESS_GAME_MESSAGE undoChessPrevMove(chessGame* src, bool shouldPrint){
@@ -211,10 +327,12 @@ CHESS_GAME_MESSAGE undoChessPrevMove(chessGame* src, bool shouldPrint){
         return CHESS_GAME_NO_HISTORY;
     SPArrayListNode* move = spArrayListGetLast(src->historyArray);
     spArrayListRemoveLast(src->historyArray);
-    src->gameBoard[move->prev_pos_row][move->prev_pos_col] = src->gameBoard[move->current_pos_row][move->current_pos_col];
+    src->gameBoard[move->prev_pos_row][move->prev_pos_col] = move->moving_figure;
     src->gameBoard[move->current_pos_row][move->current_pos_col] = move->prev_pos_fig;
     switchCurrentPlayer(src);
-    printf("Undo move for player %s : <%d,%c> -> <%d,%c>\n",getCurrentPlayerStringName(src),move->prev_pos_row + 1, getColumnChar(move->prev_pos_col),move->current_pos_row + 1, getColumnChar(move->current_pos_col));
+    /* This way we can use the same function internally, without printing to console */
+    if(shouldPrint)
+        printf("Undo move for player %s : <%d,%c> -> <%d,%c>\n",getCurrentPlayerStringName(src),move->prev_pos_row + 1, getColumnChar(move->prev_pos_col),move->current_pos_row + 1, getColumnChar(move->current_pos_col));
     return CHESS_GAME_SUCCESS;
     
 }
@@ -239,14 +357,13 @@ bool isCheck(chessGame* src){
             }
         }
     }
+
     
-    
-    assert((king_col != -1) && (king_row != -1));
     return (isUnderPressure(src, king_row, king_col));
 
 }
 
-//pre - this function cannot be called if we have two players! Cannot at all!!
+
 void get_moves(chessGame* src, int row, int col){
     if((row > 7)||(row < 0)||(col > 7)||(col < 0)){
         printf("Invalid position on the board\n");
@@ -263,28 +380,145 @@ void get_moves(chessGame* src, int row, int col){
         return;
     }
 
-    movesArray* moves = allPossibleMoves(src, row, col);
-    int counter = 0;
-    char columnChar;
+    SPArrayList* moves = allPossibleMoves(src, row, col);
     bool needHelpPrints;
+    SPArrayListNode* node;
     if((src->difficulty == 1)||(src->difficulty == 2))
         needHelpPrints = true;
     else
         needHelpPrints = false;
-    while(moves->moves[counter][0] != -1){
-        columnChar = getColumnChar(moves->moves[counter][3]);
-        printf("<%d,%c>", moves->moves[counter][2], columnChar);
+    while(!spArrayListIsEmpty(moves)){
+        node = spArrayListGetLast(moves);
+        
+        //todo //todelete
+        
+        //printf("<%d,%c>", node->current_pos_row + 1, getColumnChar(node->current_pos_col));
         //add * if threatend
         //add ^ if enemyfield
-        printf("\n");
-        counter++;
+        //printf("\n");
+        spArrayListRemoveLast(moves);
     }
+    spArrayListDestroy(moves);
     
 }
 
 
+/* Does not check if file is valid (in correct format */
+chessGame* loadGmae(const char* filename){
+    chessGame* src = createChessGame(6, 2, 0, 1);
+    if(strstr(filename, "load ") != 0) { /* Sometimes we send the whole command, and not just the path */
+        filename += 5;
+    }
+
+    FILE *f = fopen(filename, "r+");
+    if(f == NULL){
+        printf("Error: File doesn’t exist or cannot be opened\n");
+        return NULL;
+    }
+    char* currentToken;
+    int row;
+    char delimiter[] = " \t\r\n<>";
+    char currentStr[1024] = "\0";
+    char * buffer = 0;
+    long length;
+   
+    
+    if (f) /* First we get the whole file */
+    {
+        fseek (f, 0, SEEK_END);
+        length = ftell (f);
+        fseek (f, 0, SEEK_SET);
+        buffer = malloc (length);
+        if (buffer)
+        {
+            fread (buffer, 1, length, f);
+        }
+        fclose (f);
+    }
+    /* printf("%s",buffer); */
+    
+    strcpy(currentStr, buffer);
+    
+    currentToken = strtok(currentStr, delimiter);
+    
+    /* Now we parse it */
+    while(strncmp(currentToken,"/game",5) != 0){
+
+        currentToken = strtok(NULL, delimiter);
+
+        if(strncmp(currentToken, "difficulty", 10) == 0){
+
+            currentToken = strtok(NULL, delimiter);
+            src->difficulty = atoi(currentToken);
+        }
+        if(strncmp(currentToken, "current_turn", 12) == 0){
+      
+            currentToken = strtok(NULL, delimiter);
+            if(strncmp(currentToken, "1", 1) == 0){
+                src->currentPlayer = WHITES;
+                continue;
+            }
+            if(strncmp(currentToken, "0", 1) == 0){
+                src->currentPlayer = BLACKS;
+                continue;
+            }
+       
+        
+        }
+        if(strncmp(currentToken, "game_mode", 9) == 0){
+   
+            currentToken = strtok(NULL, delimiter);
+
+            if(strncmp(currentToken, "1", 1) == 0){
+                src->gameMode = ONE_PLAYER;
+              
+            }
+            if(strncmp(currentToken, "2", 1) == 0){
+                src->gameMode = TWO_PLAYERS;
+                
+            }
+            /* need to advance it twice as the next one is "/game_mode" and it ends the loop prematurely */
+            currentToken = strtok(NULL, delimiter);
+            currentToken = strtok(NULL, delimiter);
+       
+        }
+        if(strncmp(currentToken, "user_color", 10) == 0){
+
+            currentToken = strtok(NULL, delimiter);
+
+            if(strncmp(currentToken, "0", 1) == 0){
+ 
+                src->humanPlayerColor = BLACKS;
+                continue;
+            }
+            if(strncmp(currentToken, "1", 1) == 0){
+ 
+                src->humanPlayerColor = WHITES;
+                continue;
+            }
+       
+        }
+        if(strncmp(currentToken, "row_", 4) == 0){
+
+            row = currentToken[4]  - '0';
+            currentToken = strtok(NULL, delimiter);
+            for(int k = 0; k < 8; k++)
+                src->gameBoard[row-1][k] = currentToken[k];
+
+        }
+
+
+    }
+    
+    return src;
+
+   }
+
 bool saveGame(chessGame* src, const char* filename){
 
+    if(strstr(filename, "save ") != 0) { /* Sometimes we send the whole command, and not just the path */
+        filename += 5;
+    }
     FILE *file = fopen(filename, "w+");
     if(file == NULL){
         printf("File cannot be created or modified\n");
@@ -319,25 +553,51 @@ bool saveGame(chessGame* src, const char* filename){
         fprintf(file, "</row_%d>\n", i);
     }
     
-    
     fprintf(file, "</board>\n");
     fprintf(file, "</game>\n");
+    fclose(file);
     return true;
 }
 
 char* getCurrentPlayerStringName(chessGame* src){
     if(src->currentPlayer == WHITES)
-        return "White";
-    return "Black";
+        return "white";
+    return "black";
+}
+
+
+char* getFigureStringName(char figure){
+    switch (figure) {
+        case QUEEN_BLACK:
+        case QUEEN_WHITE:
+            return "queen";
+        case PAWN_BLACK:
+        case PAWN_WHITE:
+            return "pawn";
+        case KNIGHT_BLACK:
+        case KNIGHT_WHITE:
+            return "knight";
+        case BISHOP_BLACK:
+        case BISHOP_WHITE:
+            return "bishop";
+        case KING_BLACK:
+        case KING_WHITE:
+            return "king";
+        case ROOK_BLACK:
+        case ROOK_WHITE:
+            return "rook";
+    }
+    return "error";
 }
 
 
 void checkGameEnd(chessGame* src){
     if(isStalemate(src)){
-        printf("The game is tied\n");
+        printf("The game ends in a tie\n");
         terminateGame(src);
     }
     if(isCheckmate(src)){
+        /* we have a fucntion to get a string name of the player, but here we want a capital letter, so this is shorter */
         if(src->currentPlayer == WHITES)
             printf("Checkmate! Black player wins the game\n");
         if(src->currentPlayer == BLACKS)
@@ -349,7 +609,7 @@ void checkGameEnd(chessGame* src){
 }
 
 
-
+/* bye */
 void terminateGame(chessGame* src){
     destroyChessGame(src);
     exit(0);

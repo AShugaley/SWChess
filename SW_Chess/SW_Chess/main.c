@@ -5,8 +5,8 @@
 #include "SPMiniMax.h"
 #include "Chess_FlowTwoPlayers.h"
 #include <stdbool.h>
-#include <SDL.h>
-#include <SDL_video.h>
+//#include <SDL.h>
+//#include <SDL_video.h>
 
 #include "unitTest.h"
 #include "Chess_gameParser.h"
@@ -203,11 +203,43 @@ static bool spArrayListCreateTest() {
 	ASSERT_TRUE(list != NULL);
 	spArrayListDestroy(list);
 	return true;
+<<<<<<< HEAD
 }*/
+
+
+
+chessGame* TestBoard(chessGame* src) {
+    for (int i = 0; i<BOARD_SIZE; i++)
+        for (int j = 0; j <BOARD_SIZE; j++)
+            src->gameBoard[i][j] = EMPTY_BOARD_POS;
+    
+    
+    //whites
+   src->gameBoard[2][2] = PAWN_WHITE;
+    src->gameBoard[4][5] = ROOK_WHITE;
+    src->gameBoard[2][5] = ROOK_WHITE;
+    src->gameBoard[7][7] = PAWN_WHITE;
+    src->gameBoard[1][1] = KING_WHITE;
+       src->gameBoard[5][7] = BISHOP_WHITE;
+       //src->gameBoard[1][7] = QUEEN_WHITE;
+    //    src->gameBoard[0][4] = KING_WHITE;
+    //    src->gameBoard[0][5] = BISHOP_WHITE;
+    //    src->gameBoard[0][6] = KNIGHT_WHITE;
+     //   src->gameBoard[3][4] = QUEEN_WHITE;
+    
+    
+    
+    //blacks
+    src->gameBoard[3][3] = KING_BLACK;
+    //src->gameBoard[2][3] = QUEEN_BLACK;
+        src->gameBoard[6][0] = PAWN_BLACK;
+    src->gameBoard[2][7] = ROOK_BLACK;
+
 ////////////////////////////////////////////////
 //////////////////check - MOR - end/////////////
 ////////////////////////////////////////////////
-
+    return src;
+}
 
 int main(int argc, const char * argv[]) {
 	/*
@@ -255,17 +287,61 @@ int main(int argc, const char * argv[]) {
 
 
 
-	//////////////////////SDL - GUI /////////////////////////
-	return GUIMain();
-
 
 	////////////////////////////////////////////////////////////////////
 	//////////////////check - MOR - end/////////////////////////////////
     
-   
+
 	
 	//return 0;
+   // chessGame* src = createChessGame(5, TWO_PLAYERS, WHITES, 3);
+    //consoleMode();
+	//chessGame* src = createChessGame(5, TWO_PLAYERS, WHITES, 3);
+    //printf("%d,%d,%d,%d\n",src->currentPlayer, src->humanPlayerColor, src->gameMode, src->difficulty);
+    //rintf("\n%d\n", saveGame(src,"save /Users/alexs/dev/SWChess/text2.xml"));
+    //chessGame* src2 = loadGmae("load /Users/alexs/dev/SWChess/text2.xml");
+   // printf("%d,%d,%d,%d\n",src2->currentPlayer, src2->humanPlayerColor, src2->gameMode, src2->difficulty);
+    //chessConsolePrintBoard(src2);
+//    chessGame* src = createChessGame(6, ONE_PLAYER, BLACKS, 4);
+//    src->currentPlayer = BLACKS;
+//    src->gameBoard[0][0] = QUEEN_BLACK;
+//    src->gameBoard[1][1] = QUEEN_BLACK;
+//    src->gameBoard[2][2] = QUEEN_BLACK;
+//    src->gameBoard[3][3] = QUEEN_BLACK;
+//    src->gameBoard[4][4] = QUEEN_BLACK;
+//    src->gameBoard[5][5] = QUEEN_BLACK;
+//    src->gameBoard[6][6] = QUEEN_BLACK;
+//    src->gameBoard[7][7] = QUEEN_BLACK;
+//    printf("%d\n", src->gameMode);
+//    printf("%d\n", src->humanPlayerColor);
+//    printf("%d\n", src->currentPlayer);
+//    printf("%d\n", src->difficulty);
+//    saveGame(src, "save");
+//    chessGame* src2 = loadGmae("load");
+//    printf("ENDDDDDDD\n");
+//    chessConsolePrintBoard(src2);
+//    printf("%d\n", src2->gameMode);
+//    printf("%d\n", src2->humanPlayerColor);
+//    printf("%d\n", src2->currentPlayer);
+//    printf("%d\n", src2->difficulty);
+        //    TestBoard(src);
+//    src->currentPlayer = BLACKS;
+//    chessConsolePrintBoard(src);
+//    printf("%d\n", isCheck(src));
+//     printf("SsF\n");
+//    printf("%d\n", isCheckmate(src));
+//    printf("%d\n", isStalemate(src));
+//     printf("%d\n", isLegalMove(src, 6, 0, 5, 0));
+//    printf("%d\n", isValidMove(src, 6, 0, 5, 0));
+//    printf("%d,%d\n", suggestMove(src, 4)->current_pos_row,suggestMove(src, 4)->current_pos_col );
+//    get_moves(src,0,1);
+    runTestSim(4,3);
+    //saveGame(src, "<uos><sj><h>");
+ //consoleMode();
+    
+//	return 0;
 }
+
 
 
 

@@ -96,26 +96,24 @@ SP_ARRAY_LIST_MESSAGE spArrayListClear(SPArrayList* src);
  * array list reached its maximum capacity and error message is returned and
  * the source list is not affected
  * @param src   - the source array list
- * @param elem  - the new element to be inserted
  * @return
  * SP_ARRAY_LIST_INVALID_ARGUMENT - if src == NULL or the index is out of bound
  * SP_ARRAY_LIST_FULL - if the source array list reached its maximum capacity
  * SP_ARRAY_LIST_SUCCESS - otherwise
  */
-SP_ARRAY_LIST_MESSAGE spArrayListAddFirst(SPArrayList* src,int current_pos_row, int current_pos_col, int prev_pos_row, int prev_pos_col,  char pre_pos_fig);
+SP_ARRAY_LIST_MESSAGE spArrayListAddFirst(SPArrayList* src,int current_pos_row, int current_pos_col, int prev_pos_row, int prev_pos_col,  char pre_pos_fig,char moving_fig);
 
 /**
  * Inserts element at a the end of the source element. If the array list
  * reached its maximum capacity and error message is returned and the source
  * list is not affected.
  * @param src   - the source array list
- * @param elem  - the new element to be inserted
  * @return
  * SP_ARRAY_LIST_INVALID_ARGUMENT - if src == NULL or the index is out of bound
  * SP_ARRAY_LIST_FULL - if the source array list reached its maximum capacity
  * SP_ARRAY_LIST_SUCCESS - otherwise
  */
-SP_ARRAY_LIST_MESSAGE spArrayListAddLast(SPArrayList* src,int current_pos_row, int current_pos_col, int prev_pos_row, int prev_pos_col,  char pre_pos_fig);
+SP_ARRAY_LIST_MESSAGE spArrayListAddLast(SPArrayList* src,int current_pos_row, int current_pos_col, int prev_pos_row, int prev_pos_col,  char pre_pos_fig,char moving_fig);
 
 /**
  * Removes an element from a specified index. The elements residing after the
@@ -123,7 +121,6 @@ SP_ARRAY_LIST_MESSAGE spArrayListAddLast(SPArrayList* src,int current_pos_row, i
  * array list is empty then an error message is returned and the source list
  * is not affected
  * @param src   - The source array list
- * @param index - The index from where the element will be removed.
  *                The index is 0-based.
  * @return
  * SP_ARRAY_LIST_INVALID_ARGUMENT - if src == NULL or the index is out of bound
@@ -139,7 +136,6 @@ SP_ARRAY_LIST_MESSAGE spArrayListRemoveFirst(SPArrayList* src);
  * array list is empty then an error message is returned and the source list
  * is not affected
  * @param src   - The source array list
- * @param elem  - The new element to be inserted
  * @return
  * SP_ARRAY_LIST_INVALID_ARGUMENT - if src == NULL
  * SP_ARRAY_LIST_EMPTY - if the source array list is empty
