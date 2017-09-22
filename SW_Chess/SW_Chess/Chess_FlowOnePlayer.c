@@ -1,28 +1,21 @@
-//
-//  Chess_FlowOnePlayer.c
-//  SW_Chess
-//
-//  Created by Alexander Shugaley on 08/09/2017.
-//  Copyright © 2017 Alexander Shugaley. All rights reserved.
-//
 
 #include "Chess_FlowOnePlayer.h"
 
 GAME_STATUS onePlayerGameFlow(chessGame* src){
-    bool printBoard = true;
+    bool printBoard = true; /* should we print the game board on next iretation */
     GAME_STATUS status = EMPTY;
     char input[SP_MAX_LINE_LENGTH];
     CHESSCommand cmd;
     while (true){
         checkGameEnd(src);
         if(src->currentPlayer != src->humanPlayerColor){
-            //compMove(src); // todo
+            compMove(src);
             continue;
         }
         if(printBoard)
             chessConsolePrintBoard(src);
         else
-            printBoard = true;
+            printBoard = true; /* default = true */
         printf("%s player - enter your move:\n", getCurrentPlayerStringName(src));
         fgets(input,  SP_MAX_LINE_LENGTH, stdin);
         cmd = spParserLine(input);
@@ -41,11 +34,16 @@ GAME_STATUS onePlayerGameFlow(chessGame* src){
             continue;
         }
         if(cmd.cmd == CHESS_SAVE){
-            saveGame(src, input); //tochange to cmd.arg
+            saveGame(src, input); 
             printBoard = false;
             continue;
         }
         if(cmd.cmd == CHESS_MOVE){
+            if((!cmd.isValidFirstPair) || (!cmd.isValidSecondPair)){
+                printf("Illigal argument\n");
+                printBoard = false;
+                continue;
+            }
             printBoard = humanMove(src, cmd);
             continue;
         }
@@ -61,10 +59,11 @@ GAME_STATUS onePlayerGameFlow(chessGame* src){
 
 
 bool humanMove(chessGame* src, CHESSCommand cmd){
-    CHESS_GAME_MESSAGE message = setChessMove(src, (cmd.sourceRow -1), getIntFromColumnChar(cmd.sourceColl), (cmd.targertRow -1), getIntFromColumnChar(cmd.targetColl));
+    CHESS_GAME_MESSAGE message = setChessMove(src, (cmd.sourceRow -1), getIntFromColumnChar(cmd.sourceColl), (cmd.targertRow -1), getIntFromColumnChar(cmd.targetColl), true, true);
     if(message == CHESS_GAME_SUCCESS){
-        return true;
+        return true; /*  perfect! */
     }
+    /* an error took place */
     if(message == CHESS_GAME_INVALID_ARGUMENT)
         printf("Invalid position on the board\n");
     if(message == CHESS_GAME_INVALID_POSITION)
@@ -74,14 +73,22 @@ bool humanMove(chessGame* src, CHESSCommand cmd){
     return false;
 }
 
-        /*
-         undo_move -> undomove
-         CHESS_SAVE -> func saveGame(input), if true/false, printboard = false + continue,
-         CHESS_MOVE -> func checkmove(isvalidmove + ERRORS), if true -> setMove; else -> printboard false + continue
 
-         }
+bool compMove(chessGame* src){
+    SPArrayListNode* move = suggestMove(src, src->difficulty);
+    if(move == NULL){
+        printf("ERROR - cannot suggest move");
+        return false;
+    }
+    setChessMove(src, move->prev_pos_row, move->prev_pos_col, move->current_pos_row, move->current_pos_col, false, true);
 
-*/
+    printf("Computer: move %s at <%d,%c> to <%d,%c>\n",getFigureStringName(src->gameBoard[move->current_pos_row][move->current_pos_col]),move->prev_pos_row+1,getColumnChar(move->prev_pos_col),move->current_pos_row+1,getColumnChar(move->current_pos_col));
+    
+    free(move);
+    
+    return true;
+}
+
 
 
 
@@ -91,23 +98,14 @@ bool humanMove(chessGame* src, CHESSCommand cmd){
 /*
 todo:
 
-1. documentation
-2. compMove
-3. MinMax check
-4. verify history array - we need to save both comp and player moves, and undoX2. Anyway we need to double historySize
-5. change getAllmoves in order to use the arrayList + listnode system. Rewrite minmax accordingly :(
-6. add load game
-7. improve savegame to include path arg
-9. check isStealmate, isCheckmate, isCheck
-10. 
+
+
 
 
 
 known bugs:
- 1. when doing the move command, <E,3> does not produce an error (despite being in the wrong format, the digit should be first).
- 2. console flow line 98 - 2 identical "if"  - change the last to chess_quit 
- 
- 
+ 3. MinMax tends to come to a loop - maybe add a randomization factor? Generally it works I think. Give some people a chance to play against it and see if a basic improvment needed.
+ 6. save with an empty path does not result in error
  
  
 bonuses:

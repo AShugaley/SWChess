@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #ifndef CHESSGUI_WINDOW_H_
 #define CHESSGUI_WINDOW_H_
 #include <SDL.h>

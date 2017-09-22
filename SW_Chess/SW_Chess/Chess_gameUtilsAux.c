@@ -1,74 +1,72 @@
-//
-//  Chess_gameUtilsAux.c
-//  SW_Chess
-//
-//  Created by Alexander Shugaley on 19/08/2017.
-//  Copyright © 2017 Alexander Shugaley. All rights reserved.
-//
-
 
 
 #include "Chess_gameUtilsAux.h"
 #include "Chess_gameUtils.h"
 #include <stdbool.h>
 
-//we assume that the arguments are legal - i.e. 0<=pos<=7 => need to check it elsewhere! - the comp will do so by himself, and we will check arguments from the user at input.
+/* In all functions, we assume that the arguments are legal - i.e. 0<=pos<=7. We check it elsewhere - the comp will do so by himself, and we will check arguments from the user on input.
+*/
 
+
+/* like all the following function, merely checks if a move is legal from figure movment perspective */
 bool isValidPawnMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col){
+  
     int first_row = 0;
     int operator = 1;
-    if (src->currentPlayer == BLACKS){
+    if (src->gameBoard[prev_pos_row][prev_pos_col] == PAWN_BLACK){
         first_row = 7;
         operator = -1;
     }
-    //printf("%d,%d,%d,%d,%d,%d",prev_pos_row,prev_pos_col,next_pos_row,next_pos_col,operator,operator);
-    if (prev_pos_col != next_pos_col){
-        if((next_pos_row == prev_pos_row+(1*operator))&&((prev_pos_col+1 == next_pos_col)||(prev_pos_col-1==next_pos_col)))
+   
+    if (prev_pos_col != next_pos_col){ /* pawns move only on the same column, unless they take another figure - this is what we check here */
+        if((next_pos_row == prev_pos_row+(1*operator))&&(src->gameBoard[next_pos_row][next_pos_col] != EMPTY_BOARD_POS)&&((prev_pos_col+1 == next_pos_col)||(prev_pos_col-1==next_pos_col))) /* the pawn took oponnent figure */
             return true;
         else
-            return false;
+            return false; /* illigal move */
     }
-    if (prev_pos_row+(1*operator) == next_pos_row) // reg move
-        return true;
-    if ((prev_pos_row == first_row+(1*operator)) && (prev_pos_row+(2*operator) == next_pos_row) && (src->gameBoard[prev_pos_row+(1*operator)][prev_pos_col] == EMPTY_BOARD_POS)) // first move
-        return true;
-    return false;
+    
+    if ((prev_pos_row+(1*operator) == next_pos_row)&&(src->gameBoard[next_pos_row][next_pos_col] == EMPTY_BOARD_POS))
+        return true; /* regular move */
+    if ((prev_pos_row == first_row+(1*operator)) && (prev_pos_row+(2*operator) == next_pos_row) && (src->gameBoard[prev_pos_row+(1*operator)][prev_pos_col] == EMPTY_BOARD_POS) &&(src->gameBoard[next_pos_row][next_pos_col] == EMPTY_BOARD_POS))
+        return true; /* first move */
+  
+    return false; /* that's not how pawns work, friend */
 }
 
 
 bool isValidBishopMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col){
-    if((prev_pos_row+prev_pos_col) != (next_pos_row+next_pos_col)){ //LB to TR diag
-        for (int i = 1; i<8; i++){
+    if((prev_pos_row+prev_pos_col) != (next_pos_row+next_pos_col)){ /* bottom-left to top-right diagunal move */
+        for (int i = 1; i<8; i++){ /* going top */
             if((prev_pos_row+i == next_pos_row) && (prev_pos_col+i == next_pos_col))
                 return true;
-            if(src->gameBoard[prev_pos_row+i][prev_pos_col+i] != EMPTY_BOARD_POS)
+            if(src->gameBoard[prev_pos_row+i][prev_pos_col+i] != EMPTY_BOARD_POS) /* Cant move through figures */
                 break;
 
         }
-        for (int i = 1; i<8; i++){
+        for (int i = 1; i<8; i++){ /* going bottom */
             if((prev_pos_row-i == next_pos_row) && (prev_pos_col-i == next_pos_col))
                 return true;
-            if(src->gameBoard[prev_pos_row-i][prev_pos_col-i] != EMPTY_BOARD_POS)
+            if(src->gameBoard[prev_pos_row-i][prev_pos_col-i] != EMPTY_BOARD_POS) /* Cant move through figures */
                 break;
         }
     }
-    else{
+    else{ /* bottom-right to top-left diagunal move */
         for (int i = 1; i<8; i++){
             if((prev_pos_row+i == next_pos_row) && (prev_pos_col-i == next_pos_col))
                 return true;
-            if(src->gameBoard[prev_pos_row+i][prev_pos_col-i] != EMPTY_BOARD_POS)
+            if(src->gameBoard[prev_pos_row+i][prev_pos_col-i] != EMPTY_BOARD_POS) /* Cant move through figures */
                 break;
 
         }
         for (int i = 1; i<8; i++){
             if((prev_pos_row-i == next_pos_row) && (prev_pos_col+i == next_pos_col))
                 return true;
-            if(src->gameBoard[prev_pos_row-i][prev_pos_col+i] != EMPTY_BOARD_POS)
+            if(src->gameBoard[prev_pos_row-i][prev_pos_col+i] != EMPTY_BOARD_POS) /* Cant move through figures */
                 break;
 
         }
     }
-    return false;
+    return false; /* that's not how bishops work, girl */
 }
 
 
@@ -91,7 +89,7 @@ char getColumnChar(int col){
         case 7:
             return 'H';
     }
-    return '$';
+    return '$'; /* Shouldn't get here - error symbol */
 }
 
 
@@ -114,7 +112,7 @@ char getIntFromColumnChar(char col){
         case 'H':
             return 7;
     }
-    return -1;
+    return -1; /* Shouldn't get here - error symbol */
     
     
 }
@@ -122,7 +120,7 @@ char getIntFromColumnChar(char col){
 
 bool isValidRookMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col){
 
-    if(prev_pos_row == next_pos_row){
+    if(prev_pos_row == next_pos_row){  /* same row -> moving on column */
       
         int operator =1;
         if (prev_pos_col > next_pos_col)
@@ -130,13 +128,13 @@ bool isValidRookMove(chessGame* src, int prev_pos_row, int prev_pos_col, int nex
         for(int i = 1; i<8; i++){
             if((prev_pos_col+(i*operator) == next_pos_col))
                 return true;
-            if(src->gameBoard[prev_pos_row][prev_pos_col+(i*operator)] != EMPTY_BOARD_POS)
+            if(src->gameBoard[prev_pos_row][prev_pos_col+(i*operator)] != EMPTY_BOARD_POS)  /* Cant move through figures */
                 break;
 
         }
     }
     
-    if(prev_pos_col == next_pos_col){
+    if(prev_pos_col == next_pos_col){ /* same col -> moving on a row */
      
         int operator = 1;
         if (prev_pos_row > next_pos_row)
@@ -145,12 +143,12 @@ bool isValidRookMove(chessGame* src, int prev_pos_row, int prev_pos_col, int nex
          
             if((prev_pos_row+(i*operator) == next_pos_row))
                 return true;
-            if(src->gameBoard[prev_pos_row+(i*operator)][prev_pos_col] != EMPTY_BOARD_POS)
+            if(src->gameBoard[prev_pos_row+(i*operator)][prev_pos_col] != EMPTY_BOARD_POS)  /* Cant move through figures */
                 break;
 
         }
     }
-    return false;
+    return false; /* that's not how rooks work, dude */
 }
 
 
@@ -159,6 +157,7 @@ bool isValidRookMove(chessGame* src, int prev_pos_row, int prev_pos_col, int nex
 
 bool isValidKnightMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col){
 
+    /* CAN move through figures! */
     
     int operatorRow =1;
     if (prev_pos_row < next_pos_row)
@@ -168,30 +167,23 @@ bool isValidKnightMove(chessGame* src, int prev_pos_row, int prev_pos_col, int n
     int operatorCol =1;
     if (prev_pos_col < next_pos_col)
         operatorCol = -1;
-//    printf("HERE + %d/n", prev_pos_row);
-//    printf("HERE + %d/n", prev_pos_col);
-//    printf("HERE + %d/n", next_pos_row);
-//    printf("HERE + %d/n", next_pos_col);
-//    printf("HERE + %d/n", operatorRow);
-//    printf("HERE + %d/n", operatorCol);
-//    printf("HERE + %d/n", next_pos_row + (2*operatorRow));
-//    printf("HERE + %d/n", next_pos_col+ (1*operatorCol));
-//    printf("HERE + %d/n", next_pos_col + (2*operatorCol));
-//    printf("HERE + %d/n", next_pos_row+ (1*operatorRow));
+
     if(prev_pos_row == next_pos_row + (2*operatorRow))
         if(prev_pos_col == next_pos_col+ (1*operatorCol))
             return true;
     if(prev_pos_col == next_pos_col + (2*operatorCol))
         if(prev_pos_row == next_pos_row+ (1*operatorRow))
             return true;
-    return false;
+    
+    return false; /* that's not how knights work, player */
 }
 
 
 
-//queen moves like bishop and rook combined.
+/* Queen moves like bishop and rook combined. */
 bool isValidQueenMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col){
     return (isValidRookMove(src,prev_pos_row,prev_pos_col,next_pos_row,next_pos_col) || isValidBishopMove(src,prev_pos_row,prev_pos_col,next_pos_row,next_pos_col));
+    /* well that was short */
 }
 
 
@@ -200,23 +192,9 @@ bool isValidQueenMove(chessGame* src, int prev_pos_row, int prev_pos_col, int ne
 
 
 bool isValidKingMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col){
-    bool isNotCheck = true;
-    if (!(((prev_pos_col <= next_pos_col + 1)&&(prev_pos_col >= next_pos_col - 1))&&((prev_pos_row <= next_pos_row + 1)&&(prev_pos_row >= next_pos_row - 1)))) // king can move one cell
+    if (!(((prev_pos_col <= next_pos_col + 1)&&(prev_pos_col >= next_pos_col - 1))&&((prev_pos_row <= next_pos_row + 1)&&(prev_pos_row >= next_pos_row - 1)))) /* king can only move one cell */
          return false;
-    
-    char destenationCellFigure = src->gameBoard[next_pos_row][next_pos_col];
-    src->gameBoard[next_pos_row][next_pos_col] = src->gameBoard[prev_pos_row][prev_pos_col];
-    src->gameBoard[prev_pos_row][prev_pos_col] = EMPTY_BOARD_POS;
-    
-    if(isUnderPressure(src, next_pos_row, next_pos_col)){
-        isNotCheck = false;
-    }
-    
-    src->gameBoard[prev_pos_row][prev_pos_col] =src->gameBoard[next_pos_row][next_pos_col];
-    src->gameBoard[next_pos_row][next_pos_col] = destenationCellFigure;
-
-    
-    return isNotCheck;
+    return true; /* that IS how knights work! */
 }
 
 bool isValidDestenetion(PLAYER_COLOR player, char figure){
@@ -312,27 +290,62 @@ bool isUnderPressure(chessGame* src, int row, int col){
            
             if(isWhiteFigure(src->gameBoard[row][col])){
                 if(isBlackFigure(src->gameBoard[i][j])){
-                    if(isValidMove(src, i, j, row, col)){
-                        return true;
+                    if(!(src->gameBoard[row][col] == KING_WHITE)){ /* unless it's a king, we need to check if a move is legal */
+                        if(isLegalMove(src, i, j, row, col)){
+                            return true;
+                        }
                     }
-                    
+                    /* But, if the destenation is a king, any VALID move will be LEGAL - refer to Chess_gameUtils.h for the difference between a LEGAL and a VALID move */
+                    else{
+                        if(isValidMove(src, i, j, row, col))
+                            return true;
+                    }
                 }
             }
             
             if(isBlackFigure(src->gameBoard[row][col])){
                 if(isWhiteFigure(src->gameBoard[i][j])){
-                    if(isValidMove(src, i, j, row, col))
-                        return true;
+                    if(!(src->gameBoard[row][col] == KING_BLACK)){  /* unless it's a king, we need to check if a move is legal */
+                        if(isLegalMove(src, i, j, row, col)){
+                         
+                            return true;
+                        }
+                    }
+                    /* But, if the destenation is a king, any VALID move will be LEGAL - refer to Chess_gameUtils.h for the difference between a LEGAL and a VALID move */
+                    else{
+                        if(isValidMove(src, i, j, row, col))
+                            return true;
+                        
+                    }
                 }
             }
         }
     }
-    
-   // printf("Just checked empty filed - why did you do it?\n"); //delete
     return false;
 }
 
 
 
-///TEST
+/* this is used in case a check existed before this move. In such case, it means that:
+ *   a) There is no checkmate (otherwise the game would terminate)
+ *   b) The only legal move would be one preventing the check, i.e. a check cannot remain
+ * thus we first check if there was a check, and if yes, we create a copy of the game, submit this new move
+ * (that by now we know is legal from figure movment prespective), and check again if there's a check)
+ */
+
+bool checkAvoided(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col){
+    char prev_pos = src->gameBoard[next_pos_row][next_pos_col];
+    src->gameBoard[next_pos_row][next_pos_col] = src->gameBoard[prev_pos_row][prev_pos_col];
+    src->gameBoard[prev_pos_row][prev_pos_col] = EMPTY_BOARD_POS;
+  
+    bool check = isCheck(src);
+    
+    src->gameBoard[prev_pos_row][prev_pos_col] = src->gameBoard[next_pos_row][next_pos_col];
+    src->gameBoard[next_pos_row][next_pos_col] = prev_pos;
+    
+    return !check;
+}
+
+
+
 

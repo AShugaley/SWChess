@@ -3,11 +3,11 @@
 bool spParserSettingIsInt(const char* str)
 {
 	unsigned int i = 0;
-	if (str[0] == '-' || (str[0]<58 && str[0]>47))  //first char is minus or digit 
+	if (str[0] == '-' || (str[0]<58 && str[0]>47))  /* first char is minus or digit */
 	{
 		for (i = 1; i < strlen(str); i++)
 		{
-			if (str[i] > 57 || str[i] < 48)  // not a digit 
+			if (str[i] > 57 || str[i] < 48)  /* not a digit  */
 				return false;
 		}
 		return true;
@@ -24,14 +24,14 @@ CHESSSettingCommand spParserSettingLine(const char* str)
 	char* currentSetToken;
 	char delimiter[] = " \t\r\n";
 
-	currentSetToken = strtok(currentStr, delimiter);	//curtoken is the first part of the string 
-	if (currentSetToken == '\0')	//doesn't suppose to get here, just in case ...
+	currentSetToken = strtok(currentStr, delimiter);	/* curtoken is the first part of the string */
+	if (currentSetToken == '\0')	/* doesn't suppose to get here, just in case ... */
 	{
 		command.cmd = CHESS_INVALID_SETTING_LINE;
 		return command;
 	}
 
-	else if (!strcmp(currentSetToken, "game_mode"))	//curtoken == game_mode (strcmp = 0 in this case) 
+	else if (!strcmp(currentSetToken, "game_mode"))	/*curtoken == game_mode (strcmp = 0 in this case) */
 	{
 		command.cmd = CHESS_MODE;
 		currentSetToken = strtok(NULL, delimiter);
@@ -73,7 +73,7 @@ CHESSSettingCommand spParserSettingLine(const char* str)
 		}
 	}
 
-	else if (!strcmp(currentSetToken, "load"))	//will check the file path later in the gameUtils functions 
+	else if (!strcmp(currentSetToken, "load"))	/* will check the file path later in the gameUtils functions  */
 	{
 		command.cmd = CHESS_LOAD;
 	}
@@ -103,7 +103,7 @@ CHESSSettingCommand spParserSettingLine(const char* str)
 		command.cmd = CHESS_INVALID_SETTING_LINE;
 	}
 
-	//if there is additional text after the first& second parts  - invalid 
+	/* if there is additional text after the first& second parts  - invalid  */
 	currentSetToken = strtok(NULL, delimiter);
 	if (currentSetToken != NULL)
 	{

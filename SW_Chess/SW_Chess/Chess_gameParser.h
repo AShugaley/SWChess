@@ -5,10 +5,25 @@
 #include <stdlib.h>
 #include <string.h>
 
-//specify the maximum line length
+/**
+ * Chess_gameParser summary:
+ *
+ * A container that includes a set of structures and functions that used
+ * to read and parse human commands in console mode during the game stage.
+ *
+ * spParserIsInt                 - Checks if a string is an int.
+ * spParserIsLetter              - Creates if a string is a letter.
+ * spParserIsValidOrederedPair   - Checks if a <x,y> move input is in valid format - x is an in
+ * and y is a letter.
+ * spParserLine                  - Given a string checks if it is a valid command, and if yes
+ * parses it for further use.
+ */
+
+
+/* sepcifies the maximum input length */
 #define SP_MAX_LINE_LENGTH 1024
 
-//a type used to represent a command
+/* Enum representing the possible human commands in the game stage */
 typedef enum {
 	CHESS_INVALID_LINE,
 	CHESS_UNDO_MOVE,
@@ -19,17 +34,22 @@ typedef enum {
 } CHESS_COMMAND;
 
 
+/* Enum, that represents if a given <x,y> set is a source or target move (<x,y> -> <v,w>) */
+
 typedef enum {
 	CHESS_SOURCE_MOVE,
 	CHESS_TARGET_MOVE,
 } CHESS_MOVE_ARG;
 
-//typedef struct move_argument {
-//	int sourceRow;  char sourceColl;
-//	int targertRow; char targetColl;
-//} MOVEArg;
 
-//a new type that is used to encapsulate a parsed line
+
+/* Struct that represents a various human commands in the game stage
+ * @param - command type
+ * @isValidFirstPair,isValidSecondPair - is the first/sedond <x,y> in valid 
+ * format - a number followed by a letter (used in move commands)
+ * @param sourceRow,sourceColl,targertRow,targetColl - <x,y> -> <v,w>, repsectively
+ * @param path - a string representing the file path in save/load commands
+ */
 typedef struct command_t {
 	CHESS_COMMAND cmd;
 	bool isValidFirstPair; //is set to true if the line contains a valid argument
@@ -37,7 +57,6 @@ typedef struct command_t {
 	int sourceRow;  char sourceColl;
 	int targertRow; char targetColl;
     char* path[SP_MAX_LINE_LENGTH];
-	//MOVEArg* arg;
 } CHESSCommand;
 
 
