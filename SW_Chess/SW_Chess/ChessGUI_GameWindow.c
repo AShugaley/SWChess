@@ -82,6 +82,7 @@ Widget** createGameWindowWidgets(SDL_Renderer* renderer, ChessWindow* window)
 	SDL_Rect exit	 =  { .x = 80,.y = 530,.h = 72,.w = 180 };
 	
 	
+    
 	SDL_Rect rookWhite =	{.x = window->game->gameGUIBoard[0][0].x,.y = window->game->gameGUIBoard[0][0].y,
 							 .h = window->game->gameGUIBoard[0][0].h,.w = window->game->gameGUIBoard[0][0].w };
 
@@ -351,7 +352,7 @@ void drawGameWindow(ChessWindow* src)
 	SDL_RenderPresent(data->windowRenderer);
 }
 
-int time = 0;
+//int time = 0;
 
 WINDOW_EVENT handleEventGameWindow(ChessWindow* src, SDL_Event* event) 
 {

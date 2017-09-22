@@ -4,9 +4,17 @@
 
 #include <stdio.h>
 #include <stdbool.h>
-#include <SDL.h>
-#include <SDL_video.h>
 
+// ALEX
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_video.h>
+// $$$
+
+
+// // MOR
+//#include <SDL.h>
+//#include <SDL_video.h>
+// // $$$
 #define BOARD_SIZE 8
 
 /**

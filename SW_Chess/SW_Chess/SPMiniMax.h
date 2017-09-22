@@ -32,7 +32,7 @@ SPArrayListNode* suggestMove(chessGame* src, int depth);
 
 /**
  * Computes the MinMax algoritem scoring function. 
- * King = 200
+ * King = 100
  * Queen = 9
  * Rook = 5
  * Bishop = 3
@@ -43,7 +43,7 @@ SPArrayListNode* suggestMove(chessGame* src, int depth);
  *
  * @return int (whiteValue - blackValue)
  */
-int comFunc(chessGame* currentGame);
+int simpleUtilityFunction(chessGame* currentGame);
 
 /**
  * Inities the minmax Tree. 
@@ -63,22 +63,43 @@ SPArrayListNode* initMinmaxTree(chessGame* currentGame, int depth);
  *
  * @return int representing the best scoring function in this move.
  */
-int minmaxTree(chessGame* currentGame, int depth, int alpha, int beta);
+double minmaxTree(chessGame* currentGame, int depth, double alpha, double beta);
 
 /**
  * Determins the larger value of two ints: a if a>=b else b
  *
  * @return a if a>=b else b
  */
-int maxFunc(int a, int b);
+double maxFunc(double a, double b);
 
 /**
  * Determins the smaller value of two ints: a if a>=b else b
  *
  * @return a if a<=b else b
  */
-int minFunc(int a, int b);
+double minFunc(double a, double b);
 
 
+/**
+ * Computes the MinMax algoritem scoring function. The basis is:
+ * King = 100
+ * Queen = 9
+ * Rook = 5
+ * Bishop = 3
+ * Knight = 3
+ * Rook = 1
+ *
+ *
+ *
+ * If expert difficulty is turned on, we add a few other variables:
+ * 0.5 points (or -0.5 for black player) for isolated/blocked/doubled pawns
+ * A score between 0 and 0.35 for each pawn, depending on how cental it is located.
+ * A slight (less than 0.001) random score, in order to choose different moves given otherwise equal factors 
+ *
+ * The function is computed for both White and Black players (two seperate values - white and black)
+ *
+ * @return double (whiteValue - blackValue)
+ */
+double utilityFunction(chessGame* src);
 
 #endif /* SPMiniMax_h */

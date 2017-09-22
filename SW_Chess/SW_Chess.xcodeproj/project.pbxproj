@@ -14,6 +14,18 @@
 		DB7B096B1F4855AB00A8243D /* Chess_gameUtilsAux.c in Sources */ = {isa = PBXBuildFile; fileRef = DB7B09691F4855AB00A8243D /* Chess_gameUtilsAux.c */; };
 		DB7B096E1F486B3C00A8243D /* SPMiniMax.c in Sources */ = {isa = PBXBuildFile; fileRef = DB7B096C1F486B3C00A8243D /* SPMiniMax.c */; };
 		DBB8EBD01F45797C00B87875 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = DBB8EBCF1F45797C00B87875 /* main.c */; };
+		DBC13AA11F755B180071852A /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBC13AA01F755B180071852A /* SDL2.framework */; };
+		DBC13AB81F755BAD0071852A /* ChessGUI_GameWindow.c in Sources */ = {isa = PBXBuildFile; fileRef = DBC13AA51F755BAD0071852A /* ChessGUI_GameWindow.c */; };
+		DBC13AB91F755BAD0071852A /* Button.c in Sources */ = {isa = PBXBuildFile; fileRef = DBC13AA81F755BAD0071852A /* Button.c */; };
+		DBC13ABA1F755BAD0071852A /* ChessGUI_SettingsWindow.c in Sources */ = {isa = PBXBuildFile; fileRef = DBC13AAA1F755BAD0071852A /* ChessGUI_SettingsWindow.c */; };
+		DBC13ABB1F755BAD0071852A /* ChessGUI_Utils.c in Sources */ = {isa = PBXBuildFile; fileRef = DBC13AAB1F755BAD0071852A /* ChessGUI_Utils.c */; };
+		DBC13ABC1F755BAD0071852A /* Chess_GUIFlowMain.c in Sources */ = {isa = PBXBuildFile; fileRef = DBC13AAD1F755BAD0071852A /* Chess_GUIFlowMain.c */; };
+		DBC13ABD1F755BAD0071852A /* ChessGUI_LoadWindow.c in Sources */ = {isa = PBXBuildFile; fileRef = DBC13AAE1F755BAD0071852A /* ChessGUI_LoadWindow.c */; };
+		DBC13ABE1F755BAD0071852A /* ChessGUI_MainWindow.c in Sources */ = {isa = PBXBuildFile; fileRef = DBC13AAF1F755BAD0071852A /* ChessGUI_MainWindow.c */; };
+		DBC13ABF1F755BAD0071852A /* ChessGUI_Window.c in Sources */ = {isa = PBXBuildFile; fileRef = DBC13AB01F755BAD0071852A /* ChessGUI_Window.c */; };
+		DBC13AC01F755BAD0071852A /* makefile in Sources */ = {isa = PBXBuildFile; fileRef = DBC13AB31F755BAD0071852A /* makefile */; };
+		DBC13AC11F755BAD0071852A /* SPCommon.c in Sources */ = {isa = PBXBuildFile; fileRef = DBC13AB41F755BAD0071852A /* SPCommon.c */; };
+		DBC13AC21F755BAD0071852A /* Widget.c in Sources */ = {isa = PBXBuildFile; fileRef = DBC13AB71F755BAD0071852A /* Widget.c */; };
 		DBE111A31F62737F004A99D7 /* Chess_FlowTwoPlayers.c in Sources */ = {isa = PBXBuildFile; fileRef = DBE111A11F62737F004A99D7 /* Chess_FlowTwoPlayers.c */; };
 		DBE111A61F628230004A99D7 /* Chess_FlowOnePlayer.c in Sources */ = {isa = PBXBuildFile; fileRef = DBE111A41F628230004A99D7 /* Chess_FlowOnePlayer.c */; };
 		DBE111A91F6285FE004A99D7 /* Chess_ConsoleFlowMain.c in Sources */ = {isa = PBXBuildFile; fileRef = DBE111A71F6285FE004A99D7 /* Chess_ConsoleFlowMain.c */; };
@@ -48,6 +60,29 @@
 		DB7B096D1F486B3C00A8243D /* SPMiniMax.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPMiniMax.h; sourceTree = "<group>"; };
 		DBB8EBCC1F45797C00B87875 /* SW_Chess */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SW_Chess; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBB8EBCF1F45797C00B87875 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		DBC13AA01F755B180071852A /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
+		DBC13AA21F755BAD0071852A /* Widget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Widget.h; sourceTree = "<group>"; };
+		DBC13AA31F755BAD0071852A /* ChessGUI_Window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChessGUI_Window.h; sourceTree = "<group>"; };
+		DBC13AA41F755BAD0071852A /* Chess_GUIFlowMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Chess_GUIFlowMain.h; sourceTree = "<group>"; };
+		DBC13AA51F755BAD0071852A /* ChessGUI_GameWindow.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ChessGUI_GameWindow.c; sourceTree = "<group>"; };
+		DBC13AA61F755BAD0071852A /* ChessGUI_GameWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChessGUI_GameWindow.h; sourceTree = "<group>"; };
+		DBC13AA71F755BAD0071852A /* ChessGUI_MainWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChessGUI_MainWindow.h; sourceTree = "<group>"; };
+		DBC13AA81F755BAD0071852A /* Button.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Button.c; sourceTree = "<group>"; };
+		DBC13AA91F755BAD0071852A /* Button.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Button.h; sourceTree = "<group>"; };
+		DBC13AAA1F755BAD0071852A /* ChessGUI_SettingsWindow.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ChessGUI_SettingsWindow.c; sourceTree = "<group>"; };
+		DBC13AAB1F755BAD0071852A /* ChessGUI_Utils.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ChessGUI_Utils.c; sourceTree = "<group>"; };
+		DBC13AAC1F755BAD0071852A /* ChessGUI_Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChessGUI_Utils.h; sourceTree = "<group>"; };
+		DBC13AAD1F755BAD0071852A /* Chess_GUIFlowMain.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Chess_GUIFlowMain.c; sourceTree = "<group>"; };
+		DBC13AAE1F755BAD0071852A /* ChessGUI_LoadWindow.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ChessGUI_LoadWindow.c; sourceTree = "<group>"; };
+		DBC13AAF1F755BAD0071852A /* ChessGUI_MainWindow.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ChessGUI_MainWindow.c; sourceTree = "<group>"; };
+		DBC13AB01F755BAD0071852A /* ChessGUI_Window.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ChessGUI_Window.c; sourceTree = "<group>"; };
+		DBC13AB11F755BAD0071852A /* ChessGUI_LoadWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChessGUI_LoadWindow.h; sourceTree = "<group>"; };
+		DBC13AB21F755BAD0071852A /* ChessGUI_SettingsWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChessGUI_SettingsWindow.h; sourceTree = "<group>"; };
+		DBC13AB31F755BAD0071852A /* makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = makefile; sourceTree = "<group>"; };
+		DBC13AB41F755BAD0071852A /* SPCommon.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = SPCommon.c; sourceTree = "<group>"; };
+		DBC13AB51F755BAD0071852A /* SPCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPCommon.h; sourceTree = "<group>"; };
+		DBC13AB61F755BAD0071852A /* unit_test_util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unit_test_util.h; sourceTree = "<group>"; };
+		DBC13AB71F755BAD0071852A /* Widget.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Widget.c; sourceTree = "<group>"; };
 		DBE111A11F62737F004A99D7 /* Chess_FlowTwoPlayers.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Chess_FlowTwoPlayers.c; sourceTree = "<group>"; };
 		DBE111A21F62737F004A99D7 /* Chess_FlowTwoPlayers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Chess_FlowTwoPlayers.h; sourceTree = "<group>"; };
 		DBE111A41F628230004A99D7 /* Chess_FlowOnePlayer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Chess_FlowOnePlayer.c; sourceTree = "<group>"; };
@@ -64,6 +99,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DBC13AA11F755B180071852A /* SDL2.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -75,6 +111,7 @@
 			children = (
 				DBB8EBCE1F45797C00B87875 /* SW_Chess */,
 				DBB8EBCD1F45797C00B87875 /* Products */,
+				DBC13A9F1F755B180071852A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -89,6 +126,28 @@
 		DBB8EBCE1F45797C00B87875 /* SW_Chess */ = {
 			isa = PBXGroup;
 			children = (
+				DBC13AA21F755BAD0071852A /* Widget.h */,
+				DBC13AA31F755BAD0071852A /* ChessGUI_Window.h */,
+				DBC13AA41F755BAD0071852A /* Chess_GUIFlowMain.h */,
+				DBC13AA51F755BAD0071852A /* ChessGUI_GameWindow.c */,
+				DBC13AA61F755BAD0071852A /* ChessGUI_GameWindow.h */,
+				DBC13AA71F755BAD0071852A /* ChessGUI_MainWindow.h */,
+				DBC13AA81F755BAD0071852A /* Button.c */,
+				DBC13AA91F755BAD0071852A /* Button.h */,
+				DBC13AAA1F755BAD0071852A /* ChessGUI_SettingsWindow.c */,
+				DBC13AAB1F755BAD0071852A /* ChessGUI_Utils.c */,
+				DBC13AAC1F755BAD0071852A /* ChessGUI_Utils.h */,
+				DBC13AAD1F755BAD0071852A /* Chess_GUIFlowMain.c */,
+				DBC13AAE1F755BAD0071852A /* ChessGUI_LoadWindow.c */,
+				DBC13AAF1F755BAD0071852A /* ChessGUI_MainWindow.c */,
+				DBC13AB01F755BAD0071852A /* ChessGUI_Window.c */,
+				DBC13AB11F755BAD0071852A /* ChessGUI_LoadWindow.h */,
+				DBC13AB21F755BAD0071852A /* ChessGUI_SettingsWindow.h */,
+				DBC13AB31F755BAD0071852A /* makefile */,
+				DBC13AB41F755BAD0071852A /* SPCommon.c */,
+				DBC13AB51F755BAD0071852A /* SPCommon.h */,
+				DBC13AB61F755BAD0071852A /* unit_test_util.h */,
+				DBC13AB71F755BAD0071852A /* Widget.c */,
 				DB798CE41F51E568005619B6 /* Chess_ArrayList.c */,
 				DB798CE51F51E568005619B6 /* Chess_ArrayList.h */,
 				DB798CE61F51E568005619B6 /* Chess_gameParser.c */,
@@ -114,6 +173,14 @@
 				DBE111AB1F6D4FB8004A99D7 /* Chess_testingSimulations.h */,
 			);
 			path = SW_Chess;
+			sourceTree = "<group>";
+		};
+		DBC13A9F1F755B180071852A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DBC13AA01F755B180071852A /* SDL2.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -175,14 +242,25 @@
 			files = (
 				DB798CEB1F51E568005619B6 /* Chess_ArrayList.c in Sources */,
 				DB7B09651F48154300A8243D /* Chess_gameUtils.c in Sources */,
+				DBC13AB81F755BAD0071852A /* ChessGUI_GameWindow.c in Sources */,
+				DBC13AC21F755BAD0071852A /* Widget.c in Sources */,
 				DBB8EBD01F45797C00B87875 /* main.c in Sources */,
 				DB798CEC1F51E568005619B6 /* Chess_gameParser.c in Sources */,
 				DB798CED1F51E568005619B6 /* Chess_gameSettingsParser.c in Sources */,
 				DBE111A61F628230004A99D7 /* Chess_FlowOnePlayer.c in Sources */,
 				DBE111AC1F6D4FB8004A99D7 /* Chess_testingSimulations.c in Sources */,
+				DBC13AC11F755BAD0071852A /* SPCommon.c in Sources */,
+				DBC13ABB1F755BAD0071852A /* ChessGUI_Utils.c in Sources */,
 				DB7B096E1F486B3C00A8243D /* SPMiniMax.c in Sources */,
+				DBC13ABA1F755BAD0071852A /* ChessGUI_SettingsWindow.c in Sources */,
+				DBC13ABE1F755BAD0071852A /* ChessGUI_MainWindow.c in Sources */,
+				DBC13ABC1F755BAD0071852A /* Chess_GUIFlowMain.c in Sources */,
+				DBC13ABD1F755BAD0071852A /* ChessGUI_LoadWindow.c in Sources */,
+				DBC13AC01F755BAD0071852A /* makefile in Sources */,
 				DBE111A31F62737F004A99D7 /* Chess_FlowTwoPlayers.c in Sources */,
+				DBC13ABF1F755BAD0071852A /* ChessGUI_Window.c in Sources */,
 				DB7B096B1F4855AB00A8243D /* Chess_gameUtilsAux.c in Sources */,
+				DBC13AB91F755BAD0071852A /* Button.c in Sources */,
 				DBE111A91F6285FE004A99D7 /* Chess_ConsoleFlowMain.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -282,6 +360,10 @@
 		DBB8EBD41F45797C00B87875 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -289,6 +371,10 @@
 		DBB8EBD51F45797C00B87875 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

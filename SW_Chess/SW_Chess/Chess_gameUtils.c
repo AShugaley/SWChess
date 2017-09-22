@@ -168,6 +168,10 @@ CHESS_GAME_MESSAGE setChessMove(chessGame* src, int prev_pos_row, int prev_pos_c
     if(needToCheckMoveValidiy){
         if(src->gameBoard[prev_pos_row][prev_pos_col] == EMPTY_BOARD_POS)
             return CHESS_GAME_INVALID_POSITION;
+        if(isWhiteFigure(src->gameBoard[prev_pos_row][prev_pos_col]) && src->currentPlayer == BLACKS)
+            return CHESS_GAME_INVALID_POSITION;
+        if(isBlackFigure(src->gameBoard[prev_pos_row][prev_pos_col]) && src->currentPlayer == WHITES)
+            return CHESS_GAME_INVALID_POSITION;
         if(!isValidBoardPosition(prev_pos_row, prev_pos_col, next_pos_row, next_pos_col))
             return CHESS_GAME_INVALID_ARGUMENT;
         if(!isLegalMove(src, prev_pos_row, prev_pos_col, next_pos_row, next_pos_col))

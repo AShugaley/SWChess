@@ -59,6 +59,7 @@ GAME_STATUS onePlayerGameFlow(chessGame* src){
 
 
 bool humanMove(chessGame* src, CHESSCommand cmd){
+    
     CHESS_GAME_MESSAGE message = setChessMove(src, (cmd.sourceRow -1), getIntFromColumnChar(cmd.sourceColl), (cmd.targertRow -1), getIntFromColumnChar(cmd.targetColl), true, true);
     if(message == CHESS_GAME_SUCCESS){
         return true; /*  perfect! */
@@ -75,7 +76,9 @@ bool humanMove(chessGame* src, CHESSCommand cmd){
 
 
 bool compMove(chessGame* src){
-    SPArrayListNode* move = suggestMove(src, src->difficulty);
+    int depth = minFunc(src->difficulty, 4); /* if difficulty == 5, depth is stil 40 */
+    
+    SPArrayListNode* move = suggestMove(src, depth);
     if(move == NULL){
         printf("ERROR - cannot suggest move");
         return false;
