@@ -4,8 +4,8 @@
 
 #include <stdio.h>
 #include <stdbool.h>
-//#include <SDL.h>
-//#include <SDL_video.h>
+#include <SDL.h>
+#include <SDL_video.h>
 
 #define BOARD_SIZE 8
 
@@ -109,7 +109,7 @@ typedef struct sp_array_list_t {
  */
 typedef struct chess_game {
     char gameBoard[BOARD_SIZE][BOARD_SIZE];
-	//SDL_Rect gameGUIBoard[BOARD_SIZE][BOARD_SIZE];
+	SDL_Rect gameGUIBoard[BOARD_SIZE][BOARD_SIZE];
     GAME_MODE_PLAYER gameMode;
     int difficulty;
     PLAYER_COLOR currentPlayer;

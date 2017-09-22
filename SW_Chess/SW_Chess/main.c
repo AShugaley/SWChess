@@ -5,8 +5,8 @@
 #include "SPMiniMax.h"
 #include "Chess_FlowTwoPlayers.h"
 #include <stdbool.h>
-//#include <SDL.h>
-//#include <SDL_video.h>
+#include <SDL.h>
+#include <SDL_video.h>
 
 #include "unitTest.h"
 #include "Chess_gameParser.h"
@@ -207,7 +207,7 @@ static bool spArrayListCreateTest() {
 }*/
 
 
-
+/*
 chessGame* TestBoard(chessGame* src) {
     for (int i = 0; i<BOARD_SIZE; i++)
         for (int j = 0; j <BOARD_SIZE; j++)
@@ -240,7 +240,7 @@ chessGame* TestBoard(chessGame* src) {
 ////////////////////////////////////////////////
     return src;
 }
-
+*/
 int main(int argc, const char * argv[]) {
 	/*
 	////////////////////////////////////////////////
@@ -291,7 +291,7 @@ int main(int argc, const char * argv[]) {
 	////////////////////////////////////////////////////////////////////
 	//////////////////check - MOR - end/////////////////////////////////
     
-
+	return GUIMain();
 	
 	//return 0;
    // chessGame* src = createChessGame(5, TWO_PLAYERS, WHITES, 3);
@@ -335,7 +335,7 @@ int main(int argc, const char * argv[]) {
 //    printf("%d\n", isValidMove(src, 6, 0, 5, 0));
 //    printf("%d,%d\n", suggestMove(src, 4)->current_pos_row,suggestMove(src, 4)->current_pos_col );
 //    get_moves(src,0,1);
-    runTestSim(4,3);
+    //runTestSim(4,3);
     //saveGame(src, "<uos><sj><h>");
  //consoleMode();
     

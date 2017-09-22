@@ -322,7 +322,6 @@ WINDOW_EVENT handleEventGameWindow(ChessWindow* src, SDL_Event* event)
 	{
 		return CHESS_EMPTY_WINDOWEVENT;
 	}
-	int originX, originY;
 	int newX, newY;
 	int mouseX, mouseY;
 	Button* buttonCast;
