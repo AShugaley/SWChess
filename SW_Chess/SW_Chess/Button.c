@@ -87,18 +87,29 @@ void updateButtonLocation(Widget* src, int x, int y)
 {
 	if (src == NULL)
 		return;
+
 	Button* castedData = (Button*)src->data;
+	
+	//SDL_SetRenderDrawColor(castedData->windowRenderer, 255, 255, 255, 255);
+	//SDL_RenderDrawRect(castedData->windowRenderer, &castedData->location);
+
 	castedData->location->x = x;
 	castedData->location->y = y; 
 	castedData->location->w = 60;
 	castedData->location->h = 60;
 
-	SDL_Rect rect = { .x = castedData->location->x,.y = castedData->location->y,.h = castedData->location->h,.w = castedData->location->w };
-	if (SDL_RenderCopy(castedData->windowRenderer, castedData->buttonTexture, NULL, &rect) != 0)
-	{
-		printf("ERROR: unable to render the new location: %s\n", SDL_GetError());
-		return;
-	}
+	
+	
+	//SDL_SetRenderDrawColor(castedData->windowRenderer, 255, 0, 255, 255);
+	//SDL_RenderDrawRect(castedData->windowRenderer, &castedData->location);
+	//SDL_RenderPresent(castedData->windowRenderer);
+
+	//SDL_Rect rect = { .x = castedData->location->x,.y = castedData->location->y,.h = castedData->location->h,.w = castedData->location->w };
+	//if (SDL_RenderCopy(castedData->windowRenderer, castedData->buttonTexture, NULL, &rect) != 0)
+	//{
+	//	printf("ERROR: unable to render the new location: %s\n", SDL_GetError());
+	//	return;
+	//}
 }
 
 
@@ -120,6 +131,7 @@ void handleButtonEvent(Widget* src, SDL_Event* event)
 		SDL_Point point;
 		point.x = event->button.x;
 		point.y = event->button.y;
+
 		if (src->isVisible && SDL_PointInRect(&point, castData->location))
 		{
 			switch (buttonType)
@@ -174,7 +186,6 @@ void handleButtonEvent(Widget* src, SDL_Event* event)
 				updateButtonTexture(src, "./hard_pressed.bmp");
 				break;
 			case CHESS_PAWN_WHITE_BUTTON:
-				src->isDragLegal = true;
 				updateButtonTexture(src, "./hard_pressed.bmp");
 				/*	case CHESS_SLOT1_BUTTON:
 					{
@@ -185,87 +196,70 @@ void handleButtonEvent(Widget* src, SDL_Event* event)
 					add the other slots !!!!!!!!!!!!!!!!!!!!!!!*/
 
 			}
-			if (src->isDragLegal)
-			{
-				while (true)
-				{
-					SDL_PollEvent(event);
-					if (event->type == SDL_MOUSEMOTION && event->button.button == SDL_BUTTON_LEFT)
-					{
-						SDL_Point point;
-						point.x = event->button.x;
-						point.y = event->button.y;
-
-						if (SDL_PointInRect(&point, castData->location)) //if the click was inside the button 
-						{
-							src->isMoving = true;
-							break;
-						}
-					}
-					if (event->type == SDL_MOUSEBUTTONUP)
-					{
-						src->isActive = false;
-						src->isMoving = false;
-						src->isDragLegal = false;
-						return;
-					}
-				}
-			}
 			src->isActive = true;
-		}
-				
-		else
+			
 			return;
+		}
 	}
-	
 
 	//release the mouse 
-	if (event->type == SDL_MOUSEBUTTONUP && event->button.button == SDL_BUTTON_LEFT) 
+	else if (event->type == SDL_MOUSEBUTTONUP && event->button.button == SDL_BUTTON_LEFT) 
 	{
 		SDL_Point point;
 		point.x = event->button.x;
 		point.y = event->button.y;
-		if (SDL_PointInRect(&point, castData->location)) //if the click was inside the button 
-		{
-		//SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Title",
+		//if (SDL_PointInRect(&point, castData->location)) //if the click was inside the button 
+	//	{
+	//	if(src->isMoving)
+		printf("up!!");
+		//	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Title",
 		//		"We did it", NULL);
-		//
+		
+			
+			if (src->isDragLegal && src->isMoving)
+			{
+				//src->isDragLegal = false;
+				src->endOfDrag = true;
+				src->isMoving = false;
+				return;
+			}
 			src->isActive = false;
 			src->isMoving = false;
-		}
-		else
-			return;
+			
+		//}
+		return;
 	}
 
 	//drag
-	//if (src->isDragLegal)
-	//{
-	//	if (event->type == SDL_MOUSEMOTION && event->button.button == SDL_BUTTON_LEFT && event->type == SDL_MOUSEBUTTONDOWN)
-	//	{
-	//		SDL_Point point;
-	//		point.x = event->button.x;
-	//		point.y = event->button.y;
+	if (src->isDragLegal && src->isActive)
+	{
+		if (event->type == SDL_MOUSEMOTION && 
+			SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT))
+		{
+			SDL_Point point;
+			point.x = event->button.x;
+			point.y = event->button.y;
 
-	//		if (SDL_PointInRect(&point, castData->location)) //if the click was inside the button 
-	//		{
-	//			
-
-	//			src->isMoving = true;
-	//			//if (timer > 60)
-	//			//{
-	//			//	timer = 0;
-	//			////	destroyButton(castData);
-	//			//	//createButton()
-	//			//	return CHESS_PAWN_WHITE_BUTTON;
-	//			//	//updateButtonLocation(src, point.x, point.y);
-	//			//}
-	//			//timer++;
-	//		}
-	//		else
-	//			return;
-	//			//return CHESS_PAWN_WHITE_BUTTON;
-	//	}
-	//}
+		//	if (SDL_PointInRect(&point, castData->location)) //if the click was inside the button 
+			//{
+				
+				updateButtonLocation(src, event->motion.x, event->motion.y);
+				src->isMoving = true;
+				//if (timer > 60)
+				//{
+				//	timer = 0;
+				////	destroyButton(castData);
+				//	//createButton()
+				//	return CHESS_PAWN_WHITE_BUTTON;
+				//	//updateButtonLocation(src, point.x, point.y);
+				//}
+				//timer++;
+		//	}
+		//	else
+				return;
+				//return CHESS_PAWN_WHITE_BUTTON;
+		}
+	}
 }
 
 

@@ -22,6 +22,6 @@ void destroyButton(Widget*);
 void handleButtonEvent(Widget* src, SDL_Event* event);
 void drawButton(Widget* src);
 void updateButtonTexture(Widget* src, const char* image);
-
+void updateButtonLocation(Widget* src, int x, int y);
 
 #endif

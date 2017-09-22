@@ -97,7 +97,48 @@ void drawGameBoard(chessGameWindow* win, chessGame* game)
 	}
 }
 	
-	/*add [i][j] member to the pieces VVVVV
+
+bool isValidPlace(int x, int y, chessGame* game)
+{
+	SDL_Point point;
+	point.x = x;
+	point.y = y;
+	for (int i = 0; i < BOARD_SIZE; i++)
+	{
+		for (int j = 0; j < BOARD_SIZE; j++)
+		{
+			if (SDL_PointInRect(&point, &(game->gameGUIBoard[i][j])))
+			{
+
+				return true; ///for now 
+				//if valid -true
+				//else- false //invalid rect
+			}
+		}
+	}
+	return false;  //not in the board 
+}
+
+void setButtonPlace(int* newX, int* newY, chessGame* game, int locX, int locY, Widget* src)
+{
+	SDL_Point point;
+	point.x = locX;
+	point.y = locY;
+	for (int i = 0; i < BOARD_SIZE; i++)
+	{
+		for (int j = 0; j < BOARD_SIZE; j++)
+		{
+			if (SDL_PointInRect(&point, &(game->gameGUIBoard[i][j])))
+			{
+				*newX = game->gameGUIBoard[i][j].x;
+				*newY = game->gameGUIBoard[i][j].y;
+				src->row = i;
+				src->coll = j;
+			}
+		}
+	}
+}
+	/*
 rect origin = button location;
 drag&drop - mouse_motion => piece.i += event.motion.xrel , j+=y.rel (update button location)
 mouse_up-> 
