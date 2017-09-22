@@ -204,6 +204,7 @@ Widget** createGameWindowWidgets(SDL_Renderer* renderer, ChessWindow* window)
 		else
 			widgets[i]->isDragLegal = true;
 		widgets[i]->isMoving = false;
+		widgets[i]->endOfDrag = false; 
 	}
 
 	return widgets;
@@ -321,8 +322,13 @@ WINDOW_EVENT handleEventGameWindow(ChessWindow* src, SDL_Event* event)
 	{
 		return CHESS_EMPTY_WINDOWEVENT;
 	}
+	int originX, originY;
+	int newX, newY;
+	int mouseX, mouseY;
+	Button* buttonCast;
 	chessGameWindow* windata = (chessGameWindow*)src->data;
 	WINDOW_EVENT eventType = CHESS_EMPTY_WINDOWEVENT;
+	
 	SDL_Rect loc = { .x = event->button.x,.y = event->button.y,.h = 72,.w = 180 };
 	while (1)
 	{
@@ -334,6 +340,7 @@ WINDOW_EVENT handleEventGameWindow(ChessWindow* src, SDL_Event* event)
 				SDL_RenderPresent(windata->windowRenderer);
 				if (windata->widgets[i]->isActive && windata->widgets[i]->isActivateLegal)
 				{
+					buttonCast = (Button*)(windata->widgets[i]->data);
 					switch (windata->widgets[i]->widget_type)
 					{
 					case CHESS_EMPTY_BUTTON:
@@ -351,49 +358,70 @@ WINDOW_EVENT handleEventGameWindow(ChessWindow* src, SDL_Event* event)
 						return CHESS_HOME_WINDOWEVENT;
 					case CHESS_QUIT_BUTTON:
 						return CHESS_QUIT_WINDOWEVENT;
+					
+					case CHESS_PAWN_BLACK_BUTTON:
 					case CHESS_PAWN_WHITE_BUTTON:
-						if (windata->widgets[i]->isMoving)// && time>3)
-						{
-							time = 0;
-							
-							////SDL_GetMouseState
-							SDL_SetRenderDrawColor(windata->windowRenderer, 255, 255, 255, 255);
-							SDL_RenderDrawRect(windata->windowRenderer, &loc);
-							updateButtonLocation(windata->widgets[i], event->button.x, event->button.y);
-							SDL_SetRenderDrawColor(windata->windowRenderer, 255, 0, 255, 255);
-							SDL_RenderDrawRect(windata->windowRenderer, &loc);
-						//	SDL_Delay(16);
-							if (time > 50)
-							{
-								time = 0;
-								SDL_RenderPresent(windata->windowRenderer);
+					case CHESS_BISHOP_BLACK_BUTTON:
+					case CHESS_BISHOP_WHITE_BUTTON:
+					case CHESS_KNIGHT_BLACK_BUTTON:
+					case CHESS_KNIGHT_WHITE_BUTTON:
+					case CHESS_ROOK_BLACK_BUTTON:
+					case CHESS_ROOK_WHITE_BUTTON:
+					case CHESS_QUEEN_BLACK_BUTTON:
+					case CHESS_QUEEN_WHITE_BUTTON:
+					case CHESS_KING_WHITE_BUTTON:
+					case CHESS_KING_BLACK_BUTTON:
+						/////bonus - start writing 
+						/*SDL_SetRenderDrawColor(windata->windowRenderer, 100,10, 150, 255);
+						if (SDL_RenderFillRect(windata->windowRenderer, &src->game->gameGUIBoard[4][5]) < 0)
+							printf("ERROR: unable to fill rect: %s\n", SDL_GetError());
+						SDL_RenderPresent(windata->windowRenderer);*/
 
+						/////////just in case - 
+							////SDL_GetMouseState
+							//SDL_SetRenderDrawColor(windata->windowRenderer, 255, 255, 255, 255);
+							//SDL_RenderDrawRect(windata->windowRenderer, &loc);
+						//	updateButtonLocation(windata->widgets[i], event->motion.x, event->motion.y);
+							//i = i - 1;
+							//SDL_SetRenderDrawColor(windata->windowRenderer, 255, 0, 255, 255);
+							//SDL_RenderDrawRect(windata->windowRenderer, &loc);
+							//SDL_Delay(16);
+							//if (time > 100)
+						   //{
+							//	time = 0;
+							//	SDL_RenderPresent(windata->windowRenderer);
+//
+							//}
+						//}
+						if (windata->widgets[i]->endOfDrag)
+						{
+							SDL_GetMouseState(&mouseX, &mouseY);
+							//check valid move + update location - origin or event 
+							if (isValidPlace(mouseX, mouseY, src->game))
+							{
+								setButtonPlace(&newX, &newY, src->game, event->button.x, event->button.y, windata->widgets[i]);
+								updateButtonLocation(windata->widgets[i], newX, newY);
 							}
+							else
+								updateButtonLocation(windata->widgets[i]
+								  , src->game->gameGUIBoard[windata->widgets[i]->row][windata->widgets[i]->coll].x
+								  , src->game->gameGUIBoard[windata->widgets[i]->row][windata->widgets[i]->coll].y);
+							windata->widgets[i]->endOfDrag = false;
+							windata->widgets[i]->isActive = false;
 						}
-						time++;
+					
+					//	time++;
 						break;
 
-							/*rect origin = button location;
-							drag&drop - mouse_motion = > piece.i += event.motion.xrel, j += y.rel(update button location)
-								mouse_up->
-								for (i)
-									for (j)
-										if pointinrect(button->location, src[i][j])
-											button location.x = scr[i].x
-											.y = .y
-										else
-											button location = origin
-						}*/
-						/*case CHESS_PAWN_WHITE:
-							//check valid move ...
-						//and so on */
 					default:
 						eventType = CHESS_EMPTY_WINDOWEVENT;
 						break;
 					}
+				
 					drawGameWindow(src);
-				}
 
+				
+				}
 			}
 			break;
 		}

@@ -31,18 +31,18 @@ typedef enum {
 	CHESS_SLOT4_BUTTON,
 	CHESS_SLOT5_BUTTON,
 	CHESS_UNDO_BUTTON,
-	CHESS_PAWN_BLACK,
-	CHESS_PAWN_WHITE,
-	CHESS_BISHOP_BLACK,
-	CHESS_BISHOP_WHITE,
-	CHESS_KNIGHT_BLACK,
-	CHESS_KNIGHT_WHITE,
-	CHESS_ROOK_BLACK,
-	CHESS_ROOK_WHITE,
-	CHESS_QUEEN_BLACK,
-	CHESS_QUEEN_WHITE,
-	CHESS_KING_WHITE,
-	CHESS_KING_BLACK,
+	CHESS_PAWN_BLACK_BUTTON,
+	CHESS_PAWN_WHITE_BUTTON,
+	CHESS_BISHOP_BLACK_BUTTON,
+	CHESS_BISHOP_WHITE_BUTTON,
+	CHESS_KNIGHT_BLACK_BUTTON,
+	CHESS_KNIGHT_WHITE_BUTTON,
+	CHESS_ROOK_BLACK_BUTTON,
+	CHESS_ROOK_WHITE_BUTTON,
+	CHESS_QUEEN_BLACK_BUTTON,
+	CHESS_QUEEN_WHITE_BUTTON,
+	CHESS_KING_WHITE_BUTTON,
+	CHESS_KING_BLACK_BUTTON,
 } WIDGET_TYPE;
 
 
@@ -54,9 +54,20 @@ struct widget_t {
 	void (*destroyWidget)(Widget*);
 	void* data;
 	WIDGET_TYPE widget_type; 
-	bool isActivateLegal; //always true, except load button in some cases and back button on the first turn of the game 
+	/*is activeLegal - always true, except: 
+	 -load button in some cases
+	 -back button on the first turn of the game 
+	 -next button if no setting has been chosen 
+	*/
+	bool isActivateLegal; 
 	bool isActive;		 // is pressed or draged at the moment 
 	bool isVisible;
+	bool isDragLegal;
+	bool isMoving;
+	bool endOfDrag;
+	//for the pieces:
+	int row;
+	int coll;
 };
 
 //This function would be usefull for NULL safe desetroy
