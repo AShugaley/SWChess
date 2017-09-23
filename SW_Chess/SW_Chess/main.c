@@ -299,7 +299,7 @@ int main(int argc, const char * argv[]) {
 	////////////////////////////////////////////////////////////////////
 	//////////////////check - MOR - end/////////////////////////////////
     
-	 //GUIMain();
+     return GUIMain();
 	
 	//return 0;
    // chessGame* src = createChessGame(5, TWO_PLAYERS, WHITES, 3);
@@ -343,7 +343,7 @@ int main(int argc, const char * argv[]) {
 //    printf("%d\n", isValidMove(src, 6, 0, 5, 0));
 //    printf("%d,%d\n", suggestMove(src, 4)->current_pos_row,suggestMove(src, 4)->current_pos_col );
 //    get_moves(src,0,1);
-    runTestSim(5,3);
+    //runTestSim(5,3);
     //saveGame(src, "<uos><sj><h>");
  //consoleMode();
     

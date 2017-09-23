@@ -8,12 +8,14 @@ static const height = 700;
 //Helper function to create buttons in the simple window;
 Widget** createMainWindowWidgets(SDL_Renderer* renderer) 
 {
+    printf("EROR SDL-6; eror creating a SDL window\n");
 	if (renderer == NULL ) {
 		return NULL ;
 	}
 	Widget** widgets = malloc(sizeof(Widget*) * 3);
 	if (widgets == NULL ) 
 	{
+        printf("EROR SDL-5; eror creating a SDL window\n");
 		return NULL ;
 	}
 	
@@ -27,6 +29,7 @@ Widget** createMainWindowWidgets(SDL_Renderer* renderer)
 
 	if (widgets[0] == NULL || widgets[1] == NULL || widgets[2] == NULL) 
 	{
+        printf("EROR SDL-4; eror creating a SDL window\n");
 		destroyWidget(widgets[0]); //NULL SAFE
 		destroyWidget(widgets[1]); //NULL SAFE
 		destroyWidget(widgets[2]); //NULL SAFE
@@ -42,13 +45,17 @@ ChessWindow* createMainWindow(Uint32 winMode, chessGame* game)
 {
 	ChessWindow* res = malloc(sizeof(ChessWindow));
 	chessMainWindow* data = malloc(sizeof(chessMainWindow));
+
 	SDL_Window* window = SDL_CreateWindow("CHESS!", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, winMode);
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	//chessGame* game = createChessGame(6, ONE_PLAYER, WHITES, 2);
 
 	Widget** widgets = createMainWindowWidgets(renderer);
+
 		if (res == NULL || data == NULL || window == NULL || renderer == NULL || widgets == NULL )//|| game == NULL)
+
 	{
+        printf("EROR SDL-1; eror creating a SDL window\n");
 		free(res);
 		free(data);
 		free(widgets);
@@ -75,6 +82,7 @@ ChessWindow* createMainWindow(Uint32 winMode, chessGame* game)
 	res->handleEventWindow = handleEventMainWindow;
 	res->type = CHESS_MAIN_WINDOW;
 	res->game = game;
+    printf("$%d\n", res == NULL);
 
 	return res;
 }

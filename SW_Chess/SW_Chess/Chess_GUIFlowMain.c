@@ -20,6 +20,7 @@ int GUIMain()
 	ChessWindow* currentWindow = createWindow(CHESS_MAIN_WINDOW, SDL_WINDOW_OPENGL, game);
 	if (currentWindow == NULL)
 	{
+        printf("ERROR: unable to init SDL: %s\n", SDL_GetError());
 		SDL_Quit();
 		return 0;
 	}
@@ -114,8 +115,11 @@ int GUIMain()
 		}
 	}
 	//SDL_Delay(16);
+
 	destroyChessGame(game);
+
 	destroyWindow(currentWindow);
 	SDL_Quit();
 	return 0;
 }
+

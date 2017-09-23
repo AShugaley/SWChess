@@ -10,15 +10,18 @@ Widget* createButton(SDL_Renderer* windowRender, SDL_Rect* location, const char*
 {
 	if (windowRender == NULL || location == NULL || image == NULL ) 
 	{
+        printf("EROR SDL-1; eror creating a SDL window\n");
 		return NULL ;
 	}
 	//Allocate data
+    
 	Widget* res = (Widget*) malloc(sizeof(Widget));
 	Button* data = (Button*) malloc(sizeof(Button));
 	SDL_Surface* loadingSurface = SDL_LoadBMP(image); //We use the surface as a temp var;
 	SDL_Texture* buttonTexture = SDL_CreateTextureFromSurface(windowRender,loadingSurface);
 	if (res == NULL || data == NULL || loadingSurface == NULL || buttonTexture == NULL) 
 	{
+        printf("EROR SDL-2; eror creating a SDL window\n");
 		free(res);
 		free(data);
 		SDL_FreeSurface(loadingSurface); //It is safe to pass NULL
@@ -115,8 +118,9 @@ void updateButtonLocation(Widget* src, int x, int y)
 
 void handleButtonEvent(Widget* src, SDL_Event* event)
 {
-	if (src == NULL || event == NULL ) 
+	if (src == NULL || event == NULL )
 	{
+        printf("EROR SDL-3; eror handeling an event\n");
 		return; //Better to return an error value
 	}
 
