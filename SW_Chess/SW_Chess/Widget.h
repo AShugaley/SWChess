@@ -70,6 +70,7 @@ struct widget_t {
 	//for the pieces:
 	int row;
 	int coll;
+	char color; //for game pieces - w or b
 };
 
 //This function would be usefull for NULL safe desetroy

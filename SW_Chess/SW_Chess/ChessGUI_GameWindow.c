@@ -4,24 +4,7 @@
 #include "ChessGUI_Utils.h"
 #include "Chess_gameUtils.h"
 
-////I think I don't need it here.. late at night cheak tomorrow !! 
-//#define PAWN_WHITE 
-//#define PAWN_BLACK 
-//
-//#define BISHOP_WHITE
-//#define BISHOP_BLACK
-//
-//#define ROOK_WHITE 
-//#define ROOK_BLACK 
-//
-//#define KNIGHT_WHITE
-//#define KNIGHT_BLACK
-//
-//#define QUEEN_WHITE 
-//#define QUEEN_BLACK 
-//
-//#define KING_WHITE
-//#define KING_BLACK
+
 
 
 static const game_width = 900;
@@ -239,6 +222,11 @@ Widget** createGameWindowWidgets(SDL_Renderer* renderer, ChessWindow* window)
 			widgets[i]->isDragLegal = true;
 		widgets[i]->isMoving = false;
 		widgets[i]->endOfDrag = false; 
+		if (i == 6 || i == 7 || i == 10 || i == 11 || i == 14 || i == 15 || i == 18 ||
+			i == 20 || i == 22 || i == 24 || i == 26 || i == 28 || i == 30 || i == 32 || i == 34 || i == 36)
+			widgets[i]->color = 'w';
+		else
+			widgets[i]->color = 'b';
 	}
 
 	return widgets;
@@ -252,11 +240,6 @@ ChessWindow* createGameWindow(Uint32 winMode, chessGame* game)
 	SDL_Window* window = SDL_CreateWindow("CHESS!", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, game_width, game_height, winMode);
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	//chessGame* game = createChessGame(6, ONE_PLAYER, WHITES, 2);
-	if (game == NULL)
-	{
-		destroyChessGame(game);
-		return NULL;
-	}
 	res->game = game;
 	Widget** widgets = createGameWindowWidgets(renderer, res);
 	if (res == NULL || data == NULL || window == NULL || renderer == NULL || widgets == NULL)
@@ -273,7 +256,11 @@ ChessWindow* createGameWindow(Uint32 winMode, chessGame* game)
 	data->windowRenderer = renderer;
 	for(int j = 0; j < data->numOfWidgets; j++)
 	{
+		if(j>=6)
+			widgets[j]->isVisible = false; //pieces are unvisible, untill update acording to the game board
+
 		widgets[j]->isVisible = true; 
+
 	}
 
 	res->data = (void*)data;
@@ -338,29 +325,38 @@ void drawGameWindow(ChessWindow* src)
 	//Draw widgets
 	for (int i = 0; i < data->numOfWidgets; i++)
 	{
+		setBoardPieces(src, data);
 		if (data->widgets[i]->isVisible)
 			data->widgets[i]->drawWidget(data->widgets[i]);
 		if ((data->widgets[i]->isVisible) && (data->widgets[i]->widget_type == CHESS_UNDO_BUTTON)
 			&& (data->widgets[i]->isActivateLegal))
 			updateButtonTexture(data->widgets[3], "./undo_active.bmp"); //index 3 is undo button in the array 
+		if (src->game->currentPlayer == WHITES && data->widgets[i]->color == 'b' ||
+			src->game->currentPlayer == BLACKS && data->widgets[i]->color == 'w')
+		{
+			data->widgets[i]->isActivateLegal = false;
+			data->widgets[i]->isDragLegal = false;
+		}
+		if (src->game->currentPlayer == WHITES && data->widgets[i]->color == 'w' ||
+			src->game->currentPlayer == BLACKS && data->widgets[i]->color == 'b')
+		{
+			data->widgets[i]->isActivateLegal = true;
+			data->widgets[i]->isDragLegal = true;
+		}
 	}
-
-	
-	
 
 	SDL_RenderPresent(data->windowRenderer);
 }
 
 int time = 0;
 
-WINDOW_EVENT handleEventGameWindow(ChessWindow* src, SDL_Event* event) 
+WINDOW_EVENT handleEventGameWindow(ChessWindow* src, SDL_Event* event)
 {
 	if (src == NULL || event == NULL) 
 	{
 		return CHESS_EMPTY_WINDOWEVENT;
 	}
-	int newX, newY;
-	int mouseX, mouseY;
+	
 	Button* buttonCast;
 	chessGameWindow* windata = (chessGameWindow*)src->data;
 	WINDOW_EVENT eventType = CHESS_EMPTY_WINDOWEVENT;
@@ -388,7 +384,9 @@ WINDOW_EVENT handleEventGameWindow(ChessWindow* src, SDL_Event* event)
 					case CHESS_LOAD_BUTTON:
 						return CHESS_LOAD_SCREEN_WINDOWEVENT;
 					case CHESS_UNDO_BUTTON:
-						//taking care here? or in main? i think here 
+						/* sending to undoGame 
+						* sending
+						*/	
 						break;
 					case CHESS_HOME_BUTTON:
 						return CHESS_HOME_WINDOWEVENT;
@@ -442,23 +440,13 @@ WINDOW_EVENT handleEventGameWindow(ChessWindow* src, SDL_Event* event)
 						//}
 						if (windata->widgets[i]->endOfDrag)
 						{
-							windata->widgets[3]->isActivateLegal = true;
 
-							SDL_GetMouseState(&mouseX, &mouseY);
-							//check valid move + update location - origin or event 
-							if (isValidPlace(mouseX, mouseY, src->game))
-							{
-								setButtonPlace(&newX, &newY, src->game, event->button.x, event->button.y, windata->widgets[i]);
-								updateButtonLocation(windata->widgets[i], newX, newY);
-							}
-							else
-								updateButtonLocation(windata->widgets[i]
-								  , src->game->gameGUIBoard[windata->widgets[i]->row][windata->widgets[i]->coll].x
-								  , src->game->gameGUIBoard[windata->widgets[i]->row][windata->widgets[i]->coll].y);
+							windata->widgets[3]->isActivateLegal = true; //undo button 
+
+							GUIMove(src, windata->widgets[i], event);
 							windata->widgets[i]->endOfDrag = false;
 							windata->widgets[i]->isActive = false;
 						}
-					
 					//	time++;
 						break;
 

@@ -163,7 +163,7 @@ void drawSettingsWindow(ChessWindow* src)
 
 	//SDL_SetRenderDrawColor(data->windowRenderer, 255,255, 255, 0);
 	//SDL_FillRect(NULL, NULL, 0x000000);
-	SDL_RenderClear(data->windowRenderer);
+	//SDL_RenderClear(data->windowRenderer);
 	
 	///////////////////////////draw background///////////////////////////
 	SDL_Surface* surf = SDL_LoadBMP("./load_background.bmp");
@@ -221,7 +221,7 @@ WINDOW_EVENT handleEventSettingsWindow(ChessWindow* src, SDL_Event* event)
 			{
 				//	bool refresh = false; 
 				windata->Widgets[i]->handleEvent(windata->Widgets[i], event);
-				SDL_RenderPresent(windata->windowRenderer);
+				//SDL_RenderPresent(windata->windowRenderer);
 				if (windata->Widgets[i]->isActive && windata->Widgets[i]->isActivateLegal)//windata->widgets[i]->data->isPressed)
 				{
 					switch (windata->Widgets[i]->widget_type)
