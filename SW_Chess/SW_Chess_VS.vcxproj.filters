@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="sw_chess\Chess_ArrayList.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sw_chess\Chess_gameParser.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sw_chess\Chess_gameSettingsParser.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sw_chess\Chess_gameUtils.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sw_chess\Chess_gameUtilsAux.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sw_chess\main.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SW_Chess\SPMiniMax.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SW_Chess\Chess_ConsoleFlowMain.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SW_Chess\Chess_FlowOnePlayer.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SW_Chess\Chess_FlowTwoPlayers.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SW_Chess\Widget.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SW_Chess\SPCommon.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SW_Chess\ChessGUI_Window.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SW_Chess\ChessGUI_Utils.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SW_Chess\ChessGUI_SettingsWindow.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SW_Chess\ChessGUI_MainWindow.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SW_Chess\ChessGUI_LoadWindow.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SW_Chess\Button.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SW_Chess\Chess_GUIFlowMain.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SW_Chess\ChessGUI_GameWindow.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SW_Chess\ChessGUI_FlowTwoPlayers.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SW_Chess\ChessGUI_FlowOnePlayer.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="sw_chess\Chess_ArrayList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sw_chess\Chess_gameParser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sw_chess\Chess_gameSettingsParser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sw_chess\Chess_gameUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sw_chess\Chess_gameUtilsAux.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="unitTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SW_Chess\Chess_def.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SW_Chess\SPMiniMax.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SW_Chess\Chess_ConsoleFlowMain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SW_Chess\Chess_FlowOnePlayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SW_Chess\Chess_FlowTwoPlayers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SW_Chess\Widget.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SW_Chess\SPCommon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SW_Chess\ChessGUI_Window.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SW_Chess\ChessGUI_Utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SW_Chess\ChessGUI_SettingsWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SW_Chess\ChessGUI_MainWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SW_Chess\ChessGUI_LoadWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SW_Chess\ChessGUI_GameWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SW_Chess\Button.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SW_Chess\Chess_GUIFlowMain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SW_Chess\ChessGUI_FlowTwoPlayers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SW_Chess\ChessGUI_FlowOnePlayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
