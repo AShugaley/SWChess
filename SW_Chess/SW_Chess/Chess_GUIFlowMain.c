@@ -116,7 +116,9 @@ int GUIMain()
 	}
 	//SDL_Delay(16);
 
+
 	destroyChessGame(game);
+
 
 	destroyWindow(currentWindow);
 	SDL_Quit();

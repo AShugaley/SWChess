@@ -1,15 +1,15 @@
 #include <stdlib.h>
 #include "ChessGUI_MainWindow.h"
 #include "Button.h"
-
 static const width = 450;
 static const height = 700; 
 
 //Helper function to create buttons in the simple window;
 Widget** createMainWindowWidgets(SDL_Renderer* renderer) 
 {
-    printf("EROR SDL-6; eror creating a SDL window\n");
+    
 	if (renderer == NULL ) {
+        printf("EROR SDL-6; eror creating a SDL window\n");
 		return NULL ;
 	}
 	Widget** widgets = malloc(sizeof(Widget*) * 3);
@@ -22,7 +22,7 @@ Widget** createMainWindowWidgets(SDL_Renderer* renderer)
 	SDL_Rect newGame =	{ .x = 125, .y = 70, .h = 80, .w = 200 };
 	SDL_Rect loadGame = { .x = 125, .y = 190, .h = 80, .w = 200 };
 	SDL_Rect quit =		{ .x = 125, .y = 310, .h = 80, .w = 200 };
-		
+
 	widgets[0] = createButton(renderer, &newGame,		"./start_active.bmp", CHESS_NEWGAME_BUTTON);
 	widgets[1] = createButton(renderer, &loadGame,		"./load_active.bmp" , CHESS_LOAD_BUTTON);
 	widgets[2] = createButton(renderer, &quit,			"./exit_active.bmp" , CHESS_QUIT_BUTTON);
@@ -82,7 +82,6 @@ ChessWindow* createMainWindow(Uint32 winMode, chessGame* game)
 	res->handleEventWindow = handleEventMainWindow;
 	res->type = CHESS_MAIN_WINDOW;
 	res->game = game;
-    printf("$%d\n", res == NULL);
 
 	return res;
 }
