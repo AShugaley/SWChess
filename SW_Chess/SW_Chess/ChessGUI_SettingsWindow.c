@@ -221,7 +221,7 @@ WINDOW_EVENT handleEventSettingsWindow(ChessWindow* src, SDL_Event* event)
 			{
 				//	bool refresh = false; 
 				windata->Widgets[i]->handleEvent(windata->Widgets[i], event);
-				//SDL_RenderPresent(windata->windowRenderer);
+				SDL_RenderPresent(windata->windowRenderer);
 				if (windata->Widgets[i]->isActive && windata->Widgets[i]->isActivateLegal)//windata->widgets[i]->data->isPressed)
 				{
 					switch (windata->Widgets[i]->widget_type)
@@ -287,6 +287,7 @@ WINDOW_EVENT handleEventSettingsWindow(ChessWindow* src, SDL_Event* event)
 						windata->Widgets[NEXT]->isVisible = true;
 						windata->Widgets[START]->isVisible = false;
 						src->game->gameMode = ONE_PLAYER;
+						src->game->currentPlayer = WHITES;
 						//windata->Widgets[i]->isActive = false;
 						break;
 
@@ -295,6 +296,7 @@ WINDOW_EVENT handleEventSettingsWindow(ChessWindow* src, SDL_Event* event)
 						windata->Widgets[NEXT]->isVisible = false;
 						windata->Widgets[START]->isVisible = true;
 						src->game->gameMode = TWO_PLAYERS;
+						src->game->currentPlayer = WHITES;
 						//windata->Widgets[i]->isActive = false;
 						break;
 

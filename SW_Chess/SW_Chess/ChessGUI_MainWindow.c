@@ -146,7 +146,7 @@ WINDOW_EVENT handleEventMainWindow(ChessWindow* src, SDL_Event* event)
 	for(int i=0; i<windata->numOfWidgets; i++)
 	{
 		windata->widgets[i]->handleEvent(windata->widgets[i], event);
-		//SDL_RenderPresent(windata->windowRenderer);
+		SDL_RenderPresent(windata->windowRenderer);
 
 		//if the button is pressed now, or the piece is draged 
 		if (windata->widgets[i]->isActive)

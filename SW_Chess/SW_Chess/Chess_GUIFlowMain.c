@@ -41,14 +41,24 @@ int GUIMain()
 		
 		switch (windowEvent)
 		{
+
 		case CHESS_EMPTY_WINDOWEVENT:
 			break;
 		
 		case CHESS_ERROR_WINDOWEVENT:
 			//quit ? somthing else? look for it in the PDF 
 			break;
-		
-		case CHESS_STARTGAME_WINDOWEVENT:
+
+		case CHESS_SAVE_WINDOWEVENT:
+		case CHESS_SAVE_HOME_WINDOWEVENT:
+			//do the saving 
+			if(windowEvent == CHESS_SAVE_HOME_WINDOWEVENT)
+				currentWindow = swapWindows(currentWindow, CHESS_MAIN_WINDOW, game);
+			else
+				currentWindow = swapWindows(currentWindow, CHESS_GAME_WINDOW, game);
+			//adding event of SAVE_EXIT , but if the saving was taking care in the window so I dont need it -
+			//just return quit from the window, or stay on the same window 
+		case CHESS_STARTGAME_WINDOWEVENT: 
 			//if (currentWindow->game->gameMode == ONE_PLAYER)
 			//	onePFlow(currentWindow); //inside - swap windows
 			//else
@@ -58,32 +68,37 @@ int GUIMain()
 			break;
 
 		case CHESS_RESTART_WINDOWEVENT:
-			////create game window 
-			/*destroyWindow(mainWindow);
-			mainWindow = NULL;
-
-			gameWindow = createGameWindow();
-			if (gameWindow == NULL)
-			{
-			SDL_Quit();
-			return 0;
-			}
-			gameWindow->drawWindow(gameWindow);*/
-
-			//saving previous settings
-			if (game == NULL)
-				printf("ERROR: there is no initial game");
-			
-			/*int prevdiff = currentWindow->game->difficulty;
-			GAME_MODE_PLAYER prevmode = currentWindow->game->gameMode;
-			PLAYER_COLOR prevcolor = currentWindow->game->humanPlayerColor;*/
-		
+			initChessBoard(game);
+			spArrayListDestroy(game->historyArray);
+			game->historyArray = spArrayListCreate(6);
 			currentWindow = swapWindows(currentWindow, CHESS_GAME_WINDOW, game);
-
-			/*currentWindow->game->difficulty = prevdiff;
-			currentWindow->game->gameMode = prevmode;
-			currentWindow->game->humanPlayerColor = prevcolor;*/
 			break;
+		//	////create game window 
+		//	/*destroyWindow(mainWindow);
+		//	mainWindow = NULL;
+
+		//	gameWindow = createGameWindow();
+		//	if (gameWindow == NULL)
+		//	{
+		//	SDL_Quit();
+		//	return 0;
+		//	}
+		//	gameWindow->drawWindow(gameWindow);*/
+
+		//	//saving previous settings
+		//	if (game == NULL)
+		//		printf("ERROR: there is no initial game");
+		//	
+		//	/*int prevdiff = currentWindow->game->difficulty;
+		//	GAME_MODE_PLAYER prevmode = currentWindow->game->gameMode;
+		//	PLAYER_COLOR prevcolor = currentWindow->game->humanPlayerColor;*/
+		//
+		//	currentWindow = swapWindows(currentWindow, CHESS_GAME_WINDOW, game);
+
+		//	/*currentWindow->game->difficulty = prevdiff;
+		//	currentWindow->game->gameMode = prevmode;
+		//	currentWindow->game->humanPlayerColor = prevcolor;*/
+		//	break;
 
 		case CHESS_HOME_WINDOWEVENT:
 			currentWindow = swapWindows(currentWindow, CHESS_MAIN_WINDOW, game);

@@ -189,8 +189,6 @@ void handleButtonEvent(Widget* src, SDL_Event* event)
 			case CHESS_EXPERT_BUTTON:
 				updateButtonTexture(src, "./expert_pressed.bmp");
 				break;
-			//case CHESS_PAWN_WHITE_BUTTON:
-			//	updateButtonTexture(src, "./hard_pressed.bmp");
 			case CHESS_SLOT1_BUTTON:
 				updateButtonTexture(src, "./slot1_pressed.bmp ");
 				break;
@@ -217,6 +215,19 @@ void handleButtonEvent(Widget* src, SDL_Event* event)
 				break;
 			case CHESS_HOME_BUTTON:
 				updateButtonTexture(src, "./home_pressed.bmp");
+				break;
+			case CHESS_PAWN_BLACK_BUTTON:
+			case CHESS_PAWN_WHITE_BUTTON:
+			case CHESS_BISHOP_BLACK_BUTTON:
+			case CHESS_BISHOP_WHITE_BUTTON:
+			case CHESS_KNIGHT_BLACK_BUTTON:
+			case CHESS_KNIGHT_WHITE_BUTTON:
+			case CHESS_ROOK_BLACK_BUTTON:
+			case CHESS_ROOK_WHITE_BUTTON:
+			case CHESS_QUEEN_BLACK_BUTTON:
+			case CHESS_QUEEN_WHITE_BUTTON:
+			case CHESS_KING_WHITE_BUTTON:
+			case CHESS_KING_BLACK_BUTTON:
 				break;
 				
 				

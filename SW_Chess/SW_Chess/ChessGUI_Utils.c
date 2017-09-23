@@ -4,6 +4,7 @@
 #include "ChessGUI_LoadWindow.h"
 #include "ChessGUI_SettingsWindow.h"
 #include "Button.h"
+#include "Chess_FlowOnePlayer.h"
 
 ChessWindow* createWindow(WINDOW_TYPE wintype, Uint32 winMode, chessGame* game)
 {
@@ -151,6 +152,7 @@ void setButtonPlace(int* newX, int* newY, chessGame* game, int locX, int locY, W
 				*newY = game->gameGUIBoard[i][j].y;
 				src->row = i;
 				src->coll = j;
+				return;
 			}
 		}
 	}
@@ -178,7 +180,10 @@ void widgetUpdates(Widget* src, int x, int y, int row, int coll)
 
 void setBoardPieces(ChessWindow* src, chessGameWindow* data)
 {
-	int kStart, kEnd, kInc;
+	int kStart=-1, kEnd=-1, kInc=-1;
+
+	for (int s = 6; s <= 37; s++)
+		data->widgets[s]->isVisible = false;
 
 	for (int i = 0; i < BOARD_SIZE; i++)
 	{
@@ -193,7 +198,7 @@ void setBoardPieces(ChessWindow* src, chessGameWindow* data)
 				break;
 			case PAWN_BLACK:
 				kStart = PAWN_BLACK1;
-				kEnd = PAWN_BLACK8 - 1;
+				kEnd = PAWN_BLACK8;
 				kInc = 2;
 				break;
 			case BISHOP_WHITE:
@@ -246,11 +251,15 @@ void setBoardPieces(ChessWindow* src, chessGameWindow* data)
 				kEnd = KING_BLACK1;
 				kInc = 1;
 				break;
-			case EMPTY_BOARD_POS:
+			case '_':
+				kStart = -1;
+				break;
 			default:
+				kStart = -1;
 				break;
 			}
-			
+			if (kStart == -1)
+				continue;
 			for (int k = kStart; k <= kEnd; k = k + kInc)
 			{
 				if (!data->widgets[k]->isVisible)
@@ -258,6 +267,7 @@ void setBoardPieces(ChessWindow* src, chessGameWindow* data)
 					widgetUpdates(data->widgets[k],
 						src->game->gameGUIBoard[i][j].x, src->game->gameGUIBoard[i][j].y,
 						i, j);
+					data->widgets[k]->isVisible = true;
 					break;
 				}
 			}
@@ -265,38 +275,121 @@ void setBoardPieces(ChessWindow* src, chessGameWindow* data)
 	}
 }
 
-void GUIMove(ChessWindow* src, Widget* currentwidget, SDL_Event* event)
+bool GUIMove(ChessWindow* src, Widget* currentwidget, SDL_Event* event, chessGameWindow* data)
 {
 	int newX, newY;
 	int mouseX, mouseY;
 	SDL_GetMouseState(&mouseX, &mouseY);
 	
-	//check valid move + update location - origin or event 
+	/*there was a GUI move. we get here- 
+	doing the console move and also validate the move
+	after that we update the gui screen to see the finished move*/
+	//check valid move + update location - origin (if move is not valid) or event (mouse current location)
+	
 	if (updateConsoleBoardIfValid(mouseX, mouseY, src->game, currentwidget))
 	{
 		setButtonPlace(&newX, &newY, src->game, event->button.x, event->button.y, currentwidget);
 		updateButtonLocation(currentwidget, newX, newY);
+		//setBoardPieces(src, data);
+		return true;
 	}
 	else
 	{
 		updateButtonLocation(currentwidget
 			, src->game->gameGUIBoard[currentwidget->row][currentwidget->coll].x
 			, src->game->gameGUIBoard[currentwidget->row][currentwidget->coll].y);
-		return;
+		return false;
 	}
 		
-	//if we are here - the move was valid 
-	if (src->game->gameMode == ONE_PLAYER)
-	{
-		//compMove - alex functions
-		//update widgets 
-		//
-	}
-	else if (src->game->gameMode == TWO_PLAYERS)
-	{
-		return; //turn was switched in the setMove function from Chess_gameUtils.c 
-	}
-	//if 1p - comp move - another function :
-	//do the console part , update the screen (how? with the function I wrote - widgetsUpdate)
 
+}
+
+void GUICompMove(ChessWindow* src, chessGameWindow* data)
+{
+	compMove(src->game);
+	//setBoardPieces(src, data);
+
+}
+
+
+
+
+int counterEndMessageTime = 0;
+void showEndOfGameMessage(char* message, char* buttonName)
+{
+	counterEndMessageTime++;
+	/////////////////end of game message box////////////////// 
+	const SDL_MessageBoxButtonData buttons[] = {
+		{ SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT,   0,    buttonName },
+	};
+	const SDL_MessageBoxColorScheme colorScheme = {
+		{ /* .colors (.r, .g, .b) */
+		  /* [SDL_MESSAGEBOX_COLOR_BACKGROUND] */
+			{ 255,   0,   0 },
+			/* [SDL_MESSAGEBOX_COLOR_TEXT] */
+			{ 0, 255,   0 },
+			/* [SDL_MESSAGEBOX_COLOR_BUTTON_BORDER] */
+			{ 255, 255,   0 },
+			/* [SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND] */
+			{ 0,   0, 255 },
+			/* [SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED] */
+			{ 255,   0, 255 }
+		}
+	};
+
+	const SDL_MessageBoxData messageboxdata = {
+		SDL_MESSAGEBOX_INFORMATION,
+		NULL,
+		"Chess!",
+		message,
+		SDL_arraysize(buttons),
+		buttons,
+		&colorScheme
+	};
+
+	int buttonid;
+
+	if (SDL_ShowMessageBox(&messageboxdata, &buttonid) < 0)
+	{
+		printf("ERROR: error displaying message box: %s\n", SDL_GetError());
+		return;
+	}
+	else if (buttonid == 0) // exit
+	{
+		return;
+	}
+	else if (buttonid == -1 && counterEndMessageTime > 10) //no selection
+		return;
+	else
+		showEndOfGameMessage(message, buttonName);
+}
+
+
+int checkGuiGameEnd(ChessWindow* src)
+{
+	char* message = "";
+	char* buttonName = ""; 
+	int res=-1;
+
+	if (isStalemate(src->game))
+	{
+		message = "Stalemate! Game Is Over, Hope you had fun, Alex&Mor";
+		buttonName = "exit";
+		res = STALEMATE;
+	}
+	else if (isCheckmate(src->game))
+	{
+		message = "Checkmate! Game Is Over, Hope you had fun, Alex&Mor";
+		buttonName = "exit";
+		res = CHECKMATE;
+	}
+	else if (isCheck(src->game))
+	{
+		message = "Check! Press the button to continue";
+		buttonName = "continue";
+		res = CHECK;
+	}
+	 if(res!= -1)
+		showEndOfGameMessage(message, buttonName);
+	return res;
 }
