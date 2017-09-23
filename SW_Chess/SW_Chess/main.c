@@ -299,7 +299,7 @@ int main(int argc, const char * argv[]) {
 	////////////////////////////////////////////////////////////////////
 	//////////////////check - MOR - end/////////////////////////////////
     
-     return GUIMain();
+     //return GUIMain();
 	
 	//return 0;
    // chessGame* src = createChessGame(5, TWO_PLAYERS, WHITES, 3);
@@ -345,7 +345,7 @@ int main(int argc, const char * argv[]) {
 //    get_moves(src,0,1);
     //runTestSim(5,3);
     //saveGame(src, "<uos><sj><h>");
- //consoleMode();
+  consoleMode();
     
 //	return 0;
 }

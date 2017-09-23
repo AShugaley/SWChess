@@ -78,7 +78,7 @@ void destroyChessGame(chessGame* src); // D Not Tested
  *
  * @return message representing the result of the command (sucess, invalid move etc)
  */
-CHESS_GAME_MESSAGE setChessMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col, bool needToCheckMoveValidiy, bool isValidForCrowning); // D Not Tested
+CHESS_GAME_MESSAGE setChessMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col, bool needToCheckMoveValidiy, bool isValidForCrowning, int figureIndex); // D Not Tested
 
 /**
  * Checks if move <x,y> -> <v,w> is valid, from the perspective of how the figures move (accoring to chess rules)
@@ -209,5 +209,14 @@ chessGame* loadGmae(const char* filename);
  * returns string figure name
  */
 char* getFigureStringName(char figure);
+
+/**
+ * An undo for GUI mode. Works like a regular (console undo), but retunes a move (and not just
+ * updates position, as we need some backchannel info to the GUI.
+ *
+ *
+ * returns SPArrayListNode undone move
+ */
+SPArrayListNode* GUIModeUndo(chessGame* src);
 
 #endif /* Chess_gameUtils_h */

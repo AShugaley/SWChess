@@ -182,4 +182,6 @@ char getIntFromColumnChar(char col);
 bool checkAvoided(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col);
 
 
+
+
 #endif /* Chess_gameUtilsAux_h */

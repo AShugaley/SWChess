@@ -93,7 +93,7 @@ SPArrayList* allPossibleMoves(chessGame* src, int row, int col){
     for(int i = 0; i < BOARD_SIZE; i++){
         for(int j = 0; j<BOARD_SIZE; j++){
             if(isLegalMove(src, row, col, i, j)){
-                spArrayListAddFirst(array, i, j, row, col, src->gameBoard[i][j],src->gameBoard[row][col]);
+                spArrayListAddFirst(array, i, j, row, col, src->gameBoard[i][j],src->gameBoard[row][col],-1);
             }
         }
     }
@@ -164,7 +164,7 @@ bool isValidMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_po
 
 
 
-CHESS_GAME_MESSAGE setChessMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col, bool needToCheckMoveValidiy, bool isValidForCrowning){
+CHESS_GAME_MESSAGE setChessMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col, bool needToCheckMoveValidiy, bool isValidForCrowning, int figureIndex){
     if(needToCheckMoveValidiy){
         if(src->gameBoard[prev_pos_row][prev_pos_col] == EMPTY_BOARD_POS)
             return CHESS_GAME_INVALID_POSITION;
@@ -180,7 +180,7 @@ CHESS_GAME_MESSAGE setChessMove(chessGame* src, int prev_pos_row, int prev_pos_c
     if(spArrayListIsFull(src->historyArray))
         spArrayListRemoveFirst(src->historyArray);
         
-    spArrayListAddLast(src->historyArray, next_pos_row, next_pos_col, prev_pos_row, prev_pos_col,src->gameBoard[next_pos_row][next_pos_col],src->gameBoard[prev_pos_row][prev_pos_col]);
+    spArrayListAddLast(src->historyArray, next_pos_row, next_pos_col, prev_pos_row, prev_pos_col,src->gameBoard[next_pos_row][next_pos_col],src->gameBoard[prev_pos_row][prev_pos_col],figureIndex);
     src->gameBoard[next_pos_row][next_pos_col] = src->gameBoard[prev_pos_row][prev_pos_col];
     src->gameBoard[prev_pos_row][prev_pos_col] = EMPTY_BOARD_POS;
 //    if(isValidForCrowning) //todo //todelete
@@ -251,7 +251,7 @@ bool isCheckmate(chessGame* src){
                     SPArrayList* moves = allPossibleMoves(gameCopy, i, j);
                     while(!spArrayListIsEmpty(moves)){
                         move = spArrayListGetFirst(moves);
-                        setChessMove(gameCopy, move->prev_pos_row, move->prev_pos_col, move->current_pos_row, move->current_pos_col, false, false);
+                        setChessMove(gameCopy, move->prev_pos_row, move->prev_pos_col, move->current_pos_row, move->current_pos_col, false, false,-1);
                         if(!isUnderPressure(gameCopy, king_row, king_col)){
                             spArrayListDestroy(moves);
                             destroyChessGame(gameCopy);
@@ -272,7 +272,7 @@ bool isCheckmate(chessGame* src){
                         move = spArrayListGetFirst(moves);
                      
                         
-                        setChessMove(gameCopy, move->prev_pos_row, move->prev_pos_col, move->current_pos_row, move->current_pos_col, false, false);
+                        setChessMove(gameCopy, move->prev_pos_row, move->prev_pos_col, move->current_pos_row, move->current_pos_col, false, false,-1);
                  
                         if(!isUnderPressure(gameCopy, king_row, king_col)){
                             spArrayListDestroy(moves);
@@ -625,4 +625,16 @@ void checkGameEnd(chessGame* src){
 void terminateGame(chessGame* src){
     destroyChessGame(src);
     exit(0);
+}
+
+SPArrayListNode* GUIModeUndo(chessGame* src){
+    
+    if(spArrayListIsEmpty(src->historyArray))
+        return NULL;
+    SPArrayListNode* move = spArrayListGetLast(src->historyArray);
+    spArrayListRemoveLast(src->historyArray);
+    src->gameBoard[move->prev_pos_row][move->prev_pos_col] = move->moving_figure;
+    src->gameBoard[move->current_pos_row][move->current_pos_col] = move->prev_pos_fig;
+    switchCurrentPlayer(src);
+    return move;
 }

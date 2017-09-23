@@ -89,6 +89,7 @@ typedef struct sp_array_list_node {
     int prev_pos_col;
     char prev_pos_fig;
     char moving_figure;
+    int figureIndex;
 } SPArrayListNode;
 
 

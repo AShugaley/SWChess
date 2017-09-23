@@ -32,6 +32,7 @@ int GUIMain()
 
 	SDL_Event event;
 	WINDOW_EVENT windowEvent;
+    SDL_Delay(16);
 	while (1)
 	{
 		SDL_WaitEvent(&event);
@@ -114,7 +115,14 @@ int GUIMain()
 			return 0;
 		}
 	}
-	//SDL_Delay(16);
+
+	SDL_Delay(16);
+    
+	destroyWindow(currentWindow);
+	SDL_Quit();
+	return 0;
+}
+
 
 
 	destroyChessGame(game);
