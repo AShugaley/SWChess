@@ -5,48 +5,49 @@
 #include "ChessGUI_SettingsWindow.h"
 
 
-ChessWindow* createWindow(WINDOW_TYPE wintype, Uint32 winMode)
+ChessWindow* createWindow(WINDOW_TYPE wintype, Uint32 winMode, chessGame* game)
 {
 	ChessWindow* res = NULL;
 	if (wintype == CHESS_LOAD_WINDOW)
-		res = createLoadWindow(winMode);
+		res = createLoadWindow(winMode, game);
 	else if (wintype == CHESS_MAIN_WINDOW)
-		res = createMainWindow(winMode);
+		res = createMainWindow(winMode, game);
 	else if (wintype == CHESS_GAME_WINDOW)
-		res = createGameWindow(winMode);
+		res = createGameWindow(winMode, game);
 	else if (wintype == CHESS_SETTINGS_WINDOW)
-		res = createSettingsWindow(winMode);
+		res = createSettingsWindow(winMode, game);
 //	res->prevWindow = NULL;
 	return res;
 }
 
+//
+//ChessWindow* copyWindow(ChessWindow* src)
+//{
+//	ChessWindow* res = NULL;
+//
+//	res = createWindow(src->type, SDL_WINDOW_HIDDEN);
+//
+//
+//	///////how to copy the above ????? 
+//	//res->data = src->data;//////////////////////////////////
+//	//res->destroyWindow = src->destroyWindow;
+//	//res->drawWindow = src->drawWindow;
+//	//res->handleEventWindow = src->handleEventWindow;
+//	//res->type = src->type;
+//
+//	return res;
+//}
 
-ChessWindow* copyWindow(ChessWindow* src)
+
+
+
+ChessWindow* swapWindows(ChessWindow* oldWindow, WINDOW_TYPE type, chessGame* game)
 {
-	ChessWindow* res = NULL;
-
-	res = createWindow(src->type, SDL_WINDOW_HIDDEN);
-
-
-	///////how to copy the above ????? 
-	//res->data = src->data;//////////////////////////////////
-	//res->destroyWindow = src->destroyWindow;
-	//res->drawWindow = src->drawWindow;
-	//res->handleEventWindow = src->handleEventWindow;
-	//res->type = src->type;
-
-	return res;
-}
-
-
-
-
-ChessWindow* swapWindows(ChessWindow* oldWindow, WINDOW_TYPE type)
-{
+//	chessGame* newGame = copyChessGame(game);
 	destroyWindow(oldWindow);
 	ChessWindow* newWindow = NULL;
-	newWindow = createWindow(type, SDL_WINDOW_OPENGL);
-	
+	newWindow = createWindow(type, SDL_WINDOW_OPENGL, game);
+	//game = newGame; //update our main game pointer
 	if (newWindow == NULL)
 	{
 		SDL_Quit();

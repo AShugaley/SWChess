@@ -27,6 +27,40 @@
 static const game_width = 900;
 static const game_height = 700;
 
+/////////////////for the exit message box////////////////// 
+const SDL_MessageBoxButtonData buttons[] = {
+	{ SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT,   0,    "yes" },
+	{ 0,										 1,     "no" },
+	{ SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT,   2, "cancel" },
+}; 
+const SDL_MessageBoxColorScheme colorScheme = {
+	{ /* .colors (.r, .g, .b) */
+	  /* [SDL_MESSAGEBOX_COLOR_BACKGROUND] */
+		{ 255,   0,   0 },
+		/* [SDL_MESSAGEBOX_COLOR_TEXT] */
+		{ 0, 255,   0 },
+		/* [SDL_MESSAGEBOX_COLOR_BUTTON_BORDER] */
+		{ 255, 255,   0 },
+		/* [SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND] */
+		{ 0,   0, 255 },
+		/* [SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED] */
+		{ 255,   0, 255 }
+	}
+};
+
+const SDL_MessageBoxData messageboxdata = {
+	SDL_MESSAGEBOX_INFORMATION,
+	NULL,
+	"Chess!",
+	"Do you want to save changes?",
+	SDL_arraysize(buttons),
+	buttons,
+	&colorScheme
+};
+
+int buttonid;
+
+
 //Helper function to create buttons in the simple window;
 Widget** createGameWindowWidgets(SDL_Renderer* renderer, ChessWindow* window)
 {	
@@ -211,13 +245,13 @@ Widget** createGameWindowWidgets(SDL_Renderer* renderer, ChessWindow* window)
 }
 
 
-ChessWindow* createGameWindow(Uint32 winMode)
+ChessWindow* createGameWindow(Uint32 winMode, chessGame* game)
 {
 	ChessWindow* res = malloc(sizeof(ChessWindow));
 	chessGameWindow* data = malloc(sizeof(chessGameWindow));
 	SDL_Window* window = SDL_CreateWindow("CHESS!", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, game_width, game_height, winMode);
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-	chessGame* game = createChessGame(6, ONE_PLAYER, WHITES, 2);
+	//chessGame* game = createChessGame(6, ONE_PLAYER, WHITES, 2);
 	if (game == NULL)
 	{
 		destroyChessGame(game);
@@ -359,8 +393,19 @@ WINDOW_EVENT handleEventGameWindow(ChessWindow* src, SDL_Event* event)
 					case CHESS_HOME_BUTTON:
 						return CHESS_HOME_WINDOWEVENT;
 					case CHESS_QUIT_BUTTON:
-						return CHESS_QUIT_WINDOWEVENT;
-					
+						if (SDL_ShowMessageBox(&messageboxdata, &buttonid) < 0)
+						{
+							printf("ERROR: error displaying message box: %s\n", SDL_GetError());
+							return CHESS_ERROR_WINDOWEVENT;
+						}
+						else if (buttonid == 0) // yes
+						{
+							return CHESS_SAVE_WINDOWEVENT;
+						}
+						else if (buttonid == 1) // no
+							return CHESS_QUIT_WINDOWEVENT;
+						else if (buttonid == 2) //cancel
+							return CHESS_EMPTY_WINDOWEVENT;
 					case CHESS_PAWN_BLACK_BUTTON:
 					case CHESS_PAWN_WHITE_BUTTON:
 					case CHESS_BISHOP_BLACK_BUTTON:

@@ -12,17 +12,19 @@ int GUIMain()
 		return 1;
 	}
 
-	ChessWindow* currentWindow = createWindow(CHESS_MAIN_WINDOW, SDL_WINDOW_OPENGL);
-	/*chessGame* game = createChessGame(6, ONE_PLAYER, WHITES, 2);
+	//this game pointer will be updated along the game, here and in the game&settings windows 
+	chessGame* game = createChessGame(6, ONE_PLAYER, WHITES, 2); //default args
 	if (game == NULL)
 		destroyChessGame(game);
-	currentWindow->game = game;
-*/
+
+	ChessWindow* currentWindow = createWindow(CHESS_MAIN_WINDOW, SDL_WINDOW_OPENGL, game);
 	if (currentWindow == NULL)
 	{
 		SDL_Quit();
 		return 0;
 	}
+	
+	currentWindow->game = game;
 
 	currentWindow->drawWindow(currentWindow);
 	WINDOW_TYPE prev = CHESS_MAIN_WINDOW; //default, just for error cases
@@ -42,18 +44,20 @@ int GUIMain()
 		case CHESS_EMPTY_WINDOWEVENT:
 			break;
 		
+		case CHESS_ERROR_WINDOWEVENT:
+			//quit ? somthing else? look for it in the PDF 
+			break;
+		
 		case CHESS_STARTGAME_WINDOWEVENT:
-		{
 			//if (currentWindow->game->gameMode == ONE_PLAYER)
 			//	onePFlow(currentWindow); //inside - swap windows
 			//else
 			//	twoPFlow(currentWindow);//inside - swap windows
 
-			currentWindow = swapWindows(currentWindow, CHESS_GAME_WINDOW);
+			currentWindow = swapWindows(currentWindow, CHESS_GAME_WINDOW, game);
 			break;
-		}
+
 		case CHESS_RESTART_WINDOWEVENT:
-		{
 			////create game window 
 			/*destroyWindow(mainWindow);
 			mainWindow = NULL;
@@ -66,124 +70,52 @@ int GUIMain()
 			}
 			gameWindow->drawWindow(gameWindow);*/
 
-			//want to save the previous settings
-			if (currentWindow->game == NULL)
-				printf("there is no initial game");
+			//saving previous settings
+			if (game == NULL)
+				printf("ERROR: there is no initial game");
 			
-			int prevdiff = currentWindow->game->difficulty;
+			/*int prevdiff = currentWindow->game->difficulty;
 			GAME_MODE_PLAYER prevmode = currentWindow->game->gameMode;
-			PLAYER_COLOR prevcolor = currentWindow->game->humanPlayerColor;
+			PLAYER_COLOR prevcolor = currentWindow->game->humanPlayerColor;*/
 		
-			currentWindow = swapWindows(currentWindow, CHESS_GAME_WINDOW);
+			currentWindow = swapWindows(currentWindow, CHESS_GAME_WINDOW, game);
 
-			currentWindow->game->difficulty = prevdiff;
+			/*currentWindow->game->difficulty = prevdiff;
 			currentWindow->game->gameMode = prevmode;
-			currentWindow->game->humanPlayerColor = prevcolor;
-
-		//	currentWindow->game = createChessGame(6, ONE_PLAYER, WHITES, 2); //default args
+			currentWindow->game->humanPlayerColor = prevcolor;*/
 			break;
 
-		}
 		case CHESS_HOME_WINDOWEVENT:
-		{
-			currentWindow = swapWindows(currentWindow, CHESS_MAIN_WINDOW);
+			currentWindow = swapWindows(currentWindow, CHESS_MAIN_WINDOW, game);
 			//currentWindow->prevWindow = NULL;
 			break;
-		}
+		
 		case CHESS_SETTINGS_WINDOWEVENT:
-		{
-			currentWindow = swapWindows(currentWindow, CHESS_SETTINGS_WINDOW);
+			currentWindow = swapWindows(currentWindow, CHESS_SETTINGS_WINDOW, game);
 			prev = CHESS_MAIN_WINDOW;
 			break;
-		}
+		
 		case CHESS_LOAD_WINDOWEVENT:
-		{
+			//load the chosen game
 			break;
-			//load the chosen game 
-		}
+
+		//open load screen (from the game window for example)
 		case CHESS_LOAD_SCREEN_WINDOWEVENT:
 			prev = currentWindow->type;
-			currentWindow = swapWindows(currentWindow, CHESS_LOAD_WINDOW);
-			
+			currentWindow = swapWindows(currentWindow, CHESS_LOAD_WINDOW, game);
 			break;
-			//take care of prev type 
 		case CHESS_BACK_WINDOWEVENT:
-		{
-			currentWindow = swapWindows(currentWindow, prev);
+			currentWindow = swapWindows(currentWindow, prev, game);
 			break;
-		}
 		case CHESS_QUIT_WINDOWEVENT:
-		{
-			if (currentWindow->type == CHESS_MAIN_WINDOW)
-			{
-				destroyWindow(currentWindow);
-			}
-			else if (currentWindow->type == CHESS_GAME_WINDOW)
-			{
-				const SDL_MessageBoxButtonData buttons[] = {
-					{ SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT,   0,    "yes" },/* .flags, .buttonid, .text */
-					{ 0,										 1,     "no" },
-					{ SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT,   2, "cancel" },
-				};
-				const SDL_MessageBoxColorScheme colorScheme = {
-					{ /* .colors (.r, .g, .b) */
-					  /* [SDL_MESSAGEBOX_COLOR_BACKGROUND] */
-						{ 255,   0,   0 },
-						/* [SDL_MESSAGEBOX_COLOR_TEXT] */
-						{ 0, 255,   0 },
-						/* [SDL_MESSAGEBOX_COLOR_BUTTON_BORDER] */
-						{ 255, 255,   0 },
-						/* [SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND] */
-						{ 0,   0, 255 },
-						/* [SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED] */
-						{ 255,   0, 255 }
-					}
-				};
-				const SDL_MessageBoxData messageboxdata = {
-					SDL_MESSAGEBOX_INFORMATION, /* .flags */
-					NULL, /* .window */
-					"Chess!", /* .title */
-					"Do you want to save changes?", /* .message */
-					SDL_arraysize(buttons), /* .numbuttons */
-					buttons, /* .buttons */
-					&colorScheme /* .colorScheme */
-				};
-				int buttonid;
-				if (SDL_ShowMessageBox(&messageboxdata, &buttonid) < 0) {
-					SDL_Log("error displaying message box");
-					return 1;
-				}
-				else if (buttonid == 0) // yes
-				{
-					windowEvent = CHESS_SAVE_WINDOWEVENT;
-					break;
-				}
-				else if (buttonid == 2) // cancel
-					break;
-			}
-
+			destroyWindow(currentWindow);
 			SDL_Quit();
 			return 0;
 		}
-		}
 	}
 	//SDL_Delay(16);
+	destroyChessGame(game);
 	destroyWindow(currentWindow);
 	SDL_Quit();
 	return 0;
 }
-
-
-/*
-window :
-widgets = the pieces
-the window acts as usual
-when dropping a piece it will return the mouse location
-
-
-
-GUI flow -
-what I alrready wrote + update the game 
-
-
-*/

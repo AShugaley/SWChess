@@ -58,7 +58,8 @@ chessGame* copyChessGame(chessGame* src){
     
 }
 
-void destroyChessGame(chessGame* src){
+void destroyChessGame(chessGame* src)
+{
     if (src != NULL)
     {
         spArrayListDestroy(src->historyArray);

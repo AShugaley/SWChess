@@ -38,23 +38,23 @@ Widget** createMainWindowWidgets(SDL_Renderer* renderer)
 }
 
 
-ChessWindow* createMainWindow(Uint32 winMode)
+ChessWindow* createMainWindow(Uint32 winMode, chessGame* game)
 {
 	ChessWindow* res = malloc(sizeof(ChessWindow));
 	chessMainWindow* data = malloc(sizeof(chessMainWindow));
 	SDL_Window* window = SDL_CreateWindow("CHESS!", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, winMode);
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-	chessGame* game = createChessGame(6, ONE_PLAYER, WHITES, 2);
+	//chessGame* game = createChessGame(6, ONE_PLAYER, WHITES, 2);
 
 	Widget** widgets = createMainWindowWidgets(renderer);
-		if (res == NULL || data == NULL || window == NULL || renderer == NULL || widgets == NULL || game == NULL)
+		if (res == NULL || data == NULL || window == NULL || renderer == NULL || widgets == NULL )//|| game == NULL)
 	{
 		free(res);
 		free(data);
 		free(widgets);
 		SDL_DestroyRenderer(renderer); //NULL safe
 		SDL_DestroyWindow(window);	  //NULL safe
-		destroyChessGame(game);
+	//	destroyChessGame(game);
 
 		return NULL ;
 	}

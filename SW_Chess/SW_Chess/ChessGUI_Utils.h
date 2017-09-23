@@ -6,9 +6,9 @@
 #include "Chess_GUIFlowMain.h"
 #include "Chess_def.h"
 
-ChessWindow* swapWindows(ChessWindow* oldWindow, WINDOW_TYPE type);
-ChessWindow* copyWindow(ChessWindow* src);
-ChessWindow* createWindow(WINDOW_TYPE wintype, Uint32 winMode);
+ChessWindow* swapWindows(ChessWindow* oldWindow, WINDOW_TYPE type, chessGame* game);
+//ChessWindow* copyWindow(ChessWindow* src);
+ChessWindow* createWindow(WINDOW_TYPE wintype, Uint32 winMode, chessGame* game);
 void initGameGUIBoard(chessGame* game);
 void drawGameBoard(chessGameWindow* win, chessGame* game);
 bool isValidPlace(int x, int y, chessGame* game);

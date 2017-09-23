@@ -15,7 +15,7 @@ struct chess_mainWindow {
 	int numOfWidgets;
 };
 
-ChessWindow* createMainWindow(Uint32 winMode);
+ChessWindow* createMainWindow(Uint32 winMode, chessGame* game);
 void destroyMainWindow(ChessWindow* src);
 void drawMainWindow(ChessWindow* src);
 WINDOW_EVENT handleEventMainWindow(ChessWindow* src, SDL_Event* event);

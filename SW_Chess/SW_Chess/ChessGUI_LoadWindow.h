@@ -16,7 +16,7 @@ struct chess_LoadWindow {
 	//add legal slots - array of the slots to present (? )
 };
 
-ChessWindow* createLoadWindow(Uint32 winMode);
+ChessWindow* createLoadWindow(Uint32 winMode, chessGame* game);
 void destroyLoadWindow(ChessWindow* src);
 void drawLoadWindow(ChessWindow* src);
 WINDOW_EVENT handleEventLoadWindow(ChessWindow* src, SDL_Event* event);
