@@ -415,6 +415,45 @@ void get_moves(chessGame* src, int row, int col){
 }
 
 
+void loadGameInPlace(const char* filename, chessGame* src){
+    chessGame* newGame = loadGmae(filename);
+    if(newGame == NULL)
+        return;
+    for(int i = 0; i<8; i++)
+        for(int j = 0; j<8; j++)
+            src->gameBoard[i][j] = newGame->gameBoard[i][j];
+    src->difficulty = newGame->difficulty;
+    src->gameMode = newGame->gameMode;
+    src->humanPlayerColor = newGame->humanPlayerColor;
+    spArrayListDestroy(src->historyArray);
+    src->historyArray = spArrayListCopy(newGame->historyArray);
+    src->currentPlayer = newGame->currentPlayer;
+    src->uiMode = newGame->uiMode;
+    destroyChessGame(newGame);
+    return;
+}
+
+
+void saveGameInLastestSlot(chessGame* src){
+    chessGame* tempGame = loadGmae(SAVE_SLOT_4);
+    if(tempGame)
+        saveGame(tempGame, SAVE_SLOT_5);
+    destroyChessGame(tempGame);
+    tempGame = loadGmae(SAVE_SLOT_3);
+    if(tempGame)
+        saveGame(tempGame, SAVE_SLOT_4);
+    destroyChessGame(tempGame);
+    tempGame = loadGmae(SAVE_SLOT_2);
+    if(tempGame)
+        saveGame(tempGame, SAVE_SLOT_3);
+    destroyChessGame(tempGame);
+    tempGame = loadGmae(SAVE_SLOT_1);
+    if(tempGame)
+        saveGame(tempGame, SAVE_SLOT_2);
+    destroyChessGame(tempGame);
+    saveGame(src, SAVE_SLOT_1);
+}
+
 /* Does not check if file is valid (in correct format */
 chessGame* loadGmae(const char* filename){
     chessGame* src = createChessGame(6, 2, 0, 1);
@@ -452,7 +491,7 @@ chessGame* loadGmae(const char* filename){
     strcpy(currentStr, buffer);
     
     currentToken = strtok(currentStr, delimiter);
-    
+    free(buffer);
     /* Now we parse it */
     while(strncmp(currentToken,"/game",5) != 0){
 

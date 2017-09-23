@@ -70,7 +70,7 @@ ChessWindow* createLoadWindow(Uint32 winMode, chessGame* game)
 	//chessGame* game = createChessGame(6, ONE_PLAYER, WHITES, 2);
 
 	Widget** widgets = createLoadWindowWidgets(renderer);
-	if (res == NULL || data == NULL || window == NULL || renderer == NULL || widgets == NULL )//|| game == NULL)
+	if (res == NULL || data == NULL || window == NULL || renderer == NULL || widgets == NULL )//|| game == NULL) //No need to check game alloc - already done in createChessGame.
 	{
 		free(res);
 		free(data);
@@ -146,6 +146,12 @@ void drawLoadWindow(ChessWindow* src)
 	SDL_RenderCopy(data->windowRenderer, background, NULL, NULL);
 	SDL_DestroyTexture(background);
 	
+    if(checkIfPathIsLegal(SAVE_SLOT_1)){ data->widgets[2]->isVisible = true;} else { data->widgets[2]->isVisible = false;}
+    if(checkIfPathIsLegal(SAVE_SLOT_2)){ data->widgets[2]->isVisible = true;} else { data->widgets[2]->isVisible = false;}
+    if(checkIfPathIsLegal(SAVE_SLOT_3)){ data->widgets[2]->isVisible = true;} else { data->widgets[2]->isVisible = false;}
+    if(checkIfPathIsLegal(SAVE_SLOT_4)){ data->widgets[2]->isVisible = true;} else { data->widgets[2]->isVisible = false;}
+    if(checkIfPathIsLegal(SAVE_SLOT_5)){ data->widgets[2]->isVisible = true;} else { data->widgets[2]->isVisible = false;}
+    
 	//Draw window
 	for (int i=0; i < data->numOfWidgets; i++)
 	{
@@ -168,6 +174,7 @@ WINDOW_EVENT handleEventLoadWindow(ChessWindow* src, SDL_Event* event)
 	chessLoadWindow* windata = (chessLoadWindow*)src->data;
 
 	WINDOW_EVENT eventType = CHESS_EMPTY_WINDOWEVENT;
+    int chosenSlot = -1;
 
 
 
@@ -189,8 +196,30 @@ WINDOW_EVENT handleEventLoadWindow(ChessWindow* src, SDL_Event* event)
 					case CHESS_BACK_BUTTON:
 						return CHESS_BACK_WINDOWEVENT;
 					case CHESS_LOADER_INSIDE_BUTTON:
-						return CHESS_LOAD_WINDOWEVENT;
+                        if(chosenSlot == -1) /* I'm not sure this can happen, anyway this means no slot was chosen */
+                            return CHESS_LOAD_WINDOWEVENT;
+                        if(chosenSlot == 1){
+                                loadGameInPlace(SAVE_SLOT_1,src->game);
+                                return CHESS_LOAD_WINDOWEVENT;
+                        }
+                        if(chosenSlot == 2){
+                                loadGameInPlace(SAVE_SLOT_2,src->game);
+                                return CHESS_LOAD_WINDOWEVENT;
+                        }
+                        if(chosenSlot == 3){
+                                loadGameInPlace(SAVE_SLOT_3,src->game);
+                                return CHESS_LOAD_WINDOWEVENT;
+                        }
+                        if(chosenSlot == 4){
+                                loadGameInPlace(SAVE_SLOT_4,src->game);
+                                return CHESS_LOAD_WINDOWEVENT;
+                        }
+                        if(chosenSlot == 5){
+                                loadGameInPlace(SAVE_SLOT_5,src->game);
+                                return CHESS_LOAD_WINDOWEVENT;
+                        }
 					case CHESS_SLOT1_BUTTON:
+                        chosenSlot = 1;
 						updateButtonTexture(windata->widgets[SLOT2], "./slot2_active.bmp");
 						updateButtonTexture(windata->widgets[SLOT3], "./slot3_active.bmp");
 						updateButtonTexture(windata->widgets[SLOT4], "./slot4_active.bmp");
@@ -198,6 +227,7 @@ WINDOW_EVENT handleEventLoadWindow(ChessWindow* src, SDL_Event* event)
 						windata->widgets[LOAD]->isActivateLegal = true;
 						break;					
 					case CHESS_SLOT2_BUTTON:
+                        chosenSlot = 2;
 						updateButtonTexture(windata->widgets[SLOT1], "./slot1_active.bmp");
 						updateButtonTexture(windata->widgets[SLOT3], "./slot3_active.bmp");
 						updateButtonTexture(windata->widgets[SLOT4], "./slot4_active.bmp");
@@ -205,6 +235,7 @@ WINDOW_EVENT handleEventLoadWindow(ChessWindow* src, SDL_Event* event)
 						windata->widgets[LOAD]->isActivateLegal = true;
 						break;
 					case CHESS_SLOT3_BUTTON:
+                        chosenSlot = 3;
 						updateButtonTexture(windata->widgets[SLOT1], "./slot1_active.bmp");
 						updateButtonTexture(windata->widgets[SLOT2], "./slot2_active.bmp");
 						updateButtonTexture(windata->widgets[SLOT4], "./slot4_active.bmp");
@@ -212,6 +243,7 @@ WINDOW_EVENT handleEventLoadWindow(ChessWindow* src, SDL_Event* event)
 						windata->widgets[LOAD]->isActivateLegal = true;
 						break;
 					case CHESS_SLOT4_BUTTON:
+                        chosenSlot = 4;
 						updateButtonTexture(windata->widgets[SLOT2], "./slot2_active.bmp");
 						updateButtonTexture(windata->widgets[SLOT3], "./slot3_active.bmp");
 						updateButtonTexture(windata->widgets[SLOT1], "./slot1_active.bmp");
@@ -219,6 +251,7 @@ WINDOW_EVENT handleEventLoadWindow(ChessWindow* src, SDL_Event* event)
 						windata->widgets[LOAD]->isActivateLegal = true;
 						break;
 					case CHESS_SLOT5_BUTTON:
+                        chosenSlot = 5;
 						updateButtonTexture(windata->widgets[SLOT2], "./slot2_active.bmp");
 						updateButtonTexture(windata->widgets[SLOT3], "./slot3_active.bmp");
 						updateButtonTexture(windata->widgets[SLOT4], "./slot4_active.bmp");
@@ -228,9 +261,9 @@ WINDOW_EVENT handleEventLoadWindow(ChessWindow* src, SDL_Event* event)
 					}
 					drawLoadWindow(src);
 				}
-			}
+            }
 			break;
-		}
+		} //ummm - isn't this a rather strange loop? I mean, it will alwayes break, can be an if.
 	}
 		
 		

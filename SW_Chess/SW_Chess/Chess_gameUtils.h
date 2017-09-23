@@ -29,6 +29,7 @@
  * isStalemate                 - Checks for a chess tie
  * saveGame                    - saves the game to XML file
  * loadGame                    - loads a game from XML file
+ * loadGameInPlace             - loads a game from XML file in place of a received game
  * get_moves                   - Prints all the moves from allPossibleMoves func in a readble format
  * getCurrentPlayerStringName  - Retunes a string represenitg the current player (white/black)
  * checkGameEnd                - Checks if there's a check\tie\checkmate
@@ -148,6 +149,23 @@ bool isStalemate(chessGame* src); // D Not Tested
  */
 bool saveGame(chessGame* src, const char* filename);
 
+
+
+/**
+ * Rotates the saved slotes
+ * i.e, if all 5 slots are full, saves src to slot_1, while copying what was in slot_1 to slot_2 etc
+ * The game in slot_5 will be overwriten.
+ *
+ * returns nothing
+ */
+void saveGameInLastestSlot(chessGame* src);
+
+/**
+ * Loads a new game to src (same place in memory)
+ *
+ * returns nothing
+ */
+void loadGameInPlace(const char* filename, chessGame* src);
 /**
  * Prints all possible moves by figure at <x,y>, in the requested format.
  *

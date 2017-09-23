@@ -385,7 +385,9 @@ WINDOW_EVENT handleEventGameWindow(ChessWindow* src, SDL_Event* event)
 					case CHESS_RESTART_BUTTON: // think about it 
 						return CHESS_STARTGAME_WINDOWEVENT;
 					case CHESS_SAVE_BUTTON:
-						return CHESS_SAVE_WINDOWEVENT;
+                            /* I think that should do it. */
+                            saveGameInLastestSlot(src->game);
+						return CHESS_SAVE_WINDOWEVENT; /* why are we returning? The game should continue */
 					case CHESS_LOAD_BUTTON:
 						return CHESS_LOAD_SCREEN_WINDOWEVENT;
 					case CHESS_UNDO_BUTTON:

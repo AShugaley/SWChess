@@ -182,6 +182,14 @@ char getIntFromColumnChar(char col);
 bool checkAvoided(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col);
 
 
-
+/**
+ * Checks if file exists
+ *
+ * Gets a path and checks if we can open the file - used in the GUI in order to determine which slots
+ * include saved games;
+ *
+ * Returns true if exists, false otherwise
+ */
+bool checkIfPathIsLegal(const char* filename);
 
 #endif /* Chess_gameUtilsAux_h */

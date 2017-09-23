@@ -155,4 +155,14 @@ typedef struct chess_game {
 
 #define EMPTY_BOARD_POS '_'
 
+
+
+
+
+#define SAVE_SLOT_1 "./savedgames/game1.xml"
+#define SAVE_SLOT_2 "./savedgames/game2.xml"
+#define SAVE_SLOT_3 "./savedgames/game3.xml"
+#define SAVE_SLOT_4 "./savedgames/game4.xml"
+#define SAVE_SLOT_5 "./savedgames/game5.xml"
+
 #endif /* Chess_def_h */

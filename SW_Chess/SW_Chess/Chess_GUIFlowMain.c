@@ -98,7 +98,11 @@ int GUIMain()
 			break;
 		
 		case CHESS_LOAD_WINDOWEVENT:
-			//load the chosen game
+			// the loaded game is now at currentWindow->game, pointers were updated in place
+            // so mainwindow->game is ALSO the loaded game.
+            // if the line below won't work, try the commented one
+            currentWindow = swapWindows(currentWindow, CHESS_GAME_WINDOW, game);
+            // currentWindow = swapWindows(currentWindow, CHESS_GAME_WINDOW, currentWindow->game);
 			break;
 
 		//open load screen (from the game window for example)
@@ -116,7 +120,7 @@ int GUIMain()
 		}
 	}
 
-	SDL_Delay(16);
+	//SDL_Delay(16);
     
 	destroyWindow(currentWindow);
 	SDL_Quit();
@@ -125,11 +129,4 @@ int GUIMain()
 
 
 
-	destroyChessGame(game);
-
-
-	destroyWindow(currentWindow);
-	SDL_Quit();
-	return 0;
-}
 
