@@ -84,6 +84,16 @@ Widget** createSettingsWindowWidgets(SDL_Renderer* renderer)
 			return NULL;
 		}
 	}
+
+	for (int i = 0; i < 12; i++)
+	{
+		widgets[i]->isVisible = false;
+		widgets[i]->isActive = false;
+		widgets[i]->isDragLegal = false;
+		widgets[i]->isMoving = false;
+
+	}
+
 	return widgets;
 }
 
@@ -115,14 +125,7 @@ ChessWindow* createSettingsWindow(Uint32 winMode, chessGame* game)
 	data->window = window;
 	data->windowRenderer = renderer;
 	
-	for (int i = 0; i < data->numOfWidgets; i++)
-	{
-		data->Widgets[i]->isVisible = false;
-		data->Widgets[i]->isActive  = false; 
-		data->Widgets[i]->isDragLegal = false;
-		data->Widgets[i]->isMoving = false;
-
-	}
+	
 	data->Widgets[NEXT]->isVisible = true;
 	data->Widgets[BACK]->isVisible = true;
 	data->Widgets[ONEP]->isVisible = true;
@@ -245,16 +248,14 @@ WINDOW_EVENT handleEventSettingsWindow(ChessWindow* src, SDL_Event* event)
 						SDL_DestroyRenderer(windata->windowRenderer);
 						free(windata->Widgets);
 
-						SDL_Renderer* rendererNew = SDL_CreateRenderer(windata->window, -1, SDL_RENDERER_ACCELERATED);
-						Widget** widgetsNew = createSettingsWindowWidgets(windata->windowRenderer);
-						if (rendererNew == NULL || windata->Widgets == NULL)
+						windata->windowRenderer = SDL_CreateRenderer(windata->window, -1, SDL_RENDERER_ACCELERATED);
+						windata->Widgets = createSettingsWindowWidgets(windata->windowRenderer);
+						if (windata->windowRenderer == NULL || windata->Widgets == NULL)
 						{
-							free(widgetsNew);
-							SDL_DestroyRenderer(rendererNew);
+							free(windata->Widgets);
+							SDL_DestroyRenderer(windata->windowRenderer);
 							return CHESS_EMPTY_WINDOWEVENT;		//return CHESS_ERROR_EVENT ???????????????????
 						}
-						windata->windowRenderer = rendererNew;
-						windata->Widgets = widgetsNew;
 
 						if (windata->setType == CHESS_MODE_SET)
 						{
