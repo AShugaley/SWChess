@@ -3,8 +3,6 @@
 #include "Button.h"
 #include "Chess_gameUtils.h"
 
-#include <Windows.h>
-
 
 static const settings_width = 550;
 static const settings_height = 700;
@@ -204,7 +202,7 @@ void drawSettingsWindow(ChessWindow* src)
 			updateButtonTexture(data->Widgets[i], "./start_active.bmp");
 	}
 	
-	Sleep(50);
+	SDL_Delay(50);
 	SDL_RenderPresent(data->windowRenderer);
 }
 

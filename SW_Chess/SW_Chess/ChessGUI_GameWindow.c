@@ -4,9 +4,6 @@
 #include "ChessGUI_Utils.h"
 #include "Chess_gameUtils.h"
 
-#include <Windows.h>
-
-
 
 
 static const game_width = 900;
@@ -473,7 +470,7 @@ WINDOW_EVENT handleEventGameWindow(ChessWindow* src, SDL_Event* event)
 								drawGameWindow(src);
 								GUICompMove(src, windata);
 								drawGameWindow(src);
-								Sleep(50);
+								SDL_Delay(50);
 								endStatus = checkGuiGameEnd(src);
 								if (endStatus == STALEMATE || endStatus == CHECKMATE)
 									return CHESS_QUIT_WINDOWEVENT;
