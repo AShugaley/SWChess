@@ -3,6 +3,9 @@
 #include "Button.h"
 #include "Chess_gameUtils.h"
 
+#include <Windows.h>
+
+
 static const settings_width = 550;
 static const settings_height = 700;
 
@@ -117,6 +120,7 @@ ChessWindow* createSettingsWindow(Uint32 winMode, chessGame* game)
 		data->Widgets[i]->isVisible = false;
 		data->Widgets[i]->isActive  = false; 
 		data->Widgets[i]->isDragLegal = false;
+		data->Widgets[i]->isMoving = false;
 
 	}
 	data->Widgets[NEXT]->isVisible = true;
@@ -197,6 +201,7 @@ void drawSettingsWindow(ChessWindow* src)
 			updateButtonTexture(data->Widgets[i], "./start_active.bmp");
 	}
 	
+	Sleep(50);
 	SDL_RenderPresent(data->windowRenderer);
 }
 
@@ -378,12 +383,13 @@ WINDOW_EVENT handleEventSettingsWindow(ChessWindow* src, SDL_Event* event)
 					case CHESS_WHITE_BUTTON:
 						updateButtonTexture(windata->Widgets[BLACK], "./black_active.bmp");
 						windata->Widgets[i]->isActive = false;
-						if (!windata->Widgets[START]->isActivateLegal)
+						if (!(windata->Widgets[START]->isActivateLegal))
 						{
 							updateButtonTexture(windata->Widgets[START], "./start_active.bmp");
 							windata->Widgets[START]->isActivateLegal = true;
 						}
 						src->game->humanPlayerColor = WHITES;
+
 						break;
 
 					case CHESS_BLACK_BUTTON:

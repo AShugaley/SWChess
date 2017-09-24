@@ -101,6 +101,8 @@ int GUIMain()
 		//	break;
 
 		case CHESS_HOME_WINDOWEVENT:
+			destroyChessGame(game);
+			game = createChessGame(6, ONE_PLAYER, WHITES, 2);
 			currentWindow = swapWindows(currentWindow, CHESS_MAIN_WINDOW, game);
 			//currentWindow->prevWindow = NULL;
 			break;

@@ -312,12 +312,35 @@ void GUICompMove(ChessWindow* src, chessGameWindow* data)
 }
 
 
-
-
-int counterEndMessageTime = 0;
-void showEndOfGameMessage(char* message, char* buttonName)
+int checkGuiGameEnd(ChessWindow* src)
 {
-	counterEndMessageTime++;
+	char* message = "";
+	char* buttonName = "";
+	int res = -1;
+	int buttonid;
+
+	if (isStalemate(src->game))
+	{
+		message = "Stalemate! Game Is Over,\n Hope you had fun,\n Alex&Mor";
+		buttonName = "exit";
+		res = STALEMATE;
+	}
+	else if (isCheckmate(src->game))
+	{
+		message = "Checkmate! Game Is Over,\n Hope you had fun,\n Alex&Mor";
+		buttonName = "exit";
+		res = CHECKMATE;
+	}
+	else if (isCheck(src->game))
+	{
+		message = "Check! Press the button to continue";
+		buttonName = "continue";
+		res = CHECK;
+	}
+
+	if (res == -1)
+		return res;
+
 	/////////////////end of game message box////////////////// 
 	const SDL_MessageBoxButtonData buttons[] = {
 		{ SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT,   0,    buttonName },
@@ -347,49 +370,17 @@ void showEndOfGameMessage(char* message, char* buttonName)
 		&colorScheme
 	};
 
-	int buttonid;
-
-	if (SDL_ShowMessageBox(&messageboxdata, &buttonid) < 0)
+	
+	if (res != -1) //game is over (or check)
 	{
-		printf("ERROR: error displaying message box: %s\n", SDL_GetError());
-		return;
+		if (SDL_ShowMessageBox(&messageboxdata, &buttonid) < 0)
+		{
+			printf("ERROR: error displaying message box: %s\n", SDL_GetError()); //quit ? 
+			return -1;
+		}
+		else if (buttonid == 0) // exit/continue
+		{
+			return res;
+		}
 	}
-	else if (buttonid == 0) // exit
-	{
-		return;
-	}
-	else if (buttonid == -1 && counterEndMessageTime > 10) //no selection
-		return;
-	else
-		showEndOfGameMessage(message, buttonName);
-}
-
-
-int checkGuiGameEnd(ChessWindow* src)
-{
-	char* message = "";
-	char* buttonName = ""; 
-	int res=-1;
-
-	if (isStalemate(src->game))
-	{
-		message = "Stalemate! Game Is Over, Hope you had fun, Alex&Mor";
-		buttonName = "exit";
-		res = STALEMATE;
-	}
-	else if (isCheckmate(src->game))
-	{
-		message = "Checkmate! Game Is Over, Hope you had fun, Alex&Mor";
-		buttonName = "exit";
-		res = CHECKMATE;
-	}
-	else if (isCheck(src->game))
-	{
-		message = "Check! Press the button to continue";
-		buttonName = "continue";
-		res = CHECK;
-	}
-	 if(res!= -1)
-		showEndOfGameMessage(message, buttonName);
-	return res;
 }

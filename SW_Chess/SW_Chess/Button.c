@@ -247,7 +247,7 @@ void handleButtonEvent(Widget* src, SDL_Event* event)
 		point.x = event->button.x;
 		point.y = event->button.y;
 		//if (SDL_PointInRect(&point, castData->location)) //if the click was inside the button 
-	//	{
+		//{
 	
 		//	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Title",
 		//		"We did it", NULL);
@@ -262,7 +262,8 @@ void handleButtonEvent(Widget* src, SDL_Event* event)
 			src->isActive = false;
 			src->isMoving = false;
 		return;
-	}
+	//}
+		}
 
 	//drag
 	if (src->isDragLegal && src->isActive)

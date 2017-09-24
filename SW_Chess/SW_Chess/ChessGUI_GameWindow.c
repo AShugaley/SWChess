@@ -4,6 +4,8 @@
 #include "ChessGUI_Utils.h"
 #include "Chess_gameUtils.h"
 
+#include <Windows.h>
+
 
 
 
@@ -43,11 +45,9 @@ const SDL_MessageBoxData messageboxdata = {
 };
 
 int buttonid;
-int counterMessageTime = 0;
 
 WINDOW_EVENT showSavingMessage(WIDGET_TYPE type)
 {
-	counterMessageTime++;
 	if (SDL_ShowMessageBox(&messageboxdata, &buttonid) < 0)
 	{
 		printf("ERROR: error displaying message box: %s\n", SDL_GetError());
@@ -69,10 +69,8 @@ WINDOW_EVENT showSavingMessage(WIDGET_TYPE type)
 	}
 	else if (buttonid == 2) //cancel
 		return CHESS_EMPTY_WINDOWEVENT;
-	else if (buttonid == -1 && counterMessageTime > 10) //no selection
-		return CHESS_QUIT_WINDOWEVENT;
-	else
-		showSavingMessage(type);
+//	else if (buttonid == -1 && counterMessageTime > 10) //no selection
+	//	return CHESS_QUIT_WINDOWEVENT;
 }
 
 //Helper function to create buttons in the simple window;
@@ -386,8 +384,6 @@ void drawGameWindow(ChessWindow* src)
 	SDL_RenderPresent(data->windowRenderer);
 }
 
-int time = 0;
-
 WINDOW_EVENT handleEventGameWindow(ChessWindow* src, SDL_Event* event)
 {
 	if (src == NULL || event == NULL) 
@@ -402,8 +398,9 @@ WINDOW_EVENT handleEventGameWindow(ChessWindow* src, SDL_Event* event)
 	SDL_Rect loc = { .x = event->button.x,.y = event->button.y,.h = 72,.w = 180 };
 	while (1)
 	{
-		if (checkGuiGameEnd(src)== STALEMATE || checkGuiGameEnd(src) == CHECKMATE)
-			return CHESS_QUIT_WINDOWEVENT;
+		int endStatus;// = checkGuiGameEnd(src);
+	//	if (endStatus == STALEMATE || endStatus == CHECKMATE)
+		//	return CHESS_QUIT_WINDOWEVENT;
 			
 		while (SDL_PollEvent(event))
 		{
@@ -451,22 +448,6 @@ WINDOW_EVENT handleEventGameWindow(ChessWindow* src, SDL_Event* event)
 							printf("ERROR: unable to fill rect: %s\n", SDL_GetError());
 						SDL_RenderPresent(windata->windowRenderer);*/
 
-						/////////just in case - 
-							////SDL_GetMouseState
-							//SDL_SetRenderDrawColor(windata->windowRenderer, 255, 255, 255, 255);
-							//SDL_RenderDrawRect(windata->windowRenderer, &loc);
-						//	updateButtonLocation(windata->widgets[i], event->motion.x, event->motion.y);
-							//i = i - 1;
-							//SDL_SetRenderDrawColor(windata->windowRenderer, 255, 0, 255, 255);
-							//SDL_RenderDrawRect(windata->windowRenderer, &loc);
-							//SDL_Delay(16);
-							//if (time > 100)
-						   //{
-							//	time = 0;
-							//	SDL_RenderPresent(windata->windowRenderer);
-//
-							//}
-						//}
 						if (windata->widgets[i]->endOfDrag)
 						{
 							steadyBoard = true;
@@ -482,13 +463,20 @@ WINDOW_EVENT handleEventGameWindow(ChessWindow* src, SDL_Event* event)
 							windata->widgets[i]->endOfDrag = false;
 							windata->widgets[i]->isActive = false;
 
-							if (checkGuiGameEnd(src) == STALEMATE || checkGuiGameEnd(src) == CHECKMATE)
+							endStatus = checkGuiGameEnd(src);
+							if (endStatus == STALEMATE || endStatus == CHECKMATE)
 								return CHESS_QUIT_WINDOWEVENT;
 
 							//if we are here - the move was valid 
 							if (src->game->gameMode == ONE_PLAYER)
 							{
+								drawGameWindow(src);
 								GUICompMove(src, windata);
+								drawGameWindow(src);
+								Sleep(50);
+								endStatus = checkGuiGameEnd(src);
+								if (endStatus == STALEMATE || endStatus == CHECKMATE)
+									return CHESS_QUIT_WINDOWEVENT;
 								break;
 							}
 							else if (src->game->gameMode == TWO_PLAYERS)
