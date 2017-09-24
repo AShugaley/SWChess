@@ -1,9 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "Chess_gameUtils.h"
-#include "Chess_gameUtilsAux.h"
-#include "SPMiniMax.h"
-#include "Chess_FlowTwoPlayers.h"
+
+#include "Chess_ConsoleFlowMain.h"
 #include <stdbool.h>
 // ALEX
 #include <SDL2/SDL.h>
@@ -16,11 +14,9 @@
 //#include <SDL_video.h>
 // // $$$
 
-#include "unitTest.h"
-#include "Chess_gameParser.h"
-#include "Chess_gameSettingsParser.h"
-#include "Chess_ArrayList.h"
-#include "Chess_GUIFlowMain.h"
+
+#include "Chess_ConsoleFlowMain.h"
+
 
 /////////////////////////////Testers declerations////////////////////////////////////
 
@@ -299,7 +295,7 @@ int main(int argc, const char * argv[]) {
 	////////////////////////////////////////////////////////////////////
 	//////////////////check - MOR - end/////////////////////////////////
     
-     //return GUIMain();
+     return GUIMain();
 	
 	//return 0;
    // chessGame* src = createChessGame(5, TWO_PLAYERS, WHITES, 3);
@@ -310,30 +306,30 @@ int main(int argc, const char * argv[]) {
     //chessGame* src2 = loadGmae("load /Users/alexs/dev/SWChess/text2.xml");
    // printf("%d,%d,%d,%d\n",src2->currentPlayer, src2->humanPlayerColor, src2->gameMode, src2->difficulty);
     //chessConsolePrintBoard(src2);
-    chessGame* src = createChessGame(6, ONE_PLAYER, BLACKS, 4);
-    src->currentPlayer = BLACKS;
-    src->gameBoard[0][0] = QUEEN_BLACK;
-    src->gameBoard[1][1] = QUEEN_BLACK;
-    src->gameBoard[2][2] = QUEEN_BLACK;
-    src->gameBoard[3][3] = QUEEN_WHITE;
-    src->gameBoard[4][4] = QUEEN_BLACK;
-    src->gameBoard[5][5] = QUEEN_BLACK;
-    src->gameBoard[6][6] = QUEEN_BLACK;
-    src->gameBoard[7][7] = QUEEN_BLACK;
-    
-    saveGameInLastestSlot(src);
-    //saveGame(src, SAVE_SLOT_1);
-    while(1){
+//    chessGame* src = createChessGame(6, ONE_PLAYER, BLACKS, 4);
+//    src->currentPlayer = BLACKS;
+//    src->gameBoard[0][0] = QUEEN_BLACK;
+//    src->gameBoard[1][1] = QUEEN_BLACK;
+//    src->gameBoard[2][2] = QUEEN_BLACK;
+//    src->gameBoard[3][3] = QUEEN_WHITE;
+//    src->gameBoard[4][4] = QUEEN_BLACK;
+//    src->gameBoard[5][5] = QUEEN_BLACK;
+//    src->gameBoard[6][6] = QUEEN_BLACK;
+//    src->gameBoard[7][7] = QUEEN_BLACK;
+//    
+//    saveGameInLastestSlot(src);
+//    //saveGame(src, SAVE_SLOT_1);
+//    while(1){
     //saveGameInLastestSlot(src);
     //chessGame* src3 = loadGmae(SAVE_SLOT_3);
     //chessConsolePrintBoard(src3);
     //chessConsolePrintBoard(src);
-    loadGameInPlace(SAVE_SLOT_5, src);
-        destroyChessGame(src);
-        src = createChessGame(6, ONE_PLAYER, BLACKS, 4);
+//    loadGameInPlace(SAVE_SLOT_5, src);
+//        destroyChessGame(src);
+     //   src = createChessGame(6, ONE_PLAYER, BLACKS, 4);
     //chessConsolePrintBoard(src);
     
-    }
+    //}
 //    }
 //    printf("%d\n", src->gameMode);
 //    printf("%d\n", src->humanPlayerColor);
@@ -357,7 +353,7 @@ int main(int argc, const char * argv[]) {
 //    get_moves(src,0,1);
     //runTestSim(5,3);
     //saveGame(src, "<uos><sj><h>");
- // consoleMode();
+//consoleMode();
     
 //	return 0;
 }

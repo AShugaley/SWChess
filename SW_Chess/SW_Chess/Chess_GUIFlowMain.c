@@ -18,6 +18,7 @@ int GUIMain()
 		destroyChessGame(game);
 
 	ChessWindow* currentWindow = createWindow(CHESS_MAIN_WINDOW, SDL_WINDOW_OPENGL, game);
+    //SDL_Delay(100);
 	if (currentWindow == NULL)
 	{
         printf("ERROR: unable to init SDL: %s\n", SDL_GetError());
@@ -28,13 +29,15 @@ int GUIMain()
 	currentWindow->game = game;
 
 	currentWindow->drawWindow(currentWindow);
+    SDL_Delay(100);
 	WINDOW_TYPE prev = CHESS_MAIN_WINDOW; //default, just for error cases
 
 	SDL_Event event;
 	WINDOW_EVENT windowEvent;
-    SDL_Delay(16);
+    //SDL_Delay(16);
 	while (1)
 	{
+        SDL_Delay(10);
 		SDL_WaitEvent(&event);
 		if (event.type == SDL_QUIT)
 			break;
