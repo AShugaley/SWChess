@@ -1,18 +1,17 @@
 CC = gcc
-OBJS = main.o Widget.o ChessGUI_Window.o Chess_GUIFlowMain.o ChessGUI_GameWindow.o ChessGUI_MainWindow.o Button.o ChessGUI_SettingsWindow.o ChessGUI_Utils.o ChessGUI_LoadWindow.o SPCommon.o Chess_ArrayList.o Chess_gameParser.o Chess_gameSettingsParser.o Chess_gameUtilsAux.o Chess_gameUtils.o SPMiniMax.o Chess_def.o Chess_FlowTwoPlayers.o Chess_FlowOnePlayer.o Chess_ConsoleFlowMain.o 
+OBJS = main.o Widget.o ChessGUI_Window.o Chess_GUIFlowMain.o ChessGUI_GameWindow.o ChessGUI_MainWindow.o Button.o ChessGUI_SettingsWindow.o ChessGUI_Utils.o ChessGUI_LoadWindow.o SPCommon.o Chess_ArrayList.o Chess_gameParser.o Chess_gameSettingsParser.o Chess_gameUtilsAux.o Chess_gameUtils.o SPMiniMax.o Chess_def.o Chess_FlowTwoPlayers.o Chess_FlowOnePlayer.o Chess_ConsoleFlowMain.o
 EXEC = chessprog
 CONSOLE_GAME_OBJS = Chess_FlowOnePlayer.o Chess_FlowTwoPlayers.o Chess_ConsoleFlowMain.o
 GAME_UTILS = Chess_gameUtilsAux.o Chess_gameUtils.o SPMiniMax.o
-GUI_GAME_OBJS = Widget.o ChessGUI_Window.o ChessGUI_GameWindow.o ChessGUI_MainWindow.o 
-Button.o ChessGUI_SettingsWindow.o ChessGUI_Utils.o Chess_GUIFlowMain.o
+GUI_GAME_OBJS = Widget.o ChessGUI_Window.o ChessGUI_GameWindow.o ChessGUI_MainWindow.o Button.o ChessGUI_SettingsWindow.o ChessGUI_Utils.o Chess_GUIFlowMain.o
 AUX_UTILS = Chess_ArrayList.o Chess_gameParser.o Chess_gameSettingsParser.o
-CC_COMP_FLAG = -std=c99 -Wall -Wextra \ 
+CC_COMP_FLAG = -std=c99 -Wall -Wextra \
 -Werror -pedantic-errors
 SDL_COMP_FLAG = -I/usr/local/lib/sdl_2.0.5/include/SDL2 -D_REENTRANT
 SDL_LIB = -L/usr/local/lib/sdl_2.0.5/lib -Wl,-rpath,/usr/local/lib/sdl_2.0.5/lib -Wl,--enable-new-dtags -lSDL2 -lSDL2main
 $(EXEC): $(OBJS)
 	$(CC) $(OBJS) $(SDL_LIB) -o $@
-Chess_def.o: Chess_def.h
+Chess_def.o: Chess_def.h Chess_def.c
 	$(CC) $(COMP_FLAG) $(SDL_COMP_FLAG) -c $*.c
 Chess_ArrayList.o: Chess_ArrayList.h Chess_ArrayList.c Chess_def.h
 	$(CC) $(COMP_FLAG) $(SDL_COMP_FLAG) -c $*.c
