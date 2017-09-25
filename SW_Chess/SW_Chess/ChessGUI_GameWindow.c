@@ -55,7 +55,7 @@ WINDOW_EVENT showSavingMessage(WIDGET_TYPE type)
 		if (type == CHESS_HOME_BUTTON)
 			return CHESS_SAVE_HOME_WINDOWEVENT;
 		else if (type == CHESS_QUIT_BUTTON)
-			return CHESS_QUIT_WINDOWEVENT;
+			return CHESS_SAVE_QUIT_WINDOWEVENT;
 	}
 	else if (buttonid == 1) // no
 	{
@@ -66,6 +66,7 @@ WINDOW_EVENT showSavingMessage(WIDGET_TYPE type)
 	}
 	else if (buttonid == 2) //cancel
 		return CHESS_EMPTY_WINDOWEVENT;
+
 //	else if (buttonid == -1 && counterMessageTime > 10) //no selection
 	//	return CHESS_QUIT_WINDOWEVENT;
 }
@@ -396,6 +397,7 @@ WINDOW_EVENT handleEventGameWindow(ChessWindow* src, SDL_Event* event)
 	while (1)
 	{
 		int endStatus;// = checkGuiGameEnd(src);
+		WINDOW_EVENT savingChoose;
 	//	if (endStatus == STALEMATE || endStatus == CHECKMATE)
 		//	return CHESS_QUIT_WINDOWEVENT;
 			
@@ -424,9 +426,19 @@ WINDOW_EVENT handleEventGameWindow(ChessWindow* src, SDL_Event* event)
 						*/	
 						break;
 					case CHESS_HOME_BUTTON:
-						return showSavingMessage(windata->widgets[i]->widget_type);
+						savingChoose = showSavingMessage(windata->widgets[i]->widget_type);
+						if (savingChoose == CHESS_EMPTY_WINDOWEVENT)//"cancel" pressed
+						{
+							updateButtonTexture(windata->widgets[4], "./home_active.bmp");
+						}
 					case CHESS_QUIT_BUTTON:
-						return showSavingMessage(windata->widgets[i]->widget_type);
+						SDL_Delay(50);
+						savingChoose = showSavingMessage(windata->widgets[i]->widget_type);
+						if (savingChoose == CHESS_EMPTY_WINDOWEVENT)//"cancel" pressed
+						{
+							updateButtonTexture(windata->widgets[5], "./exit_active.bmp");
+						}											 
+						return savingChoose;
 					case CHESS_PAWN_BLACK_BUTTON:
 					case CHESS_PAWN_WHITE_BUTTON:
 					case CHESS_BISHOP_BLACK_BUTTON:
@@ -448,7 +460,6 @@ WINDOW_EVENT handleEventGameWindow(ChessWindow* src, SDL_Event* event)
 						if (windata->widgets[i]->endOfDrag)
 						{
 							steadyBoard = true;
-							windata->widgets[3]->isActivateLegal = true; //undo button 
 
 							if (GUIMove(src, windata->widgets[i], event, windata) == false)
 							{
@@ -457,6 +468,7 @@ WINDOW_EVENT handleEventGameWindow(ChessWindow* src, SDL_Event* event)
 								break;
 							}
 							
+							windata->widgets[3]->isActivateLegal = true; //undo button 
 							windata->widgets[i]->endOfDrag = false;
 							windata->widgets[i]->isActive = false;
 

@@ -51,9 +51,17 @@ int GUIMain()
 
 		case CHESS_SAVE_WINDOWEVENT:
 		case CHESS_SAVE_HOME_WINDOWEVENT:
-			//do the saving 
+		case CHESS_SAVE_QUIT_WINDOWEVENT:
+			//do the saving !!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			if(windowEvent == CHESS_SAVE_HOME_WINDOWEVENT)
 				currentWindow = swapWindows(currentWindow, CHESS_MAIN_WINDOW, game);
+			else if (windowEvent == CHESS_SAVE_QUIT_WINDOWEVENT)
+			{
+				destroyWindow(currentWindow);
+				destroyChessGame(game);
+				SDL_Quit();
+				return 0;
+			}
 			else
 				currentWindow = swapWindows(currentWindow, CHESS_GAME_WINDOW, game);
 			//adding event of SAVE_EXIT , but if the saving was taking care in the window so I dont need it -
@@ -130,7 +138,7 @@ int GUIMain()
 			return 0;
 		}
 	}
-	//SDL_Delay(16);
+
 	destroyChessGame(game);
 	destroyWindow(currentWindow);
 	SDL_Quit();
