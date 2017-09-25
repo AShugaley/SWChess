@@ -3,12 +3,13 @@
 #include "Button.h"
 #include "ChessGUI_Utils.h"
 #include "Chess_gameUtils.h"
-
+#include "Chess_FlowOnePlayer.h"
 
 
 static const game_width = 900;
 static const game_height = 700;
 bool steadyBoard = true;
+bool needToPollEvent = true;
 
 /////////////////for the exit message box////////////////// 
 const SDL_MessageBoxButtonData buttons[] = {
@@ -66,9 +67,7 @@ WINDOW_EVENT showSavingMessage(WIDGET_TYPE type)
 	}
 	else if (buttonid == 2) //cancel
 		return CHESS_EMPTY_WINDOWEVENT;
-
-//	else if (buttonid == -1 && counterMessageTime > 10) //no selection
-	//	return CHESS_QUIT_WINDOWEVENT;
+	
 }
 
 //Helper function to create buttons in the simple window;
@@ -225,6 +224,10 @@ Widget** createGameWindowWidgets(SDL_Renderer* renderer, ChessWindow* window)
 		widgets[place+1]->row = 6;
 		widgets[place+1]->coll = i;
 		
+		if (place == 36)
+		{
+			printf("36 loaction x: %d, y: %d\n", pawnWhite.x, pawnWhite.y);
+		}
 		place+=2;
 	}
 	
@@ -252,9 +255,13 @@ Widget** createGameWindowWidgets(SDL_Renderer* renderer, ChessWindow* window)
 		if (i == 6 || i == 7 || i == 10 || i == 11 || i == 14 || i == 15 || i == 18 ||
 			i == 20 || i == 22 || i == 24 || i == 26 || i == 28 || i == 30 || i == 32 || i == 34 || i == 36)
 			widgets[i]->color = 'w';
-		else if(i>6)
-			widgets[i]->color = 'b';
+		else
+		{
+			if (i > 6)
+				widgets[i]->color = 'b';
+		}
 	}
+	
 
 	return widgets;
 }
@@ -361,6 +368,7 @@ void drawGameWindow(ChessWindow* src)
 	{	
 		if (data->widgets[i]->isVisible)
 			data->widgets[i]->drawWidget(data->widgets[i]);
+	//	printf("i: %d %d \n", i, data->widgets[i]->isActive);
 		if ((data->widgets[i]->isVisible) && (data->widgets[i]->widget_type == CHESS_UNDO_BUTTON)
 			&& (data->widgets[i]->isActivateLegal))
 			updateButtonTexture(data->widgets[3], "./undo_active.bmp"); //index 3 is undo button in the array 
@@ -392,38 +400,53 @@ WINDOW_EVENT handleEventGameWindow(ChessWindow* src, SDL_Event* event)
 	Button* buttonCast;
 	chessGameWindow* windata = (chessGameWindow*)src->data;
 	WINDOW_EVENT eventType = CHESS_EMPTY_WINDOWEVENT;
-	
-	SDL_Rect loc = { .x = event->button.x,.y = event->button.y,.h = 72,.w = 180 };
-	while (1)
+	int endStatus;// = checkGuiGameEnd(src);
+	WINDOW_EVENT savingChoose;
+
+	if (src->game->gameMode == ONE_PLAYER && src->game->humanPlayerColor == BLACKS)
 	{
-		int endStatus;// = checkGuiGameEnd(src);
-		WINDOW_EVENT savingChoose;
+		compMove(src->game);
+		drawGameWindow(src);
+	}
+	while (needToPollEvent) //think to delete it !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	{
+		
 	//	if (endStatus == STALEMATE || endStatus == CHECKMATE)
 		//	return CHESS_QUIT_WINDOWEVENT;
-			
+begin:
 		while (SDL_PollEvent(event))
 		{
 			for (int i = 0; i < windata->numOfWidgets; i++) 
 			{
 				windata->widgets[i]->handleEvent(windata->widgets[i], event);
 				SDL_RenderPresent(windata->windowRenderer);
+			//	printf("i 22: %d", windata->widgets[22]->isActive);
+			//	if(windata->widgets[i]->isActive && !windata->widgets[i]->isActivateLegal)
+			//		printf("i: %d\n", i, windata->widgets[i]->isActive);
+				
 				if (windata->widgets[i]->isActive && windata->widgets[i]->isActivateLegal)
 				{
+					//printf("i: %d\n", i, windata->widgets[i]->isActive);
 					buttonCast = (Button*)(windata->widgets[i]->data);
 					switch (windata->widgets[i]->widget_type)
 					{
 					case CHESS_EMPTY_BUTTON:
 						return CHESS_EMPTY_WINDOWEVENT;
-					case CHESS_RESTART_BUTTON: // think about it 
+					case CHESS_RESTART_BUTTON: 
+						windata->widgets[i]->isActive = false;
 						return CHESS_RESTART_WINDOWEVENT;
 					case CHESS_SAVE_BUTTON:
+						windata->widgets[i]->isActive = false;
 						return CHESS_SAVE_WINDOWEVENT;
 					case CHESS_LOAD_BUTTON:
+						windata->widgets[i]->isActive = false;
 						return CHESS_LOAD_SCREEN_WINDOWEVENT;
 					case CHESS_UNDO_BUTTON:
 						/* sending to undoGame 
 						* sending
 						*/	
+						windata->widgets[i]->isActive = false;
+						goto begin;
 						break;
 					case CHESS_HOME_BUTTON:
 						savingChoose = showSavingMessage(windata->widgets[i]->widget_type);
@@ -431,13 +454,15 @@ WINDOW_EVENT handleEventGameWindow(ChessWindow* src, SDL_Event* event)
 						{
 							updateButtonTexture(windata->widgets[4], "./home_active.bmp");
 						}
+						windata->widgets[i]->isActive = false;
+						return savingChoose;
 					case CHESS_QUIT_BUTTON:
 						savingChoose = showSavingMessage(windata->widgets[i]->widget_type);
 						if (savingChoose == CHESS_EMPTY_WINDOWEVENT)//"cancel" pressed
 						{
 							updateButtonTexture(windata->widgets[5], "./exit_active.bmp");
 						}				
-
+						windata->widgets[i]->isActive = false;
 						return savingChoose;
 					case CHESS_PAWN_BLACK_BUTTON:
 					case CHESS_PAWN_WHITE_BUTTON:
@@ -456,7 +481,6 @@ WINDOW_EVENT handleEventGameWindow(ChessWindow* src, SDL_Event* event)
 						if (SDL_RenderFillRect(windata->windowRenderer, &src->game->gameGUIBoard[4][5]) < 0)
 							printf("ERROR: unable to fill rect: %s\n", SDL_GetError());
 						SDL_RenderPresent(windata->windowRenderer);*/
-
 						if (windata->widgets[i]->endOfDrag)
 						{
 							steadyBoard = true;
@@ -471,6 +495,9 @@ WINDOW_EVENT handleEventGameWindow(ChessWindow* src, SDL_Event* event)
 							windata->widgets[3]->isActivateLegal = true; //undo button 
 							windata->widgets[i]->endOfDrag = false;
 							windata->widgets[i]->isActive = false;
+							if (windata->widgets[i]->isMoving == true)
+								printf("shittttttttttttttttttttttt");
+						//	printf("handle, i: %d %d \n", i, windata->widgets[i]->isActive);
 
 							endStatus = checkGuiGameEnd(src);
 							if (endStatus == STALEMATE || endStatus == CHECKMATE)
@@ -480,16 +507,20 @@ WINDOW_EVENT handleEventGameWindow(ChessWindow* src, SDL_Event* event)
 							if (src->game->gameMode == ONE_PLAYER)
 							{
 								drawGameWindow(src);
-								GUICompMove(src, windata);
+								compMove(src->game);
 								drawGameWindow(src);
 								SDL_Delay(50);
 								endStatus = checkGuiGameEnd(src);
+								//printf("place 36: %d\n", windata->widgets[36]->isActive);
 								if (endStatus == STALEMATE || endStatus == CHECKMATE)
 									return CHESS_QUIT_WINDOWEVENT;
+								goto begin;
+
 								break;
 							}
 							else if (src->game->gameMode == TWO_PLAYERS)
 								break; //turn was switched in the setMove function from Chess_gameUtils.c 
+							//printf("place 36: %d\n", windata->widgets[36]->isActive);
 						}
 						else 
 							steadyBoard = false;
@@ -499,7 +530,8 @@ WINDOW_EVENT handleEventGameWindow(ChessWindow* src, SDL_Event* event)
 						eventType = CHESS_EMPTY_WINDOWEVENT;
 						break;
 					}
-				
+					//printf("handle down, i: %d %d \n", i, windata->widgets[i]->isActive);
+
 					drawGameWindow(src);
 
 				
@@ -507,7 +539,7 @@ WINDOW_EVENT handleEventGameWindow(ChessWindow* src, SDL_Event* event)
 			}
 			break;
 		}
-	}
+}
 	return eventType;
 }
 

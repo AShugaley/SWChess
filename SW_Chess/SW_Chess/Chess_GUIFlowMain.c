@@ -79,6 +79,7 @@ int GUIMain()
 			initChessBoard(game);
 			spArrayListDestroy(game->historyArray);
 			game->historyArray = spArrayListCreate(6);
+			game->currentPlayer = WHITES;
 			currentWindow = swapWindows(currentWindow, CHESS_GAME_WINDOW, game);
 			break;
 		//	////create game window 

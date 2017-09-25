@@ -154,33 +154,20 @@ WINDOW_EVENT handleEventMainWindow(ChessWindow* src, SDL_Event* event)
 			switch (windata->widgets[i]->widget_type)
 			{
 			case CHESS_EMPTY_BUTTON:
-			{
-				eventType = CHESS_EMPTY_WINDOWEVENT;
-				break;
-			}
+				return CHESS_EMPTY_WINDOWEVENT;
 			case CHESS_NEWGAME_BUTTON:
-			{	
-				eventType = CHESS_SETTINGS_WINDOWEVENT;
-				break;
-			}
+				windata->widgets[i]->isActive = false;
+			    return CHESS_SETTINGS_WINDOWEVENT;
 			case CHESS_LOAD_BUTTON:
-			{
-				eventType = CHESS_LOAD_SCREEN_WINDOWEVENT;
-				break;
-			}
+				windata->widgets[i]->isActive = false;
+				return CHESS_LOAD_SCREEN_WINDOWEVENT;
 			case CHESS_QUIT_BUTTON:
-			{
-				eventType = CHESS_QUIT_WINDOWEVENT;
-				break;
-			}
+				windata->widgets[i]->isActive = false;
+				return CHESS_QUIT_WINDOWEVENT;
 			default:
-			{
-				eventType = CHESS_EMPTY_WINDOWEVENT;
-				break;
-			}
+				return CHESS_EMPTY_WINDOWEVENT;
 			}
 		}
 		
 	}
-	return eventType;
 }

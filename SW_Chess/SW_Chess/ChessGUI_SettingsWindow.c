@@ -236,13 +236,16 @@ WINDOW_EVENT handleEventSettingsWindow(ChessWindow* src, SDL_Event* event)
 						return CHESS_EMPTY_WINDOWEVENT;
 
 					case CHESS_START_BUTTON:
+						windata->Widgets[i]->isActive = false;
 						return CHESS_STARTGAME_WINDOWEVENT;
 
 					case CHESS_BACK_BUTTON:
+						windata->Widgets[i]->isActive = false;
 						updateButtonTexture(windata->Widgets[i], "./back_pressed.bmp");
 						return CHESS_HOME_WINDOWEVENT;
 
 					case CHESS_NEXT_BUTTON:
+						windata->Widgets[i]->isActive = false;
 						SDL_DestroyRenderer(windata->windowRenderer);
 						free(windata->Widgets);
 
@@ -292,7 +295,7 @@ WINDOW_EVENT handleEventSettingsWindow(ChessWindow* src, SDL_Event* event)
 						windata->Widgets[START]->isVisible = false;
 						src->game->gameMode = ONE_PLAYER;
 						src->game->currentPlayer = WHITES;
-						//windata->Widgets[i]->isActive = false;
+						windata->Widgets[i]->isActive = false;
 						break;
 
 					case CHESS_TWOPLAYERS_BUTTON:
@@ -301,7 +304,7 @@ WINDOW_EVENT handleEventSettingsWindow(ChessWindow* src, SDL_Event* event)
 						windata->Widgets[START]->isVisible = true;
 						src->game->gameMode = TWO_PLAYERS;
 						src->game->currentPlayer = WHITES;
-						//windata->Widgets[i]->isActive = false;
+						windata->Widgets[i]->isActive = false;
 						break;
 
 					case CHESS_NOOB_BUTTON:
@@ -317,6 +320,7 @@ WINDOW_EVENT handleEventSettingsWindow(ChessWindow* src, SDL_Event* event)
 							windata->Widgets[NEXT]->isActivateLegal = true;
 						}
 						src->game->difficulty = 1; 
+						windata->Widgets[i]->isActive = false;
 						break;
 
 					case CHESS_EASY_BUTTON:
@@ -332,7 +336,7 @@ WINDOW_EVENT handleEventSettingsWindow(ChessWindow* src, SDL_Event* event)
 							windata->Widgets[NEXT]->isActivateLegal = true;
 						}
 						src->game->difficulty = 2;
-
+						windata->Widgets[i]->isActive = false;
 						break;
 
 					case CHESS_MODERATE_BUTTON:
@@ -348,6 +352,7 @@ WINDOW_EVENT handleEventSettingsWindow(ChessWindow* src, SDL_Event* event)
 							windata->Widgets[NEXT]->isActivateLegal = true;
 						}
 						src->game->difficulty = 3;
+						windata->Widgets[i]->isActive = false;
 						break;
 
 					case CHESS_HARD_BUTTON:
@@ -363,6 +368,7 @@ WINDOW_EVENT handleEventSettingsWindow(ChessWindow* src, SDL_Event* event)
 							windata->Widgets[NEXT]->isActivateLegal = true;
 						}
 						src->game->difficulty = 4;
+						windata->Widgets[i]->isActive = false;
 						break;
 
 					case CHESS_EXPERT_BUTTON:
@@ -377,6 +383,7 @@ WINDOW_EVENT handleEventSettingsWindow(ChessWindow* src, SDL_Event* event)
 							windata->Widgets[NEXT]->isActivateLegal = true;
 						}
 						src->game->difficulty = 5;
+						windata->Widgets[i]->isActive = false;
 						break;
 
 					case CHESS_WHITE_BUTTON:
@@ -388,7 +395,7 @@ WINDOW_EVENT handleEventSettingsWindow(ChessWindow* src, SDL_Event* event)
 							windata->Widgets[START]->isActivateLegal = true;
 						}
 						src->game->humanPlayerColor = WHITES;
-
+						windata->Widgets[i]->isActive = false;
 						break;
 
 					case CHESS_BLACK_BUTTON:
@@ -400,6 +407,7 @@ WINDOW_EVENT handleEventSettingsWindow(ChessWindow* src, SDL_Event* event)
 							windata->Widgets[START]->isActivateLegal = true;
 						}
 						src->game->humanPlayerColor = BLACKS;
+						windata->Widgets[i]->isActive = false;
 						break;
 
 					default:
@@ -409,10 +417,6 @@ WINDOW_EVENT handleEventSettingsWindow(ChessWindow* src, SDL_Event* event)
 					drawSettingsWindow(src);
 
 				}
-
-				//if(refresh)
-				//	break;
-
 			}
 
 			break;

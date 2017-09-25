@@ -28,7 +28,7 @@ void drawGameBoard(chessGameWindow* win, chessGame* game);
 bool updateConsoleBoardIfValid(int x, int y, chessGame* game, Widget* currentWidget);
 void widgetUpdates(Widget* src, int x, int y, int row, int coll);
 void setButtonPlace(int* newX, int* newY, chessGame* game, int locX, int locY, Widget* src);
-void GUICompMove(ChessWindow* src, chessGameWindow* data);
+//void GUICompMove(ChessWindow* src, chessGameWindow* data);
 int checkGuiGameEnd(ChessWindow* src);
 
 

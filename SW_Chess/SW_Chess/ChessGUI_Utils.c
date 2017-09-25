@@ -198,7 +198,7 @@ void setBoardPieces(ChessWindow* src, chessGameWindow* data)
 				break;
 			case PAWN_BLACK:
 				kStart = PAWN_BLACK1;
-				kEnd = PAWN_BLACK8;
+				kEnd =   PAWN_BLACK8;
 				kInc = 2;
 				break;
 			case BISHOP_WHITE:
@@ -304,12 +304,12 @@ bool GUIMove(ChessWindow* src, Widget* currentwidget, SDL_Event* event, chessGam
 
 }
 
-void GUICompMove(ChessWindow* src, chessGameWindow* data)
-{
-	compMove(src->game);
-	//setBoardPieces(src, data);
-
-}
+//void GUICompMove(ChessWindow* src, chessGameWindow* data)
+//{
+	//compMove(src->game);
+//	//setBoardPieces(src, data);
+//
+//}
 
 
 int checkGuiGameEnd(ChessWindow* src)
@@ -383,4 +383,5 @@ int checkGuiGameEnd(ChessWindow* src)
 			return res;
 		}
 	}
+	return res;
 }

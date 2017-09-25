@@ -228,42 +228,47 @@ void handleButtonEvent(Widget* src, SDL_Event* event)
 			case CHESS_QUEEN_WHITE_BUTTON:
 			case CHESS_KING_WHITE_BUTTON:
 			case CHESS_KING_BLACK_BUTTON:
-				break;
-				
-				
-
-
+				printf("1\n");
+				src->isActive = true;
+				return;
 			}
-			src->isActive = true;
-			
+			src->isActive = false;
 			return;
 		}
 	}
 
+	
 	//release the mouse 
-	else if (event->type == SDL_MOUSEBUTTONUP && event->button.button == SDL_BUTTON_LEFT) 
+	if (event->type == SDL_MOUSEBUTTONUP && event->button.button == SDL_BUTTON_LEFT) 
 	{
+		printf("up!\n");
 		SDL_Point point;
 		point.x = event->button.x;
 		point.y = event->button.y;
-		//if (SDL_PointInRect(&point, castData->location)) //if the click was inside the button 
-		//{
-	
-		//	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Title",
-		//		"We did it", NULL);
-		
-			
-			if (src->isDragLegal && src->isMoving)
-			{
-				src->endOfDrag = true;
-				src->isMoving = false;
-				return;
-			}
-			src->isActive = false;
+
+		if (src->isDragLegal && src->isMoving)
+		{
+			src->endOfDrag = true;
 			src->isMoving = false;
-		return;
-	//}
+			printf("2\n");
+
+			src->isActive = true;
+			return;
 		}
+
+		else
+		{
+			if (src->isVisible && src->isActivateLegal && SDL_PointInRect(&point, castData->location)) //if the click was inside the button 
+			{
+				printf("location x: %d, location y: %d\n", castData->location->x, castData->location->y);
+				printf("point x: %d, point y: %d\n", point.x, point.y);
+				printf("3\n");
+				src->isActive = true;
+				src->isMoving = false;
+			}
+		}
+		return;
+	}
 
 	//drag
 	if (src->isDragLegal && src->isActive)
@@ -271,10 +276,6 @@ void handleButtonEvent(Widget* src, SDL_Event* event)
 		if (event->type == SDL_MOUSEMOTION && 
 			SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT))
 		{
-			SDL_Point point;
-			point.x = event->button.x;
-			point.y = event->button.y;
-				
 			updateButtonLocation(src, event->motion.x, event->motion.y);
 			src->isMoving = true;
 			return;
