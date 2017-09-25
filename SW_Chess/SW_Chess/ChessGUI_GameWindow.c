@@ -432,12 +432,12 @@ WINDOW_EVENT handleEventGameWindow(ChessWindow* src, SDL_Event* event)
 							updateButtonTexture(windata->widgets[4], "./home_active.bmp");
 						}
 					case CHESS_QUIT_BUTTON:
-						SDL_Delay(50);
 						savingChoose = showSavingMessage(windata->widgets[i]->widget_type);
 						if (savingChoose == CHESS_EMPTY_WINDOWEVENT)//"cancel" pressed
 						{
 							updateButtonTexture(windata->widgets[5], "./exit_active.bmp");
-						}											 
+						}				
+
 						return savingChoose;
 					case CHESS_PAWN_BLACK_BUTTON:
 					case CHESS_PAWN_WHITE_BUTTON:
@@ -493,7 +493,6 @@ WINDOW_EVENT handleEventGameWindow(ChessWindow* src, SDL_Event* event)
 						}
 						else 
 							steadyBoard = false;
-					//	time++;
 						break;
 
 					default:
