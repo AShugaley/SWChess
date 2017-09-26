@@ -106,11 +106,9 @@ void drawMainWindow(ChessWindow* src)
 {
 	if (src == NULL ) 
 		return;
-    SDL_Delay(100);
 
 	chessMainWindow* data = (chessMainWindow*) src->data;
 	SDL_RenderClear(data->windowRenderer);
-    SDL_Delay(100);
 
 	//draw background
 	SDL_Surface* surf = SDL_LoadBMP("./main_background.bmp");
@@ -136,7 +134,6 @@ void drawMainWindow(ChessWindow* src)
 		if (data->widgets[i]->isVisible)
 			data->widgets[i]->drawWidget(data->widgets[i]);
 	}
-	SDL_Delay(100);
 	SDL_RenderPresent(data->windowRenderer);
 }
 
