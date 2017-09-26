@@ -167,9 +167,9 @@ CHESS_GAME_MESSAGE setChessMove(chessGame* src, int prev_pos_row, int prev_pos_c
     if(needToCheckMoveValidiy){
         if(src->gameBoard[prev_pos_row][prev_pos_col] == EMPTY_BOARD_POS)
             return CHESS_GAME_INVALID_POSITION;
-        if(isWhiteFigure(src->gameBoard[prev_pos_row][prev_pos_col]) && src->currentPlayer == BLACKS)
+        if((isWhiteFigure(src->gameBoard[prev_pos_row][prev_pos_col])) && (src->currentPlayer == BLACKS))
             return CHESS_GAME_INVALID_POSITION;
-        if(isBlackFigure(src->gameBoard[prev_pos_row][prev_pos_col]) && src->currentPlayer == WHITES)
+        if((isBlackFigure(src->gameBoard[prev_pos_row][prev_pos_col])) && (src->currentPlayer == WHITES))
             return CHESS_GAME_INVALID_POSITION;
         if(!isValidBoardPosition(prev_pos_row, prev_pos_col, next_pos_row, next_pos_col))
             return CHESS_GAME_INVALID_ARGUMENT;
@@ -294,7 +294,7 @@ bool isCheckmate(chessGame* src){
 bool hasValidMove(chessGame* src, int row, int col){
     for(int i = 0; i<BOARD_SIZE; i++){
         for(int j = 0; j<BOARD_SIZE; j++){
-            if(isValidMove(src, row, col, i, j))
+            if(isLegalMove(src, row, col, i, j))
                 return true;
         }
     }
@@ -329,7 +329,7 @@ bool isStalemate(chessGame* src){
         }
     }
    /* Tie: no valid moves, and king NOT under threat */
-    return (!isUnderPressure(src, king_row, king_col) && !hasValidMove(src, king_row, king_col));
+    return ((!(isUnderPressure(src, king_row, king_col))) && (!(hasValidMove(src, king_row, king_col))));
     
 }
 
@@ -380,13 +380,13 @@ void get_moves(chessGame* src, int row, int col){
         printf("Invalid position on the board\n");
         return;
     }
-    if((src->currentPlayer == WHITES) && (!isWhiteFigure(src->gameBoard[row][col]))){
+    if(((src->currentPlayer == WHITES)) && (!(isWhiteFigure(src->gameBoard[row][col])))){
         printf("The specified position does not contain white player piece\n");
         return;
     }
     
     
-    if((src->currentPlayer == BLACKS) && (!isBlackFigure(src->gameBoard[row][col]))){
+    if((src->currentPlayer == BLACKS) && (!(isBlackFigure(src->gameBoard[row][col])))){
         printf("The specified position does not contain black player piece\n");
         return;
     }

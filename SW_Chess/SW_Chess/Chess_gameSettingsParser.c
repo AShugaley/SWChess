@@ -3,11 +3,11 @@
 bool spParserSettingIsInt(const char* str)
 {
 	unsigned int i = 0;
-	if (str[0] == '-' || (str[0]<58 && str[0]>47))  /* first char is minus or digit */
+	if ((str[0] == '-') || ((str[0]<58) && (str[0]>47)))  /* first char is minus or digit */
 	{
 		for (i = 1; i < strlen(str); i++)
 		{
-			if (str[i] > 57 || str[i] < 48)  /* not a digit  */
+			if ((str[i] > 57) || (str[i] < 48))  /* not a digit  */
 				return false;
 		}
 		return true;

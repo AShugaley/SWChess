@@ -88,7 +88,7 @@ double minmaxTree(chessGame* currentGame, int depth, double alpha, double beta){
 
         return utilityFunction(currentGame);
     }
-    if(isStalemate(currentGame)||isCheckmate(currentGame)){ /* terminal node */
+    if((isStalemate(currentGame))||(isCheckmate(currentGame))){ /* terminal node */
         
         return utilityFunction(currentGame);
     }

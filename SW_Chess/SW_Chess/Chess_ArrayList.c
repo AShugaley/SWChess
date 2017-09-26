@@ -142,7 +142,7 @@ SP_ARRAY_LIST_MESSAGE spArrayListRemoveLast(SPArrayList* src)
 
 SPArrayListNode* spArrayListGetAt(SPArrayList* src, int index)
 {
-    if (src == NULL || index >= src->actualSize || index < 0)
+    if ((src == NULL) || (index >= src->actualSize) || (index < 0))
         return NULL;
     return &(src->elements[index]);
 }
@@ -150,7 +150,7 @@ SPArrayListNode* spArrayListGetAt(SPArrayList* src, int index)
 
 SPArrayListNode* spArrayListGetFirst(SPArrayList* src)
 {
-    if (src == NULL || src->actualSize == 0)
+    if ((src == NULL) || (src->actualSize == 0))
         return NULL;
     return &(src->elements[0]);
 }
@@ -158,7 +158,7 @@ SPArrayListNode* spArrayListGetFirst(SPArrayList* src)
 
 SPArrayListNode* spArrayListGetLast(SPArrayList* src)
 {
-    if (src == NULL || src->actualSize == 0)
+    if ((src == NULL) || (src->actualSize == 0))
         return NULL;			
     return &(src->elements[src->actualSize - 1]);   
 }

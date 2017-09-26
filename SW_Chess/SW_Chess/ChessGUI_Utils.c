@@ -79,7 +79,7 @@ void drawGameBoard(chessGameWindow* win, chessGame* game)
 				squareTexture =  SDL_CreateTextureFromSurface(win->windowRenderer, loadingSurface);
 			}
 						
-			if (loadingSurface == NULL || squareTexture == NULL)
+			if ((loadingSurface == NULL) || (squareTexture == NULL))
 			{
 				SDL_FreeSurface(loadingSurface); 
 				SDL_DestroyTexture(squareTexture);

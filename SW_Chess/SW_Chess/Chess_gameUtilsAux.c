@@ -184,7 +184,7 @@ bool isValidKnightMove(chessGame* src, int prev_pos_row, int prev_pos_col, int n
 
 /* Queen moves like bishop and rook combined. */
 bool isValidQueenMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col){
-    return (isValidRookMove(src,prev_pos_row,prev_pos_col,next_pos_row,next_pos_col) || isValidBishopMove(src,prev_pos_row,prev_pos_col,next_pos_row,next_pos_col));
+    return ((isValidRookMove(src,prev_pos_row,prev_pos_col,next_pos_row,next_pos_col)) || (isValidBishopMove(src,prev_pos_row,prev_pos_col,next_pos_row,next_pos_col)));
     /* well that was short */
 }
 

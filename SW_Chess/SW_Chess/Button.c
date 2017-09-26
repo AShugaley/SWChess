@@ -8,7 +8,7 @@ int timer = 0;
 //You need a create function:
 Widget* createButton(SDL_Renderer* windowRender, SDL_Rect* location, const char* image, WIDGET_TYPE type)
 {
-	if (windowRender == NULL || location == NULL || image == NULL ) 
+	if ((windowRender == NULL) || (location == NULL) || (image == NULL)) 
 	{
         printf("EROR SDL-1; eror creating a SDL window\n");
 		return NULL ;
@@ -18,9 +18,9 @@ Widget* createButton(SDL_Renderer* windowRender, SDL_Rect* location, const char*
 	Button* data = (Button*) malloc(sizeof(Button));
 	SDL_Surface* loadingSurface = SDL_LoadBMP(image); //We use the surface as a temp var;
 	SDL_Texture* buttonTexture = SDL_CreateTextureFromSurface(windowRender,loadingSurface);
-	if (res == NULL || data == NULL || loadingSurface == NULL || buttonTexture == NULL) 
+	if ((res == NULL) || (data == NULL) || (loadingSurface == NULL) || (buttonTexture == NULL)) 
 	{
-        printf("EROR SDL-2; eror creating a SDL window\n");
+        printf("ERROR SDL: eror creating a SDL button\n");
 		free(res);
 		free(data);
 		SDL_FreeSurface(loadingSurface); //It is safe to pass NULL
@@ -38,7 +38,7 @@ Widget* createButton(SDL_Renderer* windowRender, SDL_Rect* location, const char*
 	res->data = data;
 	res->widget_type = type;
 	res->isActive = false;
-	if (type == CHESS_LOADER_INSIDE_BUTTON || type== CHESS_UNDO_BUTTON || type== CHESS_NEXT_BUTTON)
+	if ((type == CHESS_LOADER_INSIDE_BUTTON) || (type== CHESS_UNDO_BUTTON) || (type== CHESS_NEXT_BUTTON))
 		res->isActivateLegal = false;
 	else
 		res->isActivateLegal = true; 
@@ -61,7 +61,7 @@ void destroyButton(Widget* src)
 
 void updateButtonTexture(Widget* src, const char* image)
 {
-	if (src == NULL || image == NULL)
+	if ((src == NULL) || (image == NULL))
 		return;
 	Button* castedData = (Button*)src->data;
 	SDL_DestroyTexture(castedData->buttonTexture);
@@ -69,7 +69,7 @@ void updateButtonTexture(Widget* src, const char* image)
 	SDL_Rect rect = { .x = castedData->location->x,.y = castedData->location->y,.h = castedData->location->h,.w = castedData->location->w };
 	SDL_Surface* currentImage = SDL_LoadBMP(image); //We use the surface as a temp var;
 	SDL_Texture* texture = SDL_CreateTextureFromSurface(castedData->windowRenderer, currentImage);
-	if (currentImage == NULL || texture == NULL)
+	if ((currentImage == NULL) || (texture == NULL))
 	{
 			SDL_FreeSurface(currentImage); //It is safe to pass NULL
 			SDL_DestroyTexture(texture);
@@ -101,9 +101,9 @@ void updateButtonLocation(Widget* src, int x, int y)
 
 void handleButtonEvent(Widget* src, SDL_Event* event)
 {
-	if (src == NULL || event == NULL )
+	if ((src == NULL) || (event == NULL))
 	{
-        printf("EROR SDL-3; eror handeling an event\n");
+        printf("ERROR SDL: eror handeling an event\n");
 		return; //Better to return an error value
 	}
 
@@ -112,14 +112,14 @@ void handleButtonEvent(Widget* src, SDL_Event* event)
 	Button* castData = (Button*) src->data;
 
 	//////////////////////////////////press the mouse//////////////////////////////////
-	if (event->type == SDL_MOUSEBUTTONDOWN  && event->button.button == SDL_BUTTON_LEFT)
+	if ((event->type == SDL_MOUSEBUTTONDOWN)  && (event->button.button == SDL_BUTTON_LEFT))
 	{
 
 		SDL_Point point;
 		point.x = event->button.x;
 		point.y = event->button.y;
 
-		if (src->isVisible && src->isActivateLegal && SDL_PointInRect(&point, castData->location) )
+		if ((src->isVisible) && (src->isActivateLegal) && (SDL_PointInRect(&point, castData->location)))
 		{
 			switch (buttonType)
 			{
@@ -217,32 +217,29 @@ void handleButtonEvent(Widget* src, SDL_Event* event)
 				return;
 			}
 			src->isActive = false;
-			printf("1\n");
 			return;
 		}
 	}
 
 	
 	//////////////////////////////release the mouse/////////////////////////////////
-	if (event->type == SDL_MOUSEBUTTONUP && event->button.button == SDL_BUTTON_LEFT) 
+	if ((event->type == SDL_MOUSEBUTTONUP) && (event->button.button == SDL_BUTTON_LEFT)) 
 	{
 		SDL_Point point;
 		point.x = event->button.x;
 		point.y = event->button.y;
 
-		if (src->isDragLegal && src->isMoving)
+		if ((src->isDragLegal) && (src->isMoving))
 		{
 			src->endOfDrag = true;
 			src->isMoving = false;
-			printf("2\n");
-
 			src->isActive = true;
 			return;
 		}
 
 		else
 		{
-			if (src->isVisible && src->isActivateLegal && SDL_PointInRect(&point, castData->location)) //if the click was inside the button 
+			if ((src->isVisible) && (src->isActivateLegal) && (SDL_PointInRect(&point, castData->location))) //if the click was inside the button 
 			{
 				src->isActive = true;
 				src->isMoving = false;
@@ -252,10 +249,10 @@ void handleButtonEvent(Widget* src, SDL_Event* event)
 	}
 
 	//////////////////////////////drag//////////////////////////////
-	if (src->isDragLegal && src->isActive)
+	if ((src->isDragLegal) && (src->isActive))
 	{
-		if (event->type == SDL_MOUSEMOTION && 
-			SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT))
+		if ((event->type == SDL_MOUSEMOTION) && 
+			((SDL_GetMouseState(NULL, NULL)) & (SDL_BUTTON(SDL_BUTTON_LEFT))))
 		{
 			mouseDeltaX = event->motion.x - mouseX0;
 			mouseDeltaY = event->motion.y - mouseY0;

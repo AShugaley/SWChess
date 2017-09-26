@@ -44,7 +44,7 @@ const SDL_MessageBoxData messageboxdata = {
 
 int buttonid;
 
-WINDOW_EVENT showSavingMessage(WIDGET_TYPE type)
+WINDOW_EVENT showSavingMessage()
 {
 	if (SDL_ShowMessageBox(&messageboxdata, &buttonid) < 0)
 	{
@@ -59,6 +59,8 @@ WINDOW_EVENT showSavingMessage(WIDGET_TYPE type)
 
 	else if (buttonid == 2) //cancel
 		return CHESS_EMPTY_WINDOWEVENT;
+	
+	return CHESS_EMPTY_WINDOWEVENT;
 }
 
 //Helper function to create buttons in the simple window;
@@ -135,7 +137,7 @@ Widget** createGameWindowWidgets(SDL_Renderer* renderer, ChessWindow* window)
 	widgets[0]  = createButton(renderer, &restart,     "./restart_active.bmp", CHESS_RESTART_BUTTON);
 	widgets[1]  = createButton(renderer, &save,	       "./save_active.bmp", CHESS_SAVE_BUTTON);
 	widgets[2]  = createButton(renderer, &load,	       "./load_active.bmp", CHESS_LOAD_BUTTON);
-	if (spArrayListIsEmpty(window->game->historyArray) || window->game->gameMode == TWO_PLAYERS)
+	if ((spArrayListIsEmpty(window->game->historyArray)) || (window->game->gameMode == TWO_PLAYERS))
 		widgets[3]  = createButton(renderer, &undo,        "./undo_nonactive.bmp", CHESS_UNDO_BUTTON);
 	else
 		widgets[3] = createButton(renderer, &undo, "./undo_active.bmp", CHESS_UNDO_BUTTON);
@@ -243,8 +245,8 @@ Widget** createGameWindowWidgets(SDL_Renderer* renderer, ChessWindow* window)
 			widgets[i]->isDragLegal = true;
 		widgets[i]->isMoving = false;
 		widgets[i]->endOfDrag = false; 
-		if (i == 6 || i == 7 || i == 10 || i == 11 || i == 14 || i == 15 || i == 18 ||
-			i == 20 || i == 22 || i == 24 || i == 26 || i == 28 || i == 30 || i == 32 || i == 34 || i == 36)
+		if ( (i == 6) || (i == 7) || (i == 10) || (i == 11) || (i == 14) || (i == 15) || (i == 18) ||
+			(i == 20) || (i == 22) || (i == 24) || (i == 26) || (i == 28) || (i == 30) || (i == 32) || (i == 34) || (i == 36))
 			widgets[i]->color = 'w';
 		else
 		{
@@ -266,7 +268,7 @@ ChessWindow* createGameWindow(Uint32 winMode, chessGame* game)
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	res->game = game;
 	Widget** widgets = createGameWindowWidgets(renderer, res);
-	if (res == NULL || data == NULL || window == NULL || renderer == NULL || widgets == NULL)
+	if ((res == NULL) || (data == NULL) || (window == NULL) || (renderer == NULL) || (widgets == NULL))
 	{
 		free(res);
 		free(data);
@@ -330,7 +332,7 @@ void drawGameWindow(ChessWindow* src)
 	//draw background
 	SDL_Surface* surf = SDL_LoadBMP("./game_background.bmp");
 	SDL_Texture * background = SDL_CreateTextureFromSurface(data->windowRenderer, surf);
-	if (surf == NULL || background == NULL)
+	if ((surf == NULL) || (background == NULL))
 	{
 		free(surf);
 		SDL_DestroyTexture(background);
@@ -357,21 +359,21 @@ void drawGameWindow(ChessWindow* src)
 			data->widgets[i]->drawWidget(data->widgets[i]);
 		if (i == 3)
 		{
-			if (spArrayListIsEmpty(src->game->historyArray) || src->game->gameMode == TWO_PLAYERS)
+			if ((spArrayListIsEmpty(src->game->historyArray)) || (src->game->gameMode == TWO_PLAYERS))
 			{
 				data->widgets[i]->isActivateLegal = false; //undo button
 				updateButtonTexture(data->widgets[i], "./undo_nonactive.bmp");
 			}
 		}
 
-		if (src->game->currentPlayer == WHITES && data->widgets[i]->color == 'b' ||
-			src->game->currentPlayer == BLACKS && data->widgets[i]->color == 'w')
+		if ((src->game->currentPlayer == WHITES) && (data->widgets[i]->color == 'b') ||
+			(src->game->currentPlayer == BLACKS) && (data->widgets[i]->color == 'w'))
 		{
 			data->widgets[i]->isActivateLegal = false;
 			data->widgets[i]->isDragLegal = false;
 		}
-		if (src->game->currentPlayer == WHITES && data->widgets[i]->color == 'w' ||
-			src->game->currentPlayer == BLACKS && data->widgets[i]->color == 'b')
+		if ((src->game->currentPlayer == WHITES) && (data->widgets[i]->color == 'w') ||
+			(src->game->currentPlayer == BLACKS) && (data->widgets[i]->color == 'b'))
 		{
 			data->widgets[i]->isActivateLegal = true;
 			data->widgets[i]->isDragLegal = true;
@@ -383,12 +385,11 @@ void drawGameWindow(ChessWindow* src)
 
 WINDOW_EVENT handleEventGameWindow(ChessWindow* src, SDL_Event* event)
 {
-	if (src == NULL || event == NULL) 
+	if ((src == NULL) || (event == NULL)) 
 	{
 		return CHESS_EMPTY_WINDOWEVENT;
 	}
 	
-	Button* buttonCast;
 	chessGameWindow* windata = (chessGameWindow*)src->data;
 	int endStatus;
 	WINDOW_EVENT savingChoose;
@@ -417,7 +418,6 @@ begin:
 
 				if (windata->widgets[i]->isActive && windata->widgets[i]->isActivateLegal)
 				{
-					buttonCast = (Button*)(windata->widgets[i]->data);
 					switch (windata->widgets[i]->widget_type)
 					{
 					case CHESS_EMPTY_BUTTON:
@@ -517,7 +517,7 @@ begin:
 							drawGameWindow(src);
 							SDL_Delay(50);
 							endStatus = checkGuiGameEnd(src);
-							if (endStatus == STALEMATE || endStatus == CHECKMATE)
+							if ((endStatus == STALEMATE) || (endStatus == CHECKMATE))
 								return CHESS_QUIT_WINDOWEVENT;
 
 							//if we are here - the move was valid 
@@ -532,9 +532,8 @@ begin:
 								drawGameWindow(src);
 								SDL_Delay(50);
 								endStatus = checkGuiGameEnd(src);
-								if (endStatus == STALEMATE || endStatus == CHECKMATE)
+								if ((endStatus == STALEMATE) || (endStatus == CHECKMATE))
 									return CHESS_QUIT_WINDOWEVENT;
-								printf("i: %d\n", i);
 								goto begin;
 							}
 							else if (src->game->gameMode == TWO_PLAYERS)

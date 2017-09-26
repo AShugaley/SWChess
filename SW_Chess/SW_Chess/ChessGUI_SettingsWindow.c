@@ -105,7 +105,7 @@ ChessWindow* createSettingsWindow(Uint32 winMode, chessGame* game)
 
 	Widget** widgets =		 createSettingsWindowWidgets(renderer);
 
-	if (res == NULL || data == NULL || window == NULL || renderer == NULL || widgets == NULL)
+	if ((res == NULL) || (data == NULL) || (window == NULL) || (renderer == NULL) || (widgets == NULL))
 	{
 		free(res);
 		free(data);
@@ -167,7 +167,7 @@ void drawSettingsWindow(ChessWindow* src)
 	SDL_Surface* surf = SDL_LoadBMP("./load_background.bmp");
 
 	SDL_Texture * background = SDL_CreateTextureFromSurface(data->windowRenderer, surf);
-	if (surf == NULL || background == NULL)
+	if ((surf == NULL) || (background == NULL))
 	{
 		free(surf);
 		SDL_DestroyTexture(background);
@@ -202,7 +202,7 @@ void drawSettingsWindow(ChessWindow* src)
 
 WINDOW_EVENT handleEventSettingsWindow(ChessWindow* src, SDL_Event* event)
 {
-	if (src == NULL || event == NULL)
+	if ((src == NULL) || (event == NULL))
 	{
 		return CHESS_EMPTY_WINDOWEVENT;
 	}
@@ -213,15 +213,15 @@ WINDOW_EVENT handleEventSettingsWindow(ChessWindow* src, SDL_Event* event)
 begin:
 		while (SDL_PollEvent(event))
 		{
-			if (!(event->type == SDL_MOUSEBUTTONDOWN  && event->button.button == SDL_BUTTON_LEFT) &&
-				!(event->type == SDL_MOUSEBUTTONUP && event->button.button == SDL_BUTTON_LEFT))
+			if (!((event->type == SDL_MOUSEBUTTONDOWN)  && (event->button.button == SDL_BUTTON_LEFT)) &&
+				!((event->type == SDL_MOUSEBUTTONUP) && (event->button.button == SDL_BUTTON_LEFT)))
 				goto begin;
 
 			for (int i = 0; i<windata->numOfWidgets; i++)
 			{
 				windata->Widgets[i]->handleEvent(windata->Widgets[i], event);
 				SDL_RenderPresent(windata->windowRenderer);
-				if (windata->Widgets[i]->isActive && windata->Widgets[i]->isActivateLegal)
+				if ((windata->Widgets[i]->isActive) && (windata->Widgets[i]->isActivateLegal))
 				{
 					switch (windata->Widgets[i]->widget_type)
 					{
@@ -244,7 +244,7 @@ begin:
 
 						windata->windowRenderer = SDL_CreateRenderer(windata->window, -1, SDL_RENDERER_ACCELERATED);
 						windata->Widgets = createSettingsWindowWidgets(windata->windowRenderer);
-						if (windata->windowRenderer == NULL || windata->Widgets == NULL)
+						if ((windata->windowRenderer == NULL) || (windata->Widgets == NULL))
 						{
 							free(windata->Widgets);
 							SDL_DestroyRenderer(windata->windowRenderer);

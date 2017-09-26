@@ -28,7 +28,7 @@ Widget** createMainWindowWidgets(SDL_Renderer* renderer)
 	widgets[1] = createButton(renderer, &loadGame,		"./load_active.bmp" , CHESS_LOAD_BUTTON);
 	widgets[2] = createButton(renderer, &quit,			"./exit_active.bmp" , CHESS_QUIT_BUTTON);
 
-	if (widgets[0] == NULL || widgets[1] == NULL || widgets[2] == NULL) 
+	if ((widgets[0] == NULL) || (widgets[1] == NULL) || (widgets[2] == NULL))
 	{
         printf("EROR SDL-4; eror creating a SDL window\n");
 		destroyWidget(widgets[0]); //NULL SAFE
@@ -52,7 +52,7 @@ ChessWindow* createMainWindow(Uint32 winMode, chessGame* game)
 
 	Widget** widgets = createMainWindowWidgets(renderer);
 
-	if (res == NULL || data == NULL || window == NULL || renderer == NULL || widgets == NULL )
+	if ((res == NULL) || (data == NULL) || (window == NULL) || (renderer == NULL) || (widgets == NULL))
 	{
         printf("EROR SDL-1; eror creating a SDL window\n");
 		free(res);
@@ -115,7 +115,7 @@ void drawMainWindow(ChessWindow* src)
 	//draw background
 	SDL_Surface* surf = SDL_LoadBMP("./main_background.bmp");
 	SDL_Texture * background = SDL_CreateTextureFromSurface(data->windowRenderer, surf);
-	if (surf == NULL || background == NULL)
+	if ((surf == NULL) || (background == NULL))
 	{
 		free(surf);
 		SDL_DestroyTexture(background);
@@ -143,13 +143,13 @@ void drawMainWindow(ChessWindow* src)
 
 WINDOW_EVENT handleEventMainWindow(ChessWindow* src, SDL_Event* event)
 {
-	if(src == NULL || event==NULL)
+	if((src == NULL) || (event==NULL))
 		return CHESS_EMPTY_WINDOWEVENT;
 
 	chessMainWindow* windata = (chessMainWindow*)src->data;
 
-	if (!(event->type == SDL_MOUSEBUTTONDOWN  && event->button.button == SDL_BUTTON_LEFT) &&
-		!(event->type == SDL_MOUSEBUTTONUP && event->button.button == SDL_BUTTON_LEFT))
+	if (!((event->type == SDL_MOUSEBUTTONDOWN)  && (event->button.button == SDL_BUTTON_LEFT)) &&
+		!((event->type == SDL_MOUSEBUTTONUP) && (event->button.button == SDL_BUTTON_LEFT)))
 		return CHESS_EMPTY_WINDOWEVENT;
 	
 	for(int i=0; i<windata->numOfWidgets; i++)

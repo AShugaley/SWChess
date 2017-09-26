@@ -70,7 +70,7 @@ ChessWindow* createLoadWindow(Uint32 winMode, chessGame* game)
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
 	Widget** widgets = createLoadWindowWidgets(renderer);
-	if (res == NULL || data == NULL || window == NULL || renderer == NULL || widgets == NULL )
+	if ((res == NULL) || (data == NULL) || (window == NULL) || (renderer == NULL) || (widgets == NULL))
 	{
 		free(res);
 		free(data);
@@ -130,7 +130,7 @@ void drawLoadWindow(ChessWindow* src)
 	//draw background
 	SDL_Surface* surf = SDL_LoadBMP("./load_background.bmp");
 	SDL_Texture * background = SDL_CreateTextureFromSurface(data->windowRenderer, surf);
-	if (surf == NULL || background == NULL)
+	if ((surf == NULL) || (background == NULL))
 	{
 		free(surf);
 		SDL_DestroyTexture(background);
@@ -167,7 +167,7 @@ void drawLoadWindow(ChessWindow* src)
 
 WINDOW_EVENT handleEventLoadWindow(ChessWindow* src, SDL_Event* event)
 {
-	if (src == NULL || event == NULL) {
+	if ((src == NULL) || (event == NULL)) {
 		return CHESS_EMPTY_WINDOWEVENT;
 	}
 	chessLoadWindow* windata = (chessLoadWindow*)src->data;
@@ -177,14 +177,14 @@ WINDOW_EVENT handleEventLoadWindow(ChessWindow* src, SDL_Event* event)
 begin:
 		while (SDL_PollEvent(event))
 		{
-			if (!(event->type == SDL_MOUSEBUTTONDOWN  && event->button.button == SDL_BUTTON_LEFT) &&
-				!(event->type == SDL_MOUSEBUTTONUP && event->button.button == SDL_BUTTON_LEFT))
+			if (!((event->type == SDL_MOUSEBUTTONDOWN)  && (event->button.button == SDL_BUTTON_LEFT)) &&
+				!((event->type == SDL_MOUSEBUTTONUP)    && (event->button.button == SDL_BUTTON_LEFT)))
 				goto begin;
 			for (int i = 0; i < windata->numOfWidgets; i++)
 			{
 				windata->widgets[i]->handleEvent(windata->widgets[i], event);
 				SDL_RenderPresent(windata->windowRenderer);
-				if (windata->widgets[i]->isActive && windata->widgets[i]->isActivateLegal)
+				if ((windata->widgets[i]->isActive) && (windata->widgets[i]->isActivateLegal))
 				{
 					switch (windata->widgets[i]->widget_type)
 					{
