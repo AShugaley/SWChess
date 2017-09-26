@@ -71,6 +71,7 @@ ChessWindow* createMainWindow(Uint32 winMode, chessGame* game)
 	for (int i = 0; i < data->numOfWidgets; i++)
 	{
 		data->widgets[i]->isDragLegal = false;
+		data->widgets[i]->isVisible = true;
 	}
 
 	res->data = (void*) data;
@@ -132,7 +133,11 @@ void drawMainWindow(ChessWindow* src)
 	for (int i = 0; i < data->numOfWidgets; i++) 
 	{
 		if (data->widgets[i]->isVisible)
+		{
+			printf("got here!");
 			data->widgets[i]->drawWidget(data->widgets[i]);
+
+		}
 	}
 	SDL_RenderPresent(data->windowRenderer);
 }
