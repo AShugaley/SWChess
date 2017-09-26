@@ -148,6 +148,25 @@ bool isStalemate(chessGame* src); // D Not Tested
  */
 bool saveGame(chessGame* src, const char* filename);
 
+
+/**
+* Rotates the saved slotes
+* i.e, if all 5 slots are full, saves src to slot_1, while copying what was in slot_1 to slot_2 etc
+* The game in slot_5 will be overwriten.
+*
+* returns nothing
+*/
+void saveGameInLastestSlot(chessGame* src);
+
+
+/**
+* Loads a new game to src (same place in memory)
+*
+* returns nothing
+*/
+void loadGameInPlace(const char* filename, chessGame* src);
+
+
 /**
  * Prints all possible moves by figure at <x,y>, in the requested format.
  *
@@ -199,7 +218,7 @@ void crowning(chessGame* src,int row,int col); //todo
  *
  * returns chess game
  */
-chessGame* loadGmae(const char* filename);
+chessGame* loadGame(const char* filename);
 
 
 /**

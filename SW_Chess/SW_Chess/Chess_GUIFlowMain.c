@@ -49,29 +49,7 @@ int GUIMain()
 			//quit ? somthing else? look for it in the PDF 
 			break;
 
-		case CHESS_SAVE_WINDOWEVENT:
-		case CHESS_SAVE_HOME_WINDOWEVENT:
-		case CHESS_SAVE_QUIT_WINDOWEVENT:
-			//do the saving !!!!!!!!!!!!!!!!!!!!!!!!!!!!
-			if(windowEvent == CHESS_SAVE_HOME_WINDOWEVENT)
-				currentWindow = swapWindows(currentWindow, CHESS_MAIN_WINDOW, game);
-			else if (windowEvent == CHESS_SAVE_QUIT_WINDOWEVENT)
-			{
-				destroyWindow(currentWindow);
-				destroyChessGame(game);
-				SDL_Quit();
-				return 0;
-			}
-			else
-				currentWindow = swapWindows(currentWindow, CHESS_GAME_WINDOW, game);
-			//adding event of SAVE_EXIT , but if the saving was taking care in the window so I dont need it -
-			//just return quit from the window, or stay on the same window 
 		case CHESS_STARTGAME_WINDOWEVENT: 
-			//if (currentWindow->game->gameMode == ONE_PLAYER)
-			//	onePFlow(currentWindow); //inside - swap windows
-			//else
-			//	twoPFlow(currentWindow);//inside - swap windows
-
 			currentWindow = swapWindows(currentWindow, CHESS_GAME_WINDOW, game);
 			break;
 
@@ -122,17 +100,24 @@ int GUIMain()
 			break;
 		
 		case CHESS_LOAD_WINDOWEVENT:
-			//load the chosen game
-			break;
 
-		//open load screen (from the game window for example)
+			// the loaded game is now at currentWindow->game, pointers were updated in place
+			// so mainwindow->game is ALSO the loaded game.
+			// if the line below won't work, try the commented one
+			currentWindow = swapWindows(currentWindow, CHESS_GAME_WINDOW, game);
+			break;
+			// currentWindow = swapWindows(currentWindow, CHESS_GAME_WINDOW, currentWindow->game);
+
+
 		case CHESS_LOAD_SCREEN_WINDOWEVENT:
 			prev = currentWindow->type;
 			currentWindow = swapWindows(currentWindow, CHESS_LOAD_WINDOW, game);
 			break;
+		
 		case CHESS_BACK_WINDOWEVENT:
 			currentWindow = swapWindows(currentWindow, prev, game);
 			break;
+		
 		case CHESS_QUIT_WINDOWEVENT:
 			destroyWindow(currentWindow);
 			SDL_Quit();

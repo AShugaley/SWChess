@@ -21,26 +21,6 @@ ChessWindow* createWindow(WINDOW_TYPE wintype, Uint32 winMode, chessGame* game)
 	return res;
 }
 
-//
-//ChessWindow* copyWindow(ChessWindow* src)
-//{
-//	ChessWindow* res = NULL;
-//
-//	res = createWindow(src->type, SDL_WINDOW_HIDDEN);
-//
-//
-//	///////how to copy the above ????? 
-//	//res->data = src->data;//////////////////////////////////
-//	//res->destroyWindow = src->destroyWindow;
-//	//res->drawWindow = src->drawWindow;
-//	//res->handleEventWindow = src->handleEventWindow;
-//	//res->type = src->type;
-//
-//	return res;
-//}
-
-
-
 
 ChessWindow* swapWindows(ChessWindow* oldWindow, WINDOW_TYPE type, chessGame* game)
 {
@@ -60,8 +40,10 @@ ChessWindow* swapWindows(ChessWindow* oldWindow, WINDOW_TYPE type, chessGame* ga
 
 void initGameGUIBoard(chessGame* game)
 {
-	int leftUpCornerX = 800;
-	int leftUpCornerY = 520;
+//	int leftUpCornerX = 800;
+//	int leftUpCornerY = 520;
+	int leftDownCornerX = 380;
+	int leftDownCornerY = 520;
 	int width = 60;
 	int height = 60;
 
@@ -69,8 +51,8 @@ void initGameGUIBoard(chessGame* game)
 	{
 		for (int j = 0; j < BOARD_SIZE; j++)
 		{
-			SDL_Rect currentRect = { .x = -(j * width)  + leftUpCornerX
-									,.y = -(i * height) + leftUpCornerY
+			SDL_Rect currentRect = { .x = (j * width)  + leftDownCornerX
+									,.y = -(i * height) + leftDownCornerY
 									,.h = 60
 									,.w = 60 };
 			game->gameGUIBoard[i][j] = currentRect;
@@ -78,6 +60,7 @@ void initGameGUIBoard(chessGame* game)
 	}
 	
 }
+
 
 void drawGameBoard(chessGameWindow* win, chessGame* game)
 {

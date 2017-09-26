@@ -52,22 +52,13 @@ WINDOW_EVENT showSavingMessage(WIDGET_TYPE type)
 		return CHESS_ERROR_WINDOWEVENT;
 	}
 	else if (buttonid == 0) // yes
-	{
-		if (type == CHESS_HOME_BUTTON)
-			return CHESS_SAVE_HOME_WINDOWEVENT;
-		else if (type == CHESS_QUIT_BUTTON)
-			return CHESS_SAVE_QUIT_WINDOWEVENT;
-	}
+		return CHESS_SAVE_WINDOWEVENT;
+
 	else if (buttonid == 1) // no
-	{
-		if (type == CHESS_HOME_BUTTON)
-			return CHESS_HOME_WINDOWEVENT;
-		else if (type == CHESS_QUIT_BUTTON)
-			return CHESS_QUIT_WINDOWEVENT;
-	}
+		return CHESS_DONT_SAVE_WINDOWEVENT;
+
 	else if (buttonid == 2) //cancel
 		return CHESS_EMPTY_WINDOWEVENT;
-	
 }
 
 //Helper function to create buttons in the simple window;
@@ -411,19 +402,11 @@ WINDOW_EVENT handleEventGameWindow(ChessWindow* src, SDL_Event* event)
 	if (src->game->gameMode == ONE_PLAYER && src->game->humanPlayerColor == BLACKS)
 	{
 		compMove(src->game);
-		if (windata->widgets[3]->isActivateLegal == false)
-		{
-			windata->widgets[3]->isActivateLegal = true;
-			updateButtonTexture(windata->widgets[3], "./undo_active.bmp");
-		}
 		steadyBoard = true;
 		drawGameWindow(src);
 	}
-	while (1) //think to delete it !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	while (1) 
 	{
-		
-	//	if (endStatus == STALEMATE || endStatus == CHECKMATE)
-		//	return CHESS_QUIT_WINDOWEVENT;
 begin:
 		while (SDL_PollEvent(event))
 		{
@@ -438,10 +421,7 @@ begin:
 			{
 				windata->widgets[i]->handleEvent(windata->widgets[i], event);
 				SDL_RenderPresent(windata->windowRenderer);
-			//	printf("i 22: %d", windata->widgets[22]->isActive);
-			//	if(windata->widgets[i]->isActive && !windata->widgets[i]->isActivateLegal)
-			//		printf("i: %d\n", i, windata->widgets[i]->isActive);
-				
+
 				if (windata->widgets[i]->isActive && windata->widgets[i]->isActivateLegal)
 				{
 					//printf("i: %d\n", i, windata->widgets[i]->isActive);
@@ -450,15 +430,22 @@ begin:
 					{
 					case CHESS_EMPTY_BUTTON:
 						return CHESS_EMPTY_WINDOWEVENT;
+					
 					case CHESS_RESTART_BUTTON: 
 						windata->widgets[i]->isActive = false;
 						return CHESS_RESTART_WINDOWEVENT;
+					
 					case CHESS_SAVE_BUTTON:
 						windata->widgets[i]->isActive = false;
-						return CHESS_SAVE_WINDOWEVENT;
+						saveGameInLastestSlot(src->game);
+						updateButtonTexture(windata->widgets[i], "./save_active.bmp");
+						drawGameWindow(src);
+						goto begin;
+
 					case CHESS_LOAD_BUTTON:
 						windata->widgets[i]->isActive = false;
 						return CHESS_LOAD_SCREEN_WINDOWEVENT;
+					
 					case CHESS_UNDO_BUTTON:
 						undoGui(src->game);
 						undoGui(src->game);
@@ -467,6 +454,7 @@ begin:
 						drawGameWindow(src);
 						windata->widgets[i]->isActive = false;
 						goto begin;
+				
 					case CHESS_HOME_BUTTON:
 						savingChoose = showSavingMessage(windata->widgets[i]->widget_type);
 						if (savingChoose == CHESS_EMPTY_WINDOWEVENT)//"cancel" pressed
@@ -478,8 +466,12 @@ begin:
 							steadyBoard = true;
 							goto begin;
 						}
+					    if (savingChoose == CHESS_SAVE_WINDOWEVENT)	//"yes" pressed
+							saveGameInLastestSlot(src->game);
+						
 						windata->widgets[i]->isActive = false;
-						return savingChoose;
+						return CHESS_HOME_WINDOWEVENT;
+					
 					case CHESS_QUIT_BUTTON:
 						savingChoose = showSavingMessage(windata->widgets[i]->widget_type);
 						if (savingChoose == CHESS_EMPTY_WINDOWEVENT)//"cancel" pressed
@@ -491,8 +483,13 @@ begin:
 							steadyBoard = true;
 							goto begin;
 						}
+						
+						if (savingChoose == CHESS_SAVE_WINDOWEVENT)	//"yes" pressed
+							saveGameInLastestSlot(src->game);
+
 						windata->widgets[i]->isActive = false;
-						return savingChoose;
+						return CHESS_QUIT_WINDOWEVENT;
+					
 					case CHESS_PAWN_BLACK_BUTTON:
 					case CHESS_PAWN_WHITE_BUTTON:
 					case CHESS_BISHOP_BLACK_BUTTON:
@@ -572,7 +569,6 @@ begin:
 					//printf("handle down, i: %d %d \n", i, windata->widgets[i]->isActive)
 				}
 			}
-			break;
 		}
 }
 	return eventType;

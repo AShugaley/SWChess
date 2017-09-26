@@ -137,9 +137,9 @@ void drawMainWindow(ChessWindow* src)
 
 WINDOW_EVENT handleEventMainWindow(ChessWindow* src, SDL_Event* event)
 {
-	if(src == NULL || event==NULL){
+	if(src == NULL || event==NULL)
 		return CHESS_EMPTY_WINDOWEVENT;
-	}
+
 	chessMainWindow* windata = (chessMainWindow*)src->data;
 
 	if (!(event->type == SDL_MOUSEBUTTONDOWN  && event->button.button == SDL_BUTTON_LEFT) &&
@@ -151,7 +151,7 @@ WINDOW_EVENT handleEventMainWindow(ChessWindow* src, SDL_Event* event)
 		windata->widgets[i]->handleEvent(windata->widgets[i], event);
 		SDL_RenderPresent(windata->windowRenderer);
 
-		//if the button is pressed now, or the piece is draged 
+		//if the button is pressed now 
 		if (windata->widgets[i]->isActive)
 		{
 			switch (windata->widgets[i]->widget_type)
@@ -171,7 +171,8 @@ WINDOW_EVENT handleEventMainWindow(ChessWindow* src, SDL_Event* event)
 				return CHESS_EMPTY_WINDOWEVENT;
 			}
 		}
-		return CHESS_EMPTY_WINDOWEVENT;
+		
 		
 	}
+	return CHESS_EMPTY_WINDOWEVENT;   //return error? ???????????????? 
 }

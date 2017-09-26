@@ -416,17 +416,15 @@ begin:
 						break;
 
 					default:
-						eventType = CHESS_EMPTY_WINDOWEVENT;
-						break;
+						return CHESS_EMPTY_WINDOWEVENT;
 					}
-					drawSettingsWindow(src);
 
+					drawSettingsWindow(src);
+					goto begin;
 				}
 			}
-
-			break;
 		}
-		}
+	}
 		
 	
 	return eventType;

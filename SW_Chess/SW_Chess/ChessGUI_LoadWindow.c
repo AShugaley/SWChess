@@ -5,6 +5,7 @@
 
 static const load_width = 550;
 static const load_height = 700;
+int chosenSlot;
 
 #define LOAD 0 
 #define BACK 1
@@ -70,15 +71,13 @@ ChessWindow* createLoadWindow(Uint32 winMode, chessGame* game)
 	//chessGame* game = createChessGame(6, ONE_PLAYER, WHITES, 2);
 
 	Widget** widgets = createLoadWindowWidgets(renderer);
-	if (res == NULL || data == NULL || window == NULL || renderer == NULL || widgets == NULL )//|| game == NULL)
+	if (res == NULL || data == NULL || window == NULL || renderer == NULL || widgets == NULL )
 	{
 		free(res);
 		free(data);
 		free(widgets);
 		SDL_DestroyRenderer(renderer); //NULL safe
 		SDL_DestroyWindow(window);	  //NULL safe
-		//destroyChessGame(game);
-
 		return NULL;
 	}
 	data->widgets = widgets;
@@ -147,6 +146,13 @@ void drawLoadWindow(ChessWindow* src)
 	SDL_DestroyTexture(background);
 	
 	//Draw window
+	if (checkIfPathIsLegal(SAVE_SLOT_1)){ data->widgets[2]->isVisible = true; }  else{ data->widgets[2]->isVisible = false; }
+	if (checkIfPathIsLegal(SAVE_SLOT_2)){ data->widgets[3]->isVisible = true; }  else{ data->widgets[3]->isVisible = false; }
+	if (checkIfPathIsLegal(SAVE_SLOT_3)){ data->widgets[4]->isVisible = true; }  else{ data->widgets[4]->isVisible = false; }
+	if (checkIfPathIsLegal(SAVE_SLOT_4)){ data->widgets[5]->isVisible = true; }  else{ data->widgets[5]->isVisible = false; }
+	if (checkIfPathIsLegal(SAVE_SLOT_5)){ data->widgets[6]->isVisible = true; }  else{ data->widgets[6]->isVisible = false; }
+
+
 	for (int i=0; i < data->numOfWidgets; i++)
 	{
 		if (data->widgets[i]->isVisible)
@@ -190,21 +196,42 @@ begin:
 					{
 					case CHESS_EMPTY_BUTTON:
 						return CHESS_EMPTY_WINDOWEVENT;
+					
 					case CHESS_BACK_BUTTON:
 						windata->widgets[i]->isActive = false;
 						return CHESS_BACK_WINDOWEVENT;
+					
 					case CHESS_LOADER_INSIDE_BUTTON:
 						windata->widgets[i]->isActive = false;
+						if (chosenSlot == 1) 
+							loadGameInPlace(SAVE_SLOT_1, src->game);
+						
+						if (chosenSlot == 2) 
+							loadGameInPlace(SAVE_SLOT_2, src->game);
+						
+						if (chosenSlot == 3) 
+							loadGameInPlace(SAVE_SLOT_3, src->game);
+						
+						if (chosenSlot == 4) 
+							loadGameInPlace(SAVE_SLOT_4, src->game);
+						
+						if (chosenSlot == 5) 
+							loadGameInPlace(SAVE_SLOT_5, src->game);
+						
 						return CHESS_LOAD_WINDOWEVENT;
+					
 					case CHESS_SLOT1_BUTTON:
+						chosenSlot = 1;
 						updateButtonTexture(windata->widgets[SLOT2], "./slot2_active.bmp");
 						updateButtonTexture(windata->widgets[SLOT3], "./slot3_active.bmp");
 						updateButtonTexture(windata->widgets[SLOT4], "./slot4_active.bmp");
 						updateButtonTexture(windata->widgets[SLOT5], "./slot5_active.bmp");
 						windata->widgets[LOAD]->isActivateLegal = true;
 						windata->widgets[i]->isActive = false;
-						break;					
+						break;
+					
 					case CHESS_SLOT2_BUTTON:
+						chosenSlot = 2;
 						updateButtonTexture(windata->widgets[SLOT1], "./slot1_active.bmp");
 						updateButtonTexture(windata->widgets[SLOT3], "./slot3_active.bmp");
 						updateButtonTexture(windata->widgets[SLOT4], "./slot4_active.bmp");
@@ -212,7 +239,9 @@ begin:
 						windata->widgets[LOAD]->isActivateLegal = true;
 						windata->widgets[i]->isActive = false;
 						break;
+					
 					case CHESS_SLOT3_BUTTON:
+						chosenSlot = 3;
 						updateButtonTexture(windata->widgets[SLOT1], "./slot1_active.bmp");
 						updateButtonTexture(windata->widgets[SLOT2], "./slot2_active.bmp");
 						updateButtonTexture(windata->widgets[SLOT4], "./slot4_active.bmp");
@@ -220,7 +249,9 @@ begin:
 						windata->widgets[LOAD]->isActivateLegal = true;
 						windata->widgets[i]->isActive = false;
 						break;
+					
 					case CHESS_SLOT4_BUTTON:
+						chosenSlot = 4;
 						updateButtonTexture(windata->widgets[SLOT2], "./slot2_active.bmp");
 						updateButtonTexture(windata->widgets[SLOT3], "./slot3_active.bmp");
 						updateButtonTexture(windata->widgets[SLOT1], "./slot1_active.bmp");
@@ -228,7 +259,9 @@ begin:
 						windata->widgets[LOAD]->isActivateLegal = true;
 						windata->widgets[i]->isActive = false;
 						break;
+					
 					case CHESS_SLOT5_BUTTON:
+						chosenSlot = 5;
 						updateButtonTexture(windata->widgets[SLOT2], "./slot2_active.bmp");
 						updateButtonTexture(windata->widgets[SLOT3], "./slot3_active.bmp");
 						updateButtonTexture(windata->widgets[SLOT4], "./slot4_active.bmp");
@@ -237,10 +270,11 @@ begin:
 						windata->widgets[i]->isActive = false;
 						break;
 					}
+					
 					drawLoadWindow(src);
+					goto begin;
 				}
 			}
-			break;
 		}
 	}
 		

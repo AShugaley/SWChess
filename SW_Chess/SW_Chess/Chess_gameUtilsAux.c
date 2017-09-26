@@ -348,4 +348,14 @@ bool checkAvoided(chessGame* src, int prev_pos_row, int prev_pos_col, int next_p
 
 
 
+bool checkIfPathIsLegal(const char* filename) {
+	if (strstr(filename, "load ") != 0) { /* Sometimes we send the whole command, and not just the path */
+		filename += 5;
+	}
+	FILE *f = fopen(filename, "r+");
+	if (f == NULL)
+		return false;
+	return true;
+}
+
 

@@ -410,9 +410,49 @@ void get_moves(chessGame* src, int row, int col){
     
 }
 
+void loadGameInPlace(const char* filename, chessGame* src) {
+	chessGame* newGame = loadGame(filename);
+	if (newGame == NULL)
+		return;
+	for (int i = 0; i<8; i++)
+		for (int j = 0; j<8; j++)
+			src->gameBoard[i][j] = newGame->gameBoard[i][j];
+	src->difficulty = newGame->difficulty;
+	src->gameMode = newGame->gameMode;
+	src->humanPlayerColor = newGame->humanPlayerColor;
+	spArrayListDestroy(src->historyArray);
+	src->historyArray = spArrayListCopy(newGame->historyArray);
+	src->currentPlayer = newGame->currentPlayer;
+	src->uiMode = newGame->uiMode;
+	destroyChessGame(newGame);
+	return;
+}
+
+
+void saveGameInLastestSlot(chessGame* src) {
+	chessGame* tempGame = loadGame(SAVE_SLOT_4);
+	if (tempGame)
+		saveGame(tempGame, SAVE_SLOT_5);
+	destroyChessGame(tempGame);
+	tempGame = loadGame(SAVE_SLOT_3);
+	if (tempGame)
+		saveGame(tempGame, SAVE_SLOT_4);
+	destroyChessGame(tempGame);
+	tempGame = loadGame(SAVE_SLOT_2);
+	if (tempGame)
+		saveGame(tempGame, SAVE_SLOT_3);
+	destroyChessGame(tempGame);
+	tempGame = loadGame(SAVE_SLOT_1);
+	if (tempGame)
+		saveGame(tempGame, SAVE_SLOT_2);
+	destroyChessGame(tempGame);
+	saveGame(src, SAVE_SLOT_1);
+}
+
+
 
 /* Does not check if file is valid (in correct format */
-chessGame* loadGmae(const char* filename){
+chessGame* loadGame(const char* filename){
     chessGame* src = createChessGame(6, 2, 0, 1);
     if(strstr(filename, "load ") != 0) { /* Sometimes we send the whole command, and not just the path */
         filename += 5;
@@ -420,7 +460,7 @@ chessGame* loadGmae(const char* filename){
 
     FILE *f = fopen(filename, "r+");
     if(f == NULL){
-        printf("Error: File doesn’t exist or cannot be opened\n");
+        printf("Error: File does not exist or cannot be opened\n"); 
         return NULL;
     }
     char* currentToken;
@@ -525,7 +565,7 @@ chessGame* loadGmae(const char* filename){
 bool saveGame(chessGame* src, const char* filename){
 
     if(strstr(filename, "save ") != 0) { /* Sometimes we send the whole command, and not just the path */
-        filename += 5;
+        filename += 5;					//////////////// +5 ? //////////////
     }
     FILE *file = fopen(filename, "w+");
     if(file == NULL){
