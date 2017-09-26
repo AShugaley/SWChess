@@ -9,6 +9,8 @@
 
 #include <stdbool.h>
 
+//mine
+
 /**
  * Chess_gameUtils summary:
  *

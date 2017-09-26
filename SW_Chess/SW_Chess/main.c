@@ -15,6 +15,8 @@
 #include "Chess_ArrayList.h"
 #include "Chess_GUIFlowMain.h"
 
+//mine 
+
 /////////////////////////////Testers declerations////////////////////////////////////
 
 /////ALEX/////

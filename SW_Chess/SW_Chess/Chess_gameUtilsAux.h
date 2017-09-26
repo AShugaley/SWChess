@@ -6,6 +6,9 @@
 #include "Chess_def.h"
 #include "Chess_ArrayList.h"
 
+//mine 
+
+
 /**
  * Chess_gameUtilsAux summary:
  *

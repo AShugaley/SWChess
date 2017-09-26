@@ -6,6 +6,8 @@
 #include <stdbool.h>
 #include "Chess_def.h"
 
+//mine
+
 
 typedef enum {
 	CHESS_EMPTY_WINDOWEVENT,

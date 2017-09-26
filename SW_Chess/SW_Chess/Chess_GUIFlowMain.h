@@ -1,6 +1,7 @@
 #ifndef CHESS_GUIFLOWMAIN_H_
 #define CHESS_GUIFLOWMAIN_H_
 
+//mine
 
 #include <stdio.h>
 #include "ChessGUI_MainWindow.h"

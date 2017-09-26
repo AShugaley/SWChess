@@ -4,6 +4,9 @@
 #include "Widget.h"
 #include <stdio.h>
 
+//mine
+
+
 typedef enum {
 	CHESS_EMPTYSET,
 	CHESS_MODE_SET,

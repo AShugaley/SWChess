@@ -5,6 +5,7 @@
 #include <string.h>
 #include "ChessGUI_Utils.h"
 
+//mine
 
 /* In all functions, we assume that the arguments are legal - e.g. 0<=pos<=7. We check it elsewhere - the comp will do so by himself, and we will check arguments from the user on input or higher on calculation chain.
  */

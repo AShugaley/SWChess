@@ -5,6 +5,8 @@
 #include <SDL_video.h>
 #include <stdbool.h>
 
+//mine
+
 
 typedef enum {
 	CHESS_EMPTY_BUTTON,

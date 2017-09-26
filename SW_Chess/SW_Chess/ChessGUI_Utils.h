@@ -7,6 +7,8 @@
 #include "Chess_def.h"
 #include "Chess_gameUtils.h"
 
+//mine
+
 
 #define STALEMATE  0
 #define CHECK      1
