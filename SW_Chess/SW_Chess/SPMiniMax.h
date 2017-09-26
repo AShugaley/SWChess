@@ -20,7 +20,7 @@
  * maxFunc        - Maximum of two ints
  * minFunc        - Minimum of two ints
  *
- */
+ */ 
 
 /**
  * Receives a ChessGame and a difficulry level (the depth of the minmax algoritem), and creates the call

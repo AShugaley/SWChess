@@ -53,7 +53,7 @@ Chess_GUIFlowMain.o: Chess_GUIFlowMain.h Chess_GUIFlowMain.c ChessGUI_MainWindow
 	$(CC) $(COMP_FLAG) $(SDL_COMP_FLAG) -c $*.c
 ChessGUI_Utils.o: ChessGUI_Utils.h ChessGUI_Utils.c Chess_GUIFlowMain.h ChessGUI_Window.h
 	$(CC) $(COMP_FLAG) $(SDL_COMP_FLAG) -c $*.c
-main.o: main.c Chess_GUIFlowMain.h Chess_ConsoleFlowMain.h
+main.o: main.c Chess_GUIFlowMain.h Chess_ConsoleFlowMain.h 
 	$(CC) $(COMP_FLAG) $(SDL_COMP_FLAG) -c $*.c
 clean:
 	rm -f *.o $(EXEC)

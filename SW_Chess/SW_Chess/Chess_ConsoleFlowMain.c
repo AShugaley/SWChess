@@ -38,7 +38,7 @@ reset: /* if we restart */
             if(!setcmd.isValidArg){ /* nope */
                 printf("Illigal argument\n");
                 continue;
-            }
+            } 
             if((setcmd.arg > 5) || (setcmd.arg < 1)){ /* nope */
                 printf("Wrong difficulty level. The value should be between 1 to 5\n");
                 continue;

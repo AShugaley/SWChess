@@ -91,7 +91,7 @@ typedef struct sp_array_list_node {
     char moving_figure;
     int figureIndex;
 } SPArrayListNode;
-
+ 
 
 /**
  * A type that represents the array list that contains chess moves

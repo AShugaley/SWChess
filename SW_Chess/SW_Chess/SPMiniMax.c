@@ -274,7 +274,7 @@ double utilityFunction(chessGame* src){
                 default:
                     break;
             }
-        }
+        } 
     }
     
     whiteTotal = whiteArray[0]*1 + whiteArray[1]*3 + whiteArray[2]*5 + whiteArray[3]*9 + whiteArray[4]*100;

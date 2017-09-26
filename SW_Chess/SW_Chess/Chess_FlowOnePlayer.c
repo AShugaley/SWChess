@@ -35,7 +35,7 @@ GAME_STATUS onePlayerGameFlow(chessGame* src){
         }
         if(cmd.cmd == CHESS_SAVE){
             saveGame(src, input); 
-            printBoard = false;
+             printBoard = false;
             continue;
         }
         if(cmd.cmd == CHESS_MOVE){

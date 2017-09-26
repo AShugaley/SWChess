@@ -34,7 +34,7 @@ GAME_STATUS onePlayerGameFlow(chessGame* src);
  * @return true on sucessful move, else false
  */
 bool humanMove(chessGame* src, CHESSCommand cmd);
-
+ 
 /**
  * AI player move -> uses the suggestMove function in order to determine the best possible move
  * executes this move.

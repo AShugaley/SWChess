@@ -23,7 +23,7 @@
  * spArrayListAddAt        - Inserts an element at a specified index, elements
  *                           will be shifted to make place.
  * spArrayListAddFirst     - Inserts an element at the beginning of the array
- *                           list, elements will be shifted to make place.
+ *                           list, elements will be shifted to make place. 
  * spArrayListAddLast      - Inserts an element at the end of the array list.
  * spArrayListRemoveAt     - Removes an element at the specified index, elements
  *                           elements will be shifted as a result.

@@ -38,7 +38,7 @@
    avoding a check and so on).
  * getFigureStringName         - Returns the string name of a figure
  */
-
+ 
 
 /* A simple explanation of the words we use here and in other parts of the code:
  * a VALID move is a move that is OK from figure movment perspective (i.e. rooks move in a straight line, cannot go through figures and have to land on an empty field of an oponnent figure.

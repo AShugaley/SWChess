@@ -659,7 +659,7 @@ void checkGameEnd(chessGame* src){
         printf("Check: %s King is threatened!\n",getCurrentPlayerStringName(src));
 }
 
-
+ 
 /* bye */
 void terminateGame(chessGame* src){
     destroyChessGame(src);

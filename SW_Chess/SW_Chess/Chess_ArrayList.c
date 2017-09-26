@@ -85,7 +85,7 @@ SP_ARRAY_LIST_MESSAGE spArrayListAddFirst(SPArrayList* src, int current_pos_row,
 
 
 SP_ARRAY_LIST_MESSAGE spArrayListAddLast(SPArrayList* src, int current_pos_row, int current_pos_col, int prev_pos_row, int prev_pos_col, char pre_pos_fig,char moving_fig, int figureIndex)
-{
+{ 
     if (src == NULL)
         return SP_ARRAY_LIST_INVALID_ARGUMENT;
     

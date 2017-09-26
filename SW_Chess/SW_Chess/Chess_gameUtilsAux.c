@@ -196,7 +196,7 @@ bool isValidKingMove(chessGame* src, int prev_pos_row, int prev_pos_col, int nex
          return false;
     return true; /* that IS how knights work! */
 }
-
+ 
 bool isValidDestenetion(PLAYER_COLOR player, char figure){
     if(figure == EMPTY_BOARD_POS)
         return true;
