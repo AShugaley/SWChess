@@ -1,21 +1,12 @@
 
 #ifndef CHESSGUI_WINDOW_H_
 #define CHESSGUI_WINDOW_H_
-// ALEX
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_video.h>
-// $$$
 
+#include <SDL.h>
+#include <SDL_video.h>
 
-// // MOR
-//#include <SDL.h>
-//#include <SDL_video.h>
-// // $$$
 #include <stdbool.h>
 #include "Chess_def.h"
-
-//mine
-
 
 typedef enum {
 	CHESS_EMPTY_WINDOWEVENT,
@@ -47,7 +38,6 @@ typedef struct spwindow_t ChessWindow;
 struct spwindow_t {
 	void* data;
 	void (*drawWindow)(ChessWindow* );
-	//void (*handleEventWindow)(ChessWindow*, SDL_Event*);
 	WINDOW_EVENT (*handleEventWindow)(ChessWindow* , SDL_Event*);
 	void (*destroyWindow)(ChessWindow* );
 	WINDOW_TYPE type;

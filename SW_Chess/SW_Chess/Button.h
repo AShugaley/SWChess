@@ -4,15 +4,12 @@
 #include <stdbool.h>
 #include "Widget.h" //A button is a widget also
 
-//mine
-
 
 typedef struct simplebutton_t Button;
 struct simplebutton_t{
 	SDL_Texture* buttonTexture;
 	SDL_Renderer* windowRenderer;
 	SDL_Rect* location;
-	//WIDGET_TYPE type;
 };
 
 //You need a create function:

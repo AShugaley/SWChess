@@ -102,19 +102,16 @@ ChessWindow* createSettingsWindow(Uint32 winMode, chessGame* game)
 	chessSettingsWindow* data = malloc(sizeof(chessSettingsWindow));
 	SDL_Window* window = SDL_CreateWindow("CHESS!", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,settings_width,settings_height, winMode);
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-	//chessGame* game = createChessGame(6, ONE_PLAYER, WHITES, 2);
 
 	Widget** widgets =		 createSettingsWindowWidgets(renderer);
 
-	if (res == NULL || data == NULL || window == NULL || renderer == NULL || widgets == NULL)// || game == NULL)
+	if (res == NULL || data == NULL || window == NULL || renderer == NULL || widgets == NULL)
 	{
 		free(res);
 		free(data);
 		free(widgets);
 		SDL_DestroyRenderer(renderer); //NULL safe
 		SDL_DestroyWindow(window); //NULL safe
-		//destroyChessGame(game);
-
 		return NULL;
 	}
 	data->Widgets = widgets;
@@ -166,10 +163,6 @@ void drawSettingsWindow(ChessWindow* src)
 	
 	chessSettingsWindow* data = (chessSettingsWindow*)src->data;
 
-	//SDL_SetRenderDrawColor(data->windowRenderer, 255,255, 255, 0);
-	//SDL_FillRect(NULL, NULL, 0x000000);
-	//SDL_RenderClear(data->windowRenderer);
-	
 	///////////////////////////draw background///////////////////////////
 	SDL_Surface* surf = SDL_LoadBMP("./load_background.bmp");
 
@@ -214,13 +207,9 @@ WINDOW_EVENT handleEventSettingsWindow(ChessWindow* src, SDL_Event* event)
 		return CHESS_EMPTY_WINDOWEVENT;
 	}
 	chessSettingsWindow* windata = (chessSettingsWindow*)src->data;
-	WINDOW_EVENT eventType = CHESS_EMPTY_WINDOWEVENT;
-	//int i=0;
-
 
 	while (1)
 	{
-	//	SDL_WaitEvent(&event);
 begin:
 		while (SDL_PollEvent(event))
 		{
@@ -228,12 +217,11 @@ begin:
 				!(event->type == SDL_MOUSEBUTTONUP && event->button.button == SDL_BUTTON_LEFT))
 				goto begin;
 
-			for (int i = 0; i<windata->numOfWidgets; i++)//=((i+1) % windata->numOfWidgets))
+			for (int i = 0; i<windata->numOfWidgets; i++)
 			{
-				//	bool refresh = false; 
 				windata->Widgets[i]->handleEvent(windata->Widgets[i], event);
 				SDL_RenderPresent(windata->windowRenderer);
-				if (windata->Widgets[i]->isActive && windata->Widgets[i]->isActivateLegal)//windata->widgets[i]->data->isPressed)
+				if (windata->Widgets[i]->isActive && windata->Widgets[i]->isActivateLegal)
 				{
 					switch (windata->Widgets[i]->widget_type)
 					{
@@ -260,7 +248,7 @@ begin:
 						{
 							free(windata->Widgets);
 							SDL_DestroyRenderer(windata->windowRenderer);
-							return CHESS_EMPTY_WINDOWEVENT;		//return CHESS_ERROR_EVENT ???????????????????
+							return CHESS_EMPTY_WINDOWEVENT;		//return CHESS_ERROR_EVENT !!!!!!!!!
 						}
 
 						if (windata->setType == CHESS_MODE_SET)
@@ -317,8 +305,7 @@ begin:
 						updateButtonTexture(windata->Widgets[MODERATE], "./moderate_active.bmp");
 						updateButtonTexture(windata->Widgets[HARD],		"./hard_active.bmp");
 						updateButtonTexture(windata->Widgets[EXPERT], "./expert_active.bmp");
-
-						windata->Widgets[i]->isActive = false;		///////////////////////////////check this 
+						windata->Widgets[i]->isActive = false;		 
 						if (!windata->Widgets[NEXT]->isActivateLegal)
 						{
 							updateButtonTexture(windata->Widgets[NEXT], "./next_active.bmp");
@@ -427,7 +414,7 @@ begin:
 	}
 		
 	
-	return eventType;
+	return CHESS_EMPTY_WINDOWEVENT;
 }
 
 

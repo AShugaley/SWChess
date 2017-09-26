@@ -68,7 +68,6 @@ ChessWindow* createLoadWindow(Uint32 winMode, chessGame* game)
 	chessLoadWindow* data = malloc(sizeof(chessLoadWindow));
 	SDL_Window* window = SDL_CreateWindow("CHESS!", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, load_width, load_height, winMode);
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-	//chessGame* game = createChessGame(6, ONE_PLAYER, WHITES, 2);
 
 	Widget** widgets = createLoadWindowWidgets(renderer);
 	if (res == NULL || data == NULL || window == NULL || renderer == NULL || widgets == NULL )
@@ -173,10 +172,6 @@ WINDOW_EVENT handleEventLoadWindow(ChessWindow* src, SDL_Event* event)
 	}
 	chessLoadWindow* windata = (chessLoadWindow*)src->data;
 
-	WINDOW_EVENT eventType = CHESS_EMPTY_WINDOWEVENT;
-
-
-
 	while (1)
 	{
 begin:
@@ -187,7 +182,6 @@ begin:
 				goto begin;
 			for (int i = 0; i < windata->numOfWidgets; i++)
 			{
-				//	bool refresh = false; 
 				windata->widgets[i]->handleEvent(windata->widgets[i], event);
 				SDL_RenderPresent(windata->windowRenderer);
 				if (windata->widgets[i]->isActive && windata->widgets[i]->isActivateLegal)
@@ -279,5 +273,6 @@ begin:
 	}
 		
 		
-	return eventType;
+	return CHESS_EMPTY_WINDOWEVENT;
+
 }

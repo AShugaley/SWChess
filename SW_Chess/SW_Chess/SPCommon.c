@@ -1,9 +1,6 @@
 #include "SPCommon.h"
 #include <stdlib.h>
 
-//mine
-
-
 //Helper function
 SDL_Rect* spCopyRect(SDL_Rect* src){
 	if(src == NULL){

@@ -4,8 +4,6 @@
 #include "Widget.h"
 #include <stdio.h>
 
-//mine
-
 
 #define BISHOP_WHITE1 6
 #define BISHOP_WHITE2 7

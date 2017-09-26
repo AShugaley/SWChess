@@ -4,7 +4,6 @@
 #include "Widget.h"
 #include <stdio.h>
 #include "Chess_gameUtils.h"
-//mine
 
 
 typedef struct chess_LoadWindow chessLoadWindow;
@@ -13,8 +12,6 @@ struct chess_LoadWindow {
 	SDL_Renderer* windowRenderer;
 	Widget** widgets;
 	int numOfWidgets;
-	//add activeSlot - the chosen slot (for the buttons textures) 
-	//add legal slots - array of the slots to present (? )
 };
 
 ChessWindow* createLoadWindow(Uint32 winMode, chessGame* game);

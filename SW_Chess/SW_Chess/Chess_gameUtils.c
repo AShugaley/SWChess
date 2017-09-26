@@ -1,11 +1,8 @@
-
 #include <assert.h>
 #include "Chess_gameUtils.h"
 #include <stdlib.h>
 #include <string.h>
 #include "ChessGUI_Utils.h"
-
-//mine
 
 /* In all functions, we assume that the arguments are legal - e.g. 0<=pos<=7. We check it elsewhere - the comp will do so by himself, and we will check arguments from the user on input or higher on calculation chain.
  */
@@ -707,14 +704,4 @@ void terminateGame(chessGame* src){
     exit(0);
 }
 
-SPArrayListNode* GUIModeUndo(chessGame* src){
-    
-    if(spArrayListIsEmpty(src->historyArray))
-        return NULL;
-    SPArrayListNode* move = spArrayListGetLast(src->historyArray);
-    spArrayListRemoveLast(src->historyArray);
-    src->gameBoard[move->prev_pos_row][move->prev_pos_col] = move->moving_figure;
-    src->gameBoard[move->current_pos_row][move->current_pos_col] = move->prev_pos_fig;
-    switchCurrentPlayer(src);
-    return move;
-}
+

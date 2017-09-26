@@ -1,4 +1,4 @@
-//#include "ChessGUI_Utils.h"
+#include "ChessGUI_Utils.h"
 #include "ChessGUI_MainWindow.h"
 #include "ChessGUI_GameWindow.h"
 #include "ChessGUI_LoadWindow.h"
@@ -17,18 +17,15 @@ ChessWindow* createWindow(WINDOW_TYPE wintype, Uint32 winMode, chessGame* game)
 		res = createGameWindow(winMode, game);
 	else if (wintype == CHESS_SETTINGS_WINDOW)
 		res = createSettingsWindow(winMode, game);
-//	res->prevWindow = NULL;
 	return res;
 }
 
 
 ChessWindow* swapWindows(ChessWindow* oldWindow, WINDOW_TYPE type, chessGame* game)
 {
-//	chessGame* newGame = copyChessGame(game);
 	destroyWindow(oldWindow);
 	ChessWindow* newWindow = NULL;
 	newWindow = createWindow(type, SDL_WINDOW_OPENGL, game);
-	//game = newGame; //update our main game pointer
 	if (newWindow == NULL)
 	{
 		SDL_Quit();
@@ -40,8 +37,6 @@ ChessWindow* swapWindows(ChessWindow* oldWindow, WINDOW_TYPE type, chessGame* ga
 
 void initGameGUIBoard(chessGame* game)
 {
-//	int leftUpCornerX = 800;
-//	int leftUpCornerY = 520;
 	int leftDownCornerX = 380;
 	int leftDownCornerY = 520;
 	int width = 60;
@@ -77,7 +72,6 @@ void drawGameBoard(chessGameWindow* win, chessGame* game)
 			{
 				loadingSurface = SDL_LoadBMP("./white_sq.bmp"); //We use the surface as a temp var;
 				squareTexture =  SDL_CreateTextureFromSurface(win->windowRenderer, loadingSurface);
-				//SDL_SetRenderDrawColor(win->windowRenderer, 0, 255, 0, 255);
 			}
 			else
 			{
@@ -140,18 +134,7 @@ void setButtonPlace(int* newX, int* newY, chessGame* game, int locX, int locY, W
 		}
 	}
 }
-	/*
-rect origin = button location;
-drag&drop - mouse_motion => piece.i += event.motion.xrel , j+=y.rel (update button location)
-mouse_up-> 
-for(i)
-for (j)
-if pointinrect(button->location, src[i][j])
-	button location.x = scr[i].x
-	.y =.y 
-else
-	button location = origin 
-}*/
+
 
 void widgetUpdates(Widget* src, int x, int y, int row, int coll)
 {
@@ -267,8 +250,6 @@ bool GUIMove(ChessWindow* src, Widget* currentwidget, SDL_Event* event, chessGam
 	/*there was a GUI move. we get here- 
 	doing the console move and also validate the move
 	after that we update the gui screen to see the finished move*/
-	//check valid move + update location - origin (if move is not valid) or event (mouse current location)
-	
 	if (updateConsoleBoardIfValid(mouseX, mouseY, src->game, currentwidget))
 	{
 		setButtonPlace(&newX, &newY, src->game, event->button.x, event->button.y, currentwidget);
@@ -286,14 +267,6 @@ bool GUIMove(ChessWindow* src, Widget* currentwidget, SDL_Event* event, chessGam
 		
 
 }
-
-//void GUICompMove(ChessWindow* src, chessGameWindow* data)
-//{
-	//compMove(src->game);
-//	//setBoardPieces(src, data);
-//
-//}
-
 
 int checkGuiGameEnd(ChessWindow* src)
 {

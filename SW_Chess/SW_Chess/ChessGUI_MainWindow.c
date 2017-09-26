@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include "ChessGUI_MainWindow.h"
 #include "Button.h"
+
 static const width = 450;
 static const height = 700; 
 
@@ -48,12 +49,10 @@ ChessWindow* createMainWindow(Uint32 winMode, chessGame* game)
 
 	SDL_Window* window = SDL_CreateWindow("CHESS!", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, winMode);
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-	//chessGame* game = createChessGame(6, ONE_PLAYER, WHITES, 2);
 
 	Widget** widgets = createMainWindowWidgets(renderer);
 
-		if (res == NULL || data == NULL || window == NULL || renderer == NULL || widgets == NULL )//|| game == NULL)
-
+	if (res == NULL || data == NULL || window == NULL || renderer == NULL || widgets == NULL )
 	{
         printf("EROR SDL-1; eror creating a SDL window\n");
 		free(res);
@@ -61,8 +60,6 @@ ChessWindow* createMainWindow(Uint32 winMode, chessGame* game)
 		free(widgets);
 		SDL_DestroyRenderer(renderer); //NULL safe
 		SDL_DestroyWindow(window);	  //NULL safe
-	//	destroyChessGame(game);
-
 		return NULL ;
 	}
 	
@@ -158,9 +155,8 @@ WINDOW_EVENT handleEventMainWindow(ChessWindow* src, SDL_Event* event)
 	for(int i=0; i<windata->numOfWidgets; i++)
 	{
 		windata->widgets[i]->handleEvent(windata->widgets[i], event);
-		//SDL_RenderPresent(windata->windowRenderer);
+		SDL_RenderPresent(windata->windowRenderer);
 
-		//if the button is pressed now 
 		if (windata->widgets[i]->isActive)
 		{
 			switch (windata->widgets[i]->widget_type)
@@ -183,5 +179,5 @@ WINDOW_EVENT handleEventMainWindow(ChessWindow* src, SDL_Event* event)
 		
 		
 	}
-	return CHESS_EMPTY_WINDOWEVENT;   //return error? ???????????????? 
+	return CHESS_EMPTY_WINDOWEVENT;   //return error!!!!!!!!!!!!!! 
 }

@@ -264,7 +264,6 @@ ChessWindow* createGameWindow(Uint32 winMode, chessGame* game)
 	chessGameWindow* data = malloc(sizeof(chessGameWindow));
 	SDL_Window* window = SDL_CreateWindow("CHESS!", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, game_width, game_height, winMode);
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-	//chessGame* game = createChessGame(6, ONE_PLAYER, WHITES, 2);
 	res->game = game;
 	Widget** widgets = createGameWindowWidgets(renderer, res);
 	if (res == NULL || data == NULL || window == NULL || renderer == NULL || widgets == NULL)
@@ -356,7 +355,6 @@ void drawGameWindow(ChessWindow* src)
 	{	
 		if (data->widgets[i]->isVisible)
 			data->widgets[i]->drawWidget(data->widgets[i]);
-	//	printf("i: %d %d \n", i, data->widgets[i]->isActive);
 		if (i == 3)
 		{
 			if (spArrayListIsEmpty(src->game->historyArray) || src->game->gameMode == TWO_PLAYERS)
@@ -392,8 +390,7 @@ WINDOW_EVENT handleEventGameWindow(ChessWindow* src, SDL_Event* event)
 	
 	Button* buttonCast;
 	chessGameWindow* windata = (chessGameWindow*)src->data;
-	WINDOW_EVENT eventType = CHESS_EMPTY_WINDOWEVENT;
-	int endStatus;// = checkGuiGameEnd(src);
+	int endStatus;
 	WINDOW_EVENT savingChoose;
 
 	if (src->game->gameMode == ONE_PLAYER && src->game->humanPlayerColor == BLACKS)
@@ -413,7 +410,6 @@ begin:
 					SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT))))
 					goto begin;
 
-			printf("\n");
 			for (int i = 0; i < windata->numOfWidgets; i++) 
 			{
 				windata->widgets[i]->handleEvent(windata->widgets[i], event);
@@ -518,7 +514,6 @@ begin:
 							windata->widgets[i]->endOfDrag = false;
 							windata->widgets[i]->isActive = false;
 
-						//	printf("handle, i: %d %d \n", i, windata->widgets[i]->isActive);
 							drawGameWindow(src);
 							SDL_Delay(50);
 							endStatus = checkGuiGameEnd(src);
@@ -537,7 +532,6 @@ begin:
 								drawGameWindow(src);
 								SDL_Delay(50);
 								endStatus = checkGuiGameEnd(src);
-								//printf("place 36: %d\n", windata->widgets[36]->isActive);
 								if (endStatus == STALEMATE || endStatus == CHECKMATE)
 									return CHESS_QUIT_WINDOWEVENT;
 								printf("i: %d\n", i);
@@ -545,10 +539,8 @@ begin:
 							}
 							else if (src->game->gameMode == TWO_PLAYERS)
 							{
-							//	printf("i: %d\n", i);
 								goto begin;
 							} //turn was switched in the setMove function from Chess_gameUtils.c 
-							//printf("place 36: %d\n", windata->widgets[36]->isActive);
 						}
 						else
 						{
@@ -559,15 +551,14 @@ begin:
 						goto begin;
 
 					default:
-						eventType = CHESS_EMPTY_WINDOWEVENT;
+						return CHESS_EMPTY_WINDOWEVENT;
 						break;
 					}
-					//printf("handle down, i: %d %d \n", i, windata->widgets[i]->isActive)
 				}
 			}
 		}
 }
-	return eventType;
+	return CHESS_EMPTY_WINDOWEVENT;
 }
 
 

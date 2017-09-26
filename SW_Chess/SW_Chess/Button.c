@@ -1,9 +1,6 @@
 #include <stdlib.h>
 #include "Button.h"
 #include "SPCommon.h"
-//#include <math.h>
-
-//mine
 
 int timer = 0;
 
@@ -16,7 +13,6 @@ Widget* createButton(SDL_Renderer* windowRender, SDL_Rect* location, const char*
         printf("EROR SDL-1; eror creating a SDL window\n");
 		return NULL ;
 	}
-	//Allocate data
     
 	Widget* res = (Widget*) malloc(sizeof(Widget));
 	Button* data = (Button*) malloc(sizeof(Button));
@@ -96,26 +92,10 @@ void updateButtonLocation(Widget* src, int x, int y)
 
 	Button* castedData = (Button*)src->data;
 	
-	//SDL_SetRenderDrawColor(castedData->windowRenderer, 255, 255, 255, 255);
-	//SDL_RenderDrawRect(castedData->windowRenderer, &castedData->location);
-
 	castedData->location->x = x;
 	castedData->location->y = y; 
 	castedData->location->w = 60;
 	castedData->location->h = 60;
-
-	
-	
-	//SDL_SetRenderDrawColor(castedData->windowRenderer, 255, 0, 255, 255);
-	//SDL_RenderDrawRect(castedData->windowRenderer, &castedData->location);
-	//SDL_RenderPresent(castedData->windowRenderer);
-
-	//SDL_Rect rect = { .x = castedData->location->x,.y = castedData->location->y,.h = castedData->location->h,.w = castedData->location->w };
-	//if (SDL_RenderCopy(castedData->windowRenderer, castedData->buttonTexture, NULL, &rect) != 0)
-	//{
-	//	printf("ERROR: unable to render the new location: %s\n", SDL_GetError());
-	//	return;
-	//}
 }
 
 
@@ -131,7 +111,7 @@ void handleButtonEvent(Widget* src, SDL_Event* event)
 
 	Button* castData = (Button*) src->data;
 
-	//press the mouse
+	//////////////////////////////////press the mouse//////////////////////////////////
 	if (event->type == SDL_MOUSEBUTTONDOWN  && event->button.button == SDL_BUTTON_LEFT)
 	{
 
@@ -147,7 +127,6 @@ void handleButtonEvent(Widget* src, SDL_Event* event)
 				break;
 			case CHESS_NEWGAME_BUTTON:
 			case CHESS_START_BUTTON:
-				//if (src->isActivateLegal)
 					updateButtonTexture(src, "./start_pressed.bmp");
 				break;
 			case CHESS_QUIT_BUTTON:
@@ -155,18 +134,15 @@ void handleButtonEvent(Widget* src, SDL_Event* event)
 				break;
 			case CHESS_LOAD_BUTTON:
 			case CHESS_LOADER_INSIDE_BUTTON:
-				//if (src->isActivateLegal)
 					updateButtonTexture(src, "./load_pressed.bmp");
 				break;
 			case CHESS_BACK_BUTTON:
 				updateButtonTexture(src, "./back_pressed.bmp");
 				break;
 			case CHESS_UNDO_BUTTON:
-				//if (src->isActivateLegal)
 					updateButtonTexture(src, "./undo_pressed.bmp");
 				break;
 			case CHESS_NEXT_BUTTON:
-				//if (src->isActivateLegal)
 					updateButtonTexture(src, "./next_pressed.bmp");
 				break;
 			case CHESS_ONEPLAYER_BUTTON:
@@ -247,10 +223,9 @@ void handleButtonEvent(Widget* src, SDL_Event* event)
 	}
 
 	
-	//release the mouse 
+	//////////////////////////////release the mouse/////////////////////////////////
 	if (event->type == SDL_MOUSEBUTTONUP && event->button.button == SDL_BUTTON_LEFT) 
 	{
-	//	printf("up!\n");
 		SDL_Point point;
 		point.x = event->button.x;
 		point.y = event->button.y;
@@ -269,9 +244,6 @@ void handleButtonEvent(Widget* src, SDL_Event* event)
 		{
 			if (src->isVisible && src->isActivateLegal && SDL_PointInRect(&point, castData->location)) //if the click was inside the button 
 			{
-			//	printf("location x: %d, location y: %d\n", castData->location->x, castData->location->y);
-				//printf("point x: %d, point y: %d\n", point.x, point.y);
-			//	printf("3\n");
 				src->isActive = true;
 				src->isMoving = false;
 			}
@@ -279,7 +251,7 @@ void handleButtonEvent(Widget* src, SDL_Event* event)
 		return;
 	}
 
-	//drag
+	//////////////////////////////drag//////////////////////////////
 	if (src->isDragLegal && src->isActive)
 	{
 		if (event->type == SDL_MOUSEMOTION && 

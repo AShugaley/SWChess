@@ -3,10 +3,8 @@
 #define Chess_gameUtils_h
 #include <stdio.h>
 #include <string.h>
-
 #include "Chess_gameUtilsAux.h"
 #include "Chess_ArrayList.h"
-
 #include <stdbool.h>
 
 /**

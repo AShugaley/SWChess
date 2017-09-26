@@ -1,5 +1,3 @@
-
-
 #include "Chess_gameUtilsAux.h"
 #include "Chess_gameUtils.h"
 #include <stdbool.h>
