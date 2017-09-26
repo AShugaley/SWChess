@@ -134,7 +134,6 @@ void drawMainWindow(ChessWindow* src)
 	{
 		if (data->widgets[i]->isVisible)
 		{
-			printf("got here!");
 			data->widgets[i]->drawWidget(data->widgets[i]);
 
 		}

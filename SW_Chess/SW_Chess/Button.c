@@ -10,7 +10,7 @@ Widget* createButton(SDL_Renderer* windowRender, SDL_Rect* location, const char*
 {
 	if ((windowRender == NULL) || (location == NULL) || (image == NULL)) 
 	{
-        printf("EROR SDL-1; eror creating a SDL window\n");
+        printf("ERROR SDL: error creating a SDL window\n");
 		return NULL ;
 	}
     
@@ -20,11 +20,24 @@ Widget* createButton(SDL_Renderer* windowRender, SDL_Rect* location, const char*
 	SDL_Texture* buttonTexture = SDL_CreateTextureFromSurface(windowRender,loadingSurface);
 	if ((res == NULL) || (data == NULL) || (loadingSurface == NULL) || (buttonTexture == NULL)) 
 	{
-        printf("ERROR SDL: eror creating a SDL button\n");
+        printf("ERROR SDL: error creating a SDL button\n");
+		
 		free(res);
+		printf("res");
+		SDL_Delay(50);
+		
 		free(data);
+		printf("data");
+		SDL_Delay(50);
+		
 		SDL_FreeSurface(loadingSurface); //It is safe to pass NULL
+		printf("surface");
+		SDL_Delay(50);
+
 		SDL_DestroyTexture(buttonTexture); ////It is safe to pass NULL
+		printf("buttontex");
+		SDL_Delay(50);
+
 		return NULL ;
 	}
 	SDL_FreeSurface(loadingSurface); //Surface is not actually needed after texture is created
