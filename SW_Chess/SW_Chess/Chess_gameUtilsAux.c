@@ -233,7 +233,7 @@ bool isBlackFigure(char figure){
 }
 
 
-bool isValidBoardPosition(prev_pos_row, prev_pos_col, next_pos_row, next_pos_col){
+bool isValidBoardPosition(int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col){
     if((prev_pos_row<0)||(prev_pos_row>=BOARD_SIZE)){
         return false;
     }

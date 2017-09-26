@@ -4,8 +4,8 @@
 #include "Chess_gameUtils.h"
 
 
-static const settings_width = 550;
-static const settings_height = 700;
+static const int settings_height = 700;
+static const int settings_width = 550;
 
 //this is for the widget array places, for the handle event section 
 #define BACK 0 

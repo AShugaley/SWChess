@@ -2,8 +2,8 @@
 #include "ChessGUI_MainWindow.h"
 #include "Button.h"
 
-static const width = 450;
-static const height = 700; 
+static const int width = 450;
+static const int height = 700; 
 
 //Helper function to create buttons in the simple window;
 Widget** createMainWindowWidgets(SDL_Renderer* renderer) 

@@ -3,8 +3,8 @@
 #include "Button.h"
 
 
-static const load_width = 550;
-static const load_height = 700;
+static const int load_width = 550;
+static const int load_height = 700;
 int chosenSlot;
 
 #define LOAD 0 

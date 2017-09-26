@@ -6,8 +6,8 @@
 #include "Chess_FlowOnePlayer.h"
 
 
-static const game_width = 900;
-static const game_height = 700;
+static const int game_width = 900;
+static const int game_height = 700;
 bool steadyBoard = true;
 bool needToPollEvent = true;
 
