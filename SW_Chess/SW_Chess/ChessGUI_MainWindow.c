@@ -141,8 +141,11 @@ WINDOW_EVENT handleEventMainWindow(ChessWindow* src, SDL_Event* event)
 		return CHESS_EMPTY_WINDOWEVENT;
 	}
 	chessMainWindow* windata = (chessMainWindow*)src->data;
+
+	if (!(event->type == SDL_MOUSEBUTTONDOWN  && event->button.button == SDL_BUTTON_LEFT) &&
+		!(event->type == SDL_MOUSEBUTTONUP && event->button.button == SDL_BUTTON_LEFT))
+		return CHESS_EMPTY_WINDOWEVENT;
 	
-	WINDOW_EVENT eventType = CHESS_EMPTY_WINDOWEVENT;
 	for(int i=0; i<windata->numOfWidgets; i++)
 	{
 		windata->widgets[i]->handleEvent(windata->widgets[i], event);
@@ -168,6 +171,7 @@ WINDOW_EVENT handleEventMainWindow(ChessWindow* src, SDL_Event* event)
 				return CHESS_EMPTY_WINDOWEVENT;
 			}
 		}
+		return CHESS_EMPTY_WINDOWEVENT;
 		
 	}
 }

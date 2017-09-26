@@ -221,8 +221,13 @@ WINDOW_EVENT handleEventSettingsWindow(ChessWindow* src, SDL_Event* event)
 	while (1)
 	{
 	//	SDL_WaitEvent(&event);
+begin:
 		while (SDL_PollEvent(event))
 		{
+			if (!(event->type == SDL_MOUSEBUTTONDOWN  && event->button.button == SDL_BUTTON_LEFT) &&
+				!(event->type == SDL_MOUSEBUTTONUP && event->button.button == SDL_BUTTON_LEFT))
+				goto begin;
+
 			for (int i = 0; i<windata->numOfWidgets; i++)//=((i+1) % windata->numOfWidgets))
 			{
 				//	bool refresh = false; 

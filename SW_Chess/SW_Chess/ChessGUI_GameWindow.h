@@ -53,6 +53,7 @@
 #define PAWN_WHITE8 36
 #define PAWN_BLACK8 37
 
+
 typedef struct chess_gameWindow chessGameWindow;
 struct chess_gameWindow {
 	SDL_Window* window;

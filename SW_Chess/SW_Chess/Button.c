@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include "Button.h"
 #include "SPCommon.h"
+//#include <math.h>
+
 
 int timer = 0;
 
@@ -132,7 +134,7 @@ void handleButtonEvent(Widget* src, SDL_Event* event)
 		point.x = event->button.x;
 		point.y = event->button.y;
 
-		if (src->isVisible && SDL_PointInRect(&point, castData->location))
+		if (src->isVisible && src->isActivateLegal && SDL_PointInRect(&point, castData->location) )
 		{
 			switch (buttonType)
 			{
@@ -140,7 +142,7 @@ void handleButtonEvent(Widget* src, SDL_Event* event)
 				break;
 			case CHESS_NEWGAME_BUTTON:
 			case CHESS_START_BUTTON:
-				if (src->isActivateLegal)
+				//if (src->isActivateLegal)
 					updateButtonTexture(src, "./start_pressed.bmp");
 				break;
 			case CHESS_QUIT_BUTTON:
@@ -148,18 +150,18 @@ void handleButtonEvent(Widget* src, SDL_Event* event)
 				break;
 			case CHESS_LOAD_BUTTON:
 			case CHESS_LOADER_INSIDE_BUTTON:
-				if (src->isActivateLegal)
+				//if (src->isActivateLegal)
 					updateButtonTexture(src, "./load_pressed.bmp");
 				break;
 			case CHESS_BACK_BUTTON:
 				updateButtonTexture(src, "./back_pressed.bmp");
 				break;
 			case CHESS_UNDO_BUTTON:
-				if (src->isActivateLegal)
+				//if (src->isActivateLegal)
 					updateButtonTexture(src, "./undo_pressed.bmp");
 				break;
 			case CHESS_NEXT_BUTTON:
-				if (src->isActivateLegal)
+				//if (src->isActivateLegal)
 					updateButtonTexture(src, "./next_pressed.bmp");
 				break;
 			case CHESS_ONEPLAYER_BUTTON:
@@ -228,11 +230,13 @@ void handleButtonEvent(Widget* src, SDL_Event* event)
 			case CHESS_QUEEN_WHITE_BUTTON:
 			case CHESS_KING_WHITE_BUTTON:
 			case CHESS_KING_BLACK_BUTTON:
-				printf("1\n");
+				mouseX0 = event->button.x;
+				mouseY0 = event->button.y;
 				src->isActive = true;
 				return;
 			}
 			src->isActive = false;
+			printf("1\n");
 			return;
 		}
 	}
@@ -241,7 +245,7 @@ void handleButtonEvent(Widget* src, SDL_Event* event)
 	//release the mouse 
 	if (event->type == SDL_MOUSEBUTTONUP && event->button.button == SDL_BUTTON_LEFT) 
 	{
-		printf("up!\n");
+	//	printf("up!\n");
 		SDL_Point point;
 		point.x = event->button.x;
 		point.y = event->button.y;
@@ -260,9 +264,9 @@ void handleButtonEvent(Widget* src, SDL_Event* event)
 		{
 			if (src->isVisible && src->isActivateLegal && SDL_PointInRect(&point, castData->location)) //if the click was inside the button 
 			{
-				printf("location x: %d, location y: %d\n", castData->location->x, castData->location->y);
-				printf("point x: %d, point y: %d\n", point.x, point.y);
-				printf("3\n");
+			//	printf("location x: %d, location y: %d\n", castData->location->x, castData->location->y);
+				//printf("point x: %d, point y: %d\n", point.x, point.y);
+			//	printf("3\n");
 				src->isActive = true;
 				src->isMoving = false;
 			}
@@ -276,7 +280,12 @@ void handleButtonEvent(Widget* src, SDL_Event* event)
 		if (event->type == SDL_MOUSEMOTION && 
 			SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT))
 		{
-			updateButtonLocation(src, event->motion.x, event->motion.y);
+			mouseDeltaX = event->motion.x - mouseX0;
+			mouseDeltaY = event->motion.y - mouseY0;
+			mouseX0 = event->motion.x;
+			mouseY0 = event->motion.y;
+
+			updateButtonLocation(src, castData->location->x + mouseDeltaX, castData->location->y + mouseDeltaY);
 			src->isMoving = true;
 			return;
 		}

@@ -47,6 +47,9 @@ typedef enum {
 	CHESS_KING_BLACK_BUTTON,
 } WIDGET_TYPE;
 
+int mouseDeltaX, mouseDeltaY;
+int mouseX0, mouseY0;
+
 
 typedef struct widget_t Widget;
 struct widget_t {
