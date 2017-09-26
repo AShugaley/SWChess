@@ -30,6 +30,7 @@ void widgetUpdates(Widget* src, int x, int y, int row, int coll);
 void setButtonPlace(int* newX, int* newY, chessGame* game, int locX, int locY, Widget* src);
 //void GUICompMove(ChessWindow* src, chessGameWindow* data);
 int checkGuiGameEnd(ChessWindow* src);
+void undoGui(chessGame* src);
 
 
 

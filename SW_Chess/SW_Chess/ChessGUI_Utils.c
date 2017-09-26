@@ -385,3 +385,13 @@ int checkGuiGameEnd(ChessWindow* src)
 	}
 	return res;
 }
+
+
+void undoGui(chessGame* src)
+{
+	SPArrayListNode* move = spArrayListGetLast(src->historyArray);
+	spArrayListRemoveLast(src->historyArray);
+	src->gameBoard[move->prev_pos_row][move->prev_pos_col] = move->moving_figure;
+	src->gameBoard[move->current_pos_row][move->current_pos_col] = move->prev_pos_fig;
+	switchCurrentPlayer(src);
+}
