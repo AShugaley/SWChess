@@ -4,8 +4,6 @@
 #include "Chess_gameUtils.h"
 #include <stdbool.h>
 
-//mine
-
 /* In all functions, we assume that the arguments are legal - i.e. 0<=pos<=7. We check it elsewhere - the comp will do so by himself, and we will check arguments from the user on input.
 */
 
@@ -198,7 +196,7 @@ bool isValidKingMove(chessGame* src, int prev_pos_row, int prev_pos_col, int nex
          return false;
     return true; /* that IS how knights work! */
 }
-
+ 
 bool isValidDestenetion(PLAYER_COLOR player, char figure){
     if(figure == EMPTY_BOARD_POS)
         return true;

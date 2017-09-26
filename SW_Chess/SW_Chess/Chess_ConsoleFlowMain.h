@@ -40,3 +40,4 @@ void consoleMode();
  */
 void settingsStateConsole();
 #endif /* Chess_ConsoleFlowMain_h */
+ 

@@ -1,32 +1,35 @@
 #include <stdlib.h>
 #include "ChessGUI_MainWindow.h"
 #include "Button.h"
-
 static const width = 450;
 static const height = 700; 
 
 //Helper function to create buttons in the simple window;
 Widget** createMainWindowWidgets(SDL_Renderer* renderer) 
 {
+    
 	if (renderer == NULL ) {
+        printf("EROR SDL-6; eror creating a SDL window\n");
 		return NULL ;
 	}
 	Widget** widgets = malloc(sizeof(Widget*) * 3);
 	if (widgets == NULL ) 
 	{
+        printf("EROR SDL-5; eror creating a SDL window\n");
 		return NULL ;
 	}
 	
 	SDL_Rect newGame =	{ .x = 125, .y = 70, .h = 80, .w = 200 };
 	SDL_Rect loadGame = { .x = 125, .y = 190, .h = 80, .w = 200 };
 	SDL_Rect quit =		{ .x = 125, .y = 310, .h = 80, .w = 200 };
-		
+
 	widgets[0] = createButton(renderer, &newGame,		"./start_active.bmp", CHESS_NEWGAME_BUTTON);
 	widgets[1] = createButton(renderer, &loadGame,		"./load_active.bmp" , CHESS_LOAD_BUTTON);
 	widgets[2] = createButton(renderer, &quit,			"./exit_active.bmp" , CHESS_QUIT_BUTTON);
 
 	if (widgets[0] == NULL || widgets[1] == NULL || widgets[2] == NULL) 
 	{
+        printf("EROR SDL-4; eror creating a SDL window\n");
 		destroyWidget(widgets[0]); //NULL SAFE
 		destroyWidget(widgets[1]); //NULL SAFE
 		destroyWidget(widgets[2]); //NULL SAFE
@@ -42,13 +45,17 @@ ChessWindow* createMainWindow(Uint32 winMode, chessGame* game)
 {
 	ChessWindow* res = malloc(sizeof(ChessWindow));
 	chessMainWindow* data = malloc(sizeof(chessMainWindow));
+
 	SDL_Window* window = SDL_CreateWindow("CHESS!", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, winMode);
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	//chessGame* game = createChessGame(6, ONE_PLAYER, WHITES, 2);
 
 	Widget** widgets = createMainWindowWidgets(renderer);
+
 		if (res == NULL || data == NULL || window == NULL || renderer == NULL || widgets == NULL )//|| game == NULL)
+
 	{
+        printf("EROR SDL-1; eror creating a SDL window\n");
 		free(res);
 		free(data);
 		free(widgets);
@@ -102,9 +109,11 @@ void drawMainWindow(ChessWindow* src)
 {
 	if (src == NULL ) 
 		return;
+    SDL_Delay(100);
 
 	chessMainWindow* data = (chessMainWindow*) src->data;
 	SDL_RenderClear(data->windowRenderer);
+    SDL_Delay(100);
 
 	//draw background
 	SDL_Surface* surf = SDL_LoadBMP("./main_background.bmp");
@@ -130,7 +139,7 @@ void drawMainWindow(ChessWindow* src)
 		if (data->widgets[i]->isVisible)
 			data->widgets[i]->drawWidget(data->widgets[i]);
 	}
-	
+	SDL_Delay(100);
 	SDL_RenderPresent(data->windowRenderer);
 }
 
@@ -149,7 +158,7 @@ WINDOW_EVENT handleEventMainWindow(ChessWindow* src, SDL_Event* event)
 	for(int i=0; i<windata->numOfWidgets; i++)
 	{
 		windata->widgets[i]->handleEvent(windata->widgets[i], event);
-		SDL_RenderPresent(windata->windowRenderer);
+		//SDL_RenderPresent(windata->windowRenderer);
 
 		//if the button is pressed now 
 		if (windata->widgets[i]->isActive)

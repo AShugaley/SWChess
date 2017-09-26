@@ -82,6 +82,7 @@ Widget** createGameWindowWidgets(SDL_Renderer* renderer, ChessWindow* window)
 	SDL_Rect exit	 =  { .x = 80,.y = 530,.h = 72,.w = 180 };
 	
 	
+    
 	SDL_Rect rookWhite =	{.x = window->game->gameGUIBoard[0][0].x,.y = window->game->gameGUIBoard[0][0].y,
 							 .h = window->game->gameGUIBoard[0][0].h,.w = window->game->gameGUIBoard[0][0].w };
 
@@ -218,10 +219,6 @@ Widget** createGameWindowWidgets(SDL_Renderer* renderer, ChessWindow* window)
 		widgets[place+1]->row = 6;
 		widgets[place+1]->coll = i;
 		
-		if (place == 36)
-		{
-			printf("36 loaction x: %d, y: %d\n", pawnWhite.x, pawnWhite.y);
-		}
 		place+=2;
 	}
 	
@@ -424,7 +421,6 @@ begin:
 
 				if (windata->widgets[i]->isActive && windata->widgets[i]->isActivateLegal)
 				{
-					//printf("i: %d\n", i, windata->widgets[i]->isActive);
 					buttonCast = (Button*)(windata->widgets[i]->data);
 					switch (windata->widgets[i]->widget_type)
 					{

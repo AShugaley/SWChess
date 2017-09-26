@@ -4,8 +4,6 @@
 
 #include <stdio.h>
 #include <stdbool.h>
-#include <SDL.h>
-#include <SDL_video.h>
 
 #define BOARD_SIZE 8
 
@@ -81,8 +79,9 @@ typedef struct sp_array_list_node {
     int prev_pos_col;
     char prev_pos_fig;
     char moving_figure;
+    int figureIndex;
 } SPArrayListNode;
-
+ 
 
 /**
  * A type that represents the array list that contains chess moves

@@ -9,8 +9,6 @@
 
 #include <stdbool.h>
 
-//mine
-
 /**
  * Chess_gameUtils summary:
  *
@@ -31,6 +29,7 @@
  * isStalemate                 - Checks for a chess tie
  * saveGame                    - saves the game to XML file
  * loadGame                    - loads a game from XML file
+ * loadGameInPlace             - loads a game from XML file in place of a received game
  * get_moves                   - Prints all the moves from allPossibleMoves func in a readble format
  * getCurrentPlayerStringName  - Retunes a string represenitg the current player (white/black)
  * checkGameEnd                - Checks if there's a check\tie\checkmate
@@ -39,7 +38,7 @@
    avoding a check and so on).
  * getFigureStringName         - Returns the string name of a figure
  */
-
+ 
 
 /* A simple explanation of the words we use here and in other parts of the code:
  * a VALID move is a move that is OK from figure movment perspective (i.e. rooks move in a straight line, cannot go through figures and have to land on an empty field of an oponnent figure.
@@ -80,7 +79,7 @@ void destroyChessGame(chessGame* src); // D Not Tested
  *
  * @return message representing the result of the command (sucess, invalid move etc)
  */
-CHESS_GAME_MESSAGE setChessMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col, bool needToCheckMoveValidiy, bool isValidForCrowning); // D Not Tested
+CHESS_GAME_MESSAGE setChessMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col, bool needToCheckMoveValidiy, bool isValidForCrowning, int figureIndex); // D Not Tested
 
 /**
  * Checks if move <x,y> -> <v,w> is valid, from the perspective of how the figures move (accoring to chess rules)

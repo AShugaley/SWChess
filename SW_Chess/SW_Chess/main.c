@@ -1,9 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "Chess_gameUtils.h"
-#include "Chess_gameUtilsAux.h"
-#include "SPMiniMax.h"
-#include "Chess_FlowTwoPlayers.h"
+
+#include "Chess_ConsoleFlowMain.h"
 #include <stdbool.h>
 #include <SDL.h>
 #include <SDL_video.h>
@@ -14,8 +12,6 @@
 #include "Chess_gameSettingsParser.h"
 #include "Chess_ArrayList.h"
 #include "Chess_GUIFlowMain.h"
-
-//mine 
 
 /////////////////////////////Testers declerations////////////////////////////////////
 
@@ -310,11 +306,26 @@ int main(int argc, const char * argv[]) {
 //    src->gameBoard[0][0] = QUEEN_BLACK;
 //    src->gameBoard[1][1] = QUEEN_BLACK;
 //    src->gameBoard[2][2] = QUEEN_BLACK;
-//    src->gameBoard[3][3] = QUEEN_BLACK;
+//    src->gameBoard[3][3] = QUEEN_WHITE;
 //    src->gameBoard[4][4] = QUEEN_BLACK;
 //    src->gameBoard[5][5] = QUEEN_BLACK;
 //    src->gameBoard[6][6] = QUEEN_BLACK;
 //    src->gameBoard[7][7] = QUEEN_BLACK;
+//    
+//    saveGameInLastestSlot(src);
+//    //saveGame(src, SAVE_SLOT_1);
+//    while(1){
+    //saveGameInLastestSlot(src);
+    //chessGame* src3 = loadGmae(SAVE_SLOT_3);
+    //chessConsolePrintBoard(src3);
+    //chessConsolePrintBoard(src);
+//    loadGameInPlace(SAVE_SLOT_5, src);
+//        destroyChessGame(src);
+     //   src = createChessGame(6, ONE_PLAYER, BLACKS, 4);
+    //chessConsolePrintBoard(src);
+    
+    //}
+//    }
 //    printf("%d\n", src->gameMode);
 //    printf("%d\n", src->humanPlayerColor);
 //    printf("%d\n", src->currentPlayer);
@@ -323,10 +334,7 @@ int main(int argc, const char * argv[]) {
 //    chessGame* src2 = loadGmae("load");
 //    printf("ENDDDDDDD\n");
 //    chessConsolePrintBoard(src2);
-//    printf("%d\n", src2->gameMode);
-//    printf("%d\n", src2->humanPlayerColor);
-//    printf("%d\n", src2->currentPlayer);
-//    printf("%d\n", src2->difficulty);
+\
         //    TestBoard(src);
 //    src->currentPlayer = BLACKS;
 //    chessConsolePrintBoard(src);
@@ -338,9 +346,9 @@ int main(int argc, const char * argv[]) {
 //    printf("%d\n", isValidMove(src, 6, 0, 5, 0));
 //    printf("%d,%d\n", suggestMove(src, 4)->current_pos_row,suggestMove(src, 4)->current_pos_col );
 //    get_moves(src,0,1);
-    //runTestSim(4,3);
+    //runTestSim(5,3);
     //saveGame(src, "<uos><sj><h>");
- //consoleMode();
+//consoleMode();
     
 //	return 0;
 }

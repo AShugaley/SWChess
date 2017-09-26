@@ -3,7 +3,6 @@
 #include "ChessGUI_FlowOnePlayer.h"
 #include "ChessGUI_FlowTwoPlayers.h"
 
-//mine 
 
 int GUIMain() 
 {
@@ -21,6 +20,7 @@ int GUIMain()
 	ChessWindow* currentWindow = createWindow(CHESS_MAIN_WINDOW, SDL_WINDOW_OPENGL, game);
 	if (currentWindow == NULL)
 	{
+        printf("ERROR: unable to init SDL: %s\n", SDL_GetError());
 		SDL_Quit();
 		return 0;
 	}
@@ -65,28 +65,28 @@ int GUIMain()
 		//	/*destroyWindow(mainWindow);
 		//	mainWindow = NULL;
 
-		//	gameWindow = createGameWindow();
-		//	if (gameWindow == NULL)
-		//	{
-		//	SDL_Quit();
-		//	return 0;
-		//	}
-		//	gameWindow->drawWindow(gameWindow);*/
+			gameWindow = createGameWindow();
+			if (gameWindow == NULL)
+			{
+			SDL_Quit();
+			return 0;
+			}
+			gameWindow->drawWindow(gameWindow);*/
 
-		//	//saving previous settings
-		//	if (game == NULL)
-		//		printf("ERROR: there is no initial game");
-		//	
-		//	/*int prevdiff = currentWindow->game->difficulty;
-		//	GAME_MODE_PLAYER prevmode = currentWindow->game->gameMode;
-		//	PLAYER_COLOR prevcolor = currentWindow->game->humanPlayerColor;*/
-		//
-		//	currentWindow = swapWindows(currentWindow, CHESS_GAME_WINDOW, game);
+			//saving previous settings
+			if (game == NULL)
+				printf("ERROR: there is no initial game");
+			
+			/*int prevdiff = currentWindow->game->difficulty;
+			GAME_MODE_PLAYER prevmode = currentWindow->game->gameMode;
+			PLAYER_COLOR prevcolor = currentWindow->game->humanPlayerColor;*/
+		
+			currentWindow = swapWindows(currentWindow, CHESS_GAME_WINDOW, game);
 
-		//	/*currentWindow->game->difficulty = prevdiff;
-		//	currentWindow->game->gameMode = prevmode;
-		//	currentWindow->game->humanPlayerColor = prevcolor;*/
-		//	break;
+			/*currentWindow->game->difficulty = prevdiff;
+			currentWindow->game->gameMode = prevmode;
+			currentWindow->game->humanPlayerColor = prevcolor;*/
+			break;
 
 		case CHESS_HOME_WINDOWEVENT:
 			destroyChessGame(game);
@@ -107,8 +107,6 @@ int GUIMain()
 			// if the line below won't work, try the commented one
 			currentWindow = swapWindows(currentWindow, CHESS_GAME_WINDOW, game);
 			break;
-			// currentWindow = swapWindows(currentWindow, CHESS_GAME_WINDOW, currentWindow->game);
-
 
 		case CHESS_LOAD_SCREEN_WINDOWEVENT:
 			prev = currentWindow->type;
@@ -131,3 +129,7 @@ int GUIMain()
 	SDL_Quit();
 	return 0;
 }
+
+
+
+

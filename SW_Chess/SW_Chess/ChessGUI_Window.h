@@ -1,8 +1,16 @@
 
 #ifndef CHESSGUI_WINDOW_H_
 #define CHESSGUI_WINDOW_H_
-#include <SDL.h>
-#include <SDL_video.h>
+// ALEX
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_video.h>
+// $$$
+
+
+// // MOR
+//#include <SDL.h>
+//#include <SDL_video.h>
+// // $$$
 #include <stdbool.h>
 #include "Chess_def.h"
 

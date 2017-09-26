@@ -23,7 +23,7 @@
  * spArrayListAddAt        - Inserts an element at a specified index, elements
  *                           will be shifted to make place.
  * spArrayListAddFirst     - Inserts an element at the beginning of the array
- *                           list, elements will be shifted to make place.
+ *                           list, elements will be shifted to make place. 
  * spArrayListAddLast      - Inserts an element at the end of the array list.
  * spArrayListRemoveAt     - Removes an element at the specified index, elements
  *                           elements will be shifted as a result.
@@ -101,7 +101,7 @@ SP_ARRAY_LIST_MESSAGE spArrayListClear(SPArrayList* src);
  * SP_ARRAY_LIST_FULL - if the source array list reached its maximum capacity
  * SP_ARRAY_LIST_SUCCESS - otherwise
  */
-SP_ARRAY_LIST_MESSAGE spArrayListAddFirst(SPArrayList* src,int current_pos_row, int current_pos_col, int prev_pos_row, int prev_pos_col,  char pre_pos_fig,char moving_fig);
+SP_ARRAY_LIST_MESSAGE spArrayListAddFirst(SPArrayList* src,int current_pos_row, int current_pos_col, int prev_pos_row, int prev_pos_col,  char pre_pos_fig,char moving_fig, int figureIndex);
 
 /**
  * Inserts element at a the end of the source element. If the array list
@@ -113,7 +113,7 @@ SP_ARRAY_LIST_MESSAGE spArrayListAddFirst(SPArrayList* src,int current_pos_row, 
  * SP_ARRAY_LIST_FULL - if the source array list reached its maximum capacity
  * SP_ARRAY_LIST_SUCCESS - otherwise
  */
-SP_ARRAY_LIST_MESSAGE spArrayListAddLast(SPArrayList* src,int current_pos_row, int current_pos_col, int prev_pos_row, int prev_pos_col,  char pre_pos_fig,char moving_fig);
+SP_ARRAY_LIST_MESSAGE spArrayListAddLast(SPArrayList* src,int current_pos_row, int current_pos_col, int prev_pos_row, int prev_pos_col,  char pre_pos_fig,char moving_fig, int figureIndex);
 
 /**
  * Removes an element from a specified index. The elements residing after the

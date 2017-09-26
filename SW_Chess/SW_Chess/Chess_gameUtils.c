@@ -94,7 +94,7 @@ SPArrayList* allPossibleMoves(chessGame* src, int row, int col){
     for(int i = 0; i < BOARD_SIZE; i++){
         for(int j = 0; j<BOARD_SIZE; j++){
             if(isLegalMove(src, row, col, i, j)){
-                spArrayListAddFirst(array, i, j, row, col, src->gameBoard[i][j],src->gameBoard[row][col]);
+                spArrayListAddFirst(array, i, j, row, col, src->gameBoard[i][j],src->gameBoard[row][col],-1);
             }
         }
     }
@@ -165,9 +165,13 @@ bool isValidMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_po
 
 
 
-CHESS_GAME_MESSAGE setChessMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col, bool needToCheckMoveValidiy, bool isValidForCrowning){
+CHESS_GAME_MESSAGE setChessMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col, bool needToCheckMoveValidiy, bool isValidForCrowning, int figureIndex){
     if(needToCheckMoveValidiy){
         if(src->gameBoard[prev_pos_row][prev_pos_col] == EMPTY_BOARD_POS)
+            return CHESS_GAME_INVALID_POSITION;
+        if(isWhiteFigure(src->gameBoard[prev_pos_row][prev_pos_col]) && src->currentPlayer == BLACKS)
+            return CHESS_GAME_INVALID_POSITION;
+        if(isBlackFigure(src->gameBoard[prev_pos_row][prev_pos_col]) && src->currentPlayer == WHITES)
             return CHESS_GAME_INVALID_POSITION;
         if(!isValidBoardPosition(prev_pos_row, prev_pos_col, next_pos_row, next_pos_col))
             return CHESS_GAME_INVALID_ARGUMENT;
@@ -177,7 +181,7 @@ CHESS_GAME_MESSAGE setChessMove(chessGame* src, int prev_pos_row, int prev_pos_c
     if(spArrayListIsFull(src->historyArray))
         spArrayListRemoveFirst(src->historyArray);
         
-    spArrayListAddLast(src->historyArray, next_pos_row, next_pos_col, prev_pos_row, prev_pos_col,src->gameBoard[next_pos_row][next_pos_col],src->gameBoard[prev_pos_row][prev_pos_col]);
+    spArrayListAddLast(src->historyArray, next_pos_row, next_pos_col, prev_pos_row, prev_pos_col,src->gameBoard[next_pos_row][next_pos_col],src->gameBoard[prev_pos_row][prev_pos_col],figureIndex);
     src->gameBoard[next_pos_row][next_pos_col] = src->gameBoard[prev_pos_row][prev_pos_col];
     src->gameBoard[prev_pos_row][prev_pos_col] = EMPTY_BOARD_POS;
 //    if(isValidForCrowning) //todo //todelete
@@ -248,7 +252,7 @@ bool isCheckmate(chessGame* src){
                     SPArrayList* moves = allPossibleMoves(gameCopy, i, j);
                     while(!spArrayListIsEmpty(moves)){
                         move = spArrayListGetFirst(moves);
-                        setChessMove(gameCopy, move->prev_pos_row, move->prev_pos_col, move->current_pos_row, move->current_pos_col, false, false);
+                        setChessMove(gameCopy, move->prev_pos_row, move->prev_pos_col, move->current_pos_row, move->current_pos_col, false, false,-1);
                         if(!isUnderPressure(gameCopy, king_row, king_col)){
                             spArrayListDestroy(moves);
                             destroyChessGame(gameCopy);
@@ -269,7 +273,7 @@ bool isCheckmate(chessGame* src){
                         move = spArrayListGetFirst(moves);
                      
                         
-                        setChessMove(gameCopy, move->prev_pos_row, move->prev_pos_col, move->current_pos_row, move->current_pos_col, false, false);
+                        setChessMove(gameCopy, move->prev_pos_row, move->prev_pos_col, move->current_pos_row, move->current_pos_col, false, false,-1);
                  
                         if(!isUnderPressure(gameCopy, king_row, king_col)){
                             spArrayListDestroy(moves);
@@ -452,6 +456,45 @@ void saveGameInLastestSlot(chessGame* src) {
 
 
 
+void loadGameInPlace(const char* filename, chessGame* src){
+    chessGame* newGame = loadGmae(filename);
+    if(newGame == NULL)
+        return;
+    for(int i = 0; i<8; i++)
+        for(int j = 0; j<8; j++)
+            src->gameBoard[i][j] = newGame->gameBoard[i][j];
+    src->difficulty = newGame->difficulty;
+    src->gameMode = newGame->gameMode;
+    src->humanPlayerColor = newGame->humanPlayerColor;
+    spArrayListDestroy(src->historyArray);
+    src->historyArray = spArrayListCopy(newGame->historyArray);
+    src->currentPlayer = newGame->currentPlayer;
+    src->uiMode = newGame->uiMode;
+    destroyChessGame(newGame);
+    return;
+}
+
+
+void saveGameInLastestSlot(chessGame* src){
+    chessGame* tempGame = loadGmae(SAVE_SLOT_4);
+    if(tempGame)
+        saveGame(tempGame, SAVE_SLOT_5);
+    destroyChessGame(tempGame);
+    tempGame = loadGmae(SAVE_SLOT_3);
+    if(tempGame)
+        saveGame(tempGame, SAVE_SLOT_4);
+    destroyChessGame(tempGame);
+    tempGame = loadGmae(SAVE_SLOT_2);
+    if(tempGame)
+        saveGame(tempGame, SAVE_SLOT_3);
+    destroyChessGame(tempGame);
+    tempGame = loadGmae(SAVE_SLOT_1);
+    if(tempGame)
+        saveGame(tempGame, SAVE_SLOT_2);
+    destroyChessGame(tempGame);
+    saveGame(src, SAVE_SLOT_1);
+}
+
 /* Does not check if file is valid (in correct format */
 chessGame* loadGame(const char* filename){
     chessGame* src = createChessGame(6, 2, 0, 1);
@@ -489,7 +532,7 @@ chessGame* loadGame(const char* filename){
     strcpy(currentStr, buffer);
     
     currentToken = strtok(currentStr, delimiter);
-    
+    free(buffer);
     /* Now we parse it */
     while(strncmp(currentToken,"/game",5) != 0){
 
@@ -657,9 +700,21 @@ void checkGameEnd(chessGame* src){
         printf("Check: %s King is threatened!\n",getCurrentPlayerStringName(src));
 }
 
-
+ 
 /* bye */
 void terminateGame(chessGame* src){
     destroyChessGame(src);
     exit(0);
+}
+
+SPArrayListNode* GUIModeUndo(chessGame* src){
+    
+    if(spArrayListIsEmpty(src->historyArray))
+        return NULL;
+    SPArrayListNode* move = spArrayListGetLast(src->historyArray);
+    spArrayListRemoveLast(src->historyArray);
+    src->gameBoard[move->prev_pos_row][move->prev_pos_col] = move->moving_figure;
+    src->gameBoard[move->current_pos_row][move->current_pos_col] = move->prev_pos_fig;
+    switchCurrentPlayer(src);
+    return move;
 }

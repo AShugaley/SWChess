@@ -6,9 +6,6 @@
 #include "Chess_def.h"
 #include "Chess_ArrayList.h"
 
-//mine 
-
-
 /**
  * Chess_gameUtilsAux summary:
  *
@@ -39,7 +36,7 @@
  */
 
 
-
+ 
 
 /**
  * Sets the board of the given chess game to the default starting position
