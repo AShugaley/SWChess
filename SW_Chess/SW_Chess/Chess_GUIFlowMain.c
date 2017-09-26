@@ -9,7 +9,7 @@ int GUIMain()
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
 		printf("ERROR: unable to init SDL: %s\n", SDL_GetError());
-		return 1;
+		return 0;
 	}
 
 	//this game pointer will be updated along the game, here and in the game&settings windows 

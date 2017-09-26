@@ -35,7 +35,7 @@ SPArrayListNode* initMinmaxTree(chessGame* currentGame, int depth){
                     while(!spArrayListIsEmpty(moves)){
                         SPArrayListNode* move = spArrayListGetFirst(moves);
             
-                        setChessMove(currentGame, move->prev_pos_row, move->prev_pos_col, move->current_pos_row, move->current_pos_col, false,true,-1);
+                        setChessMove(currentGame, move->prev_pos_row, move->prev_pos_col, move->current_pos_row, move->current_pos_col, false,true);
 
                         temp =minmaxTree(currentGame, depth-1, alpha, beta);
                         if(temp > bestMax){
@@ -61,7 +61,7 @@ SPArrayListNode* initMinmaxTree(chessGame* currentGame, int depth){
                     while(!spArrayListIsEmpty(moves)){
                         SPArrayListNode* move = spArrayListGetFirst(moves);
                        
-                        setChessMove(currentGame, move->prev_pos_row, move->prev_pos_col, move->current_pos_row, move->current_pos_col, false,true,-1);
+                        setChessMove(currentGame, move->prev_pos_row, move->prev_pos_col, move->current_pos_row, move->current_pos_col, false,true);
                         temp = minmaxTree(currentGame, depth-1, alpha, beta);
                         
 
@@ -102,7 +102,7 @@ double minmaxTree(chessGame* currentGame, int depth, double alpha, double beta){
                     while(!spArrayListIsEmpty(moves)){
                         SPArrayListNode* move = spArrayListGetFirst(moves);
                         
-                        setChessMove(currentGame, move->prev_pos_row, move->prev_pos_col, move->current_pos_row, move->current_pos_col, false,true,-1);
+                        setChessMove(currentGame, move->prev_pos_row, move->prev_pos_col, move->current_pos_row, move->current_pos_col, false,true);
                         v = maxFunc(v, minmaxTree(currentGame, depth-1, alpha, beta));
                         alpha = maxFunc(alpha, v);
                         undoChessPrevMove(currentGame, false);
@@ -125,7 +125,7 @@ double minmaxTree(chessGame* currentGame, int depth, double alpha, double beta){
                     while(!spArrayListIsEmpty(moves)){
                         SPArrayListNode* move = spArrayListGetFirst(moves);
                         
-                        setChessMove(currentGame, move->prev_pos_row, move->prev_pos_col, move->current_pos_row, move->current_pos_col, false,true,-1);
+                        setChessMove(currentGame, move->prev_pos_row, move->prev_pos_col, move->current_pos_row, move->current_pos_col, false,true);
                         v = minFunc(v, minmaxTree(currentGame, depth-1, alpha, beta));
                         alpha = minFunc(beta, v);
                         undoChessPrevMove(currentGame, false);

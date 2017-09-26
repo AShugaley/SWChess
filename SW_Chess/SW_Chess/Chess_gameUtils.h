@@ -1,6 +1,5 @@
-
-#ifndef Chess_gameUtils_h
-#define Chess_gameUtils_h
+#ifndef CHESS_GAMEUTILS_H_
+#define CHESS_GAMEUTILS_H_
 #include <stdio.h>
 #include <string.h>
 #include "Chess_gameUtilsAux.h"
@@ -77,7 +76,7 @@ void destroyChessGame(chessGame* src); // D Not Tested
  *
  * @return message representing the result of the command (sucess, invalid move etc)
  */
-CHESS_GAME_MESSAGE setChessMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col, bool needToCheckMoveValidiy, bool isValidForCrowning, int figureIndex); // D Not Tested
+CHESS_GAME_MESSAGE setChessMove(chessGame* src, int prev_pos_row, int prev_pos_col, int next_pos_row, int next_pos_col, bool needToCheckMoveValidiy, bool isValidForCrowning); // D Not Tested
 
 /**
  * Checks if move <x,y> -> <v,w> is valid, from the perspective of how the figures move (accoring to chess rules)
@@ -227,5 +226,7 @@ chessGame* loadGame(const char* filename);
  * returns string figure name
  */
 char* getFigureStringName(char figure);
+
+
 
 #endif /* Chess_gameUtils_h */

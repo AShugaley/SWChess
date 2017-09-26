@@ -66,7 +66,7 @@ GAME_STATUS onePlayerGameFlow(chessGame* src){
 
 bool humanMove(chessGame* src, CHESSCommand cmd){
     
-    CHESS_GAME_MESSAGE message = setChessMove(src, (cmd.sourceRow -1), getIntFromColumnChar(cmd.sourceColl), (cmd.targertRow -1), getIntFromColumnChar(cmd.targetColl), true, true,-1);
+    CHESS_GAME_MESSAGE message = setChessMove(src, (cmd.sourceRow -1), getIntFromColumnChar(cmd.sourceColl), (cmd.targertRow -1), getIntFromColumnChar(cmd.targetColl), true, true);
     if(message == CHESS_GAME_SUCCESS){
         return true; /*  perfect! */
     }
@@ -89,7 +89,7 @@ bool compMove(chessGame* src){
         printf("ERROR - cannot suggest move");
         return false;
     }
-    setChessMove(src, move->prev_pos_row, move->prev_pos_col, move->current_pos_row, move->current_pos_col, false, true,-1);
+    setChessMove(src, move->prev_pos_row, move->prev_pos_col, move->current_pos_row, move->current_pos_col, false, true);
 
     printf("Computer: move %s at <%d,%c> to <%d,%c>\n",getFigureStringName(src->gameBoard[move->current_pos_row][move->current_pos_col]),move->prev_pos_row+1,getColumnChar(move->prev_pos_col),move->current_pos_row+1,getColumnChar(move->current_pos_col));
     
