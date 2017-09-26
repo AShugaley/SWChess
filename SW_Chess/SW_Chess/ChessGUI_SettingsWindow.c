@@ -43,11 +43,11 @@ Widget** createSettingsWindowWidgets(SDL_Renderer* renderer)
 	SDL_Rect onep = { .x = 70 ,.y = 200,.h = 72,.w = 180 };
 	SDL_Rect twop = { .x = 300,.y = 200,.h = 72,.w = 180 };
 
-	SDL_Rect noob =     { .x = 190 ,.y = 50, .h = 72,.w = 180 };
-	SDL_Rect easy =     { .x = 190 ,.y = 142,.h = 72,.w = 180 };
-	SDL_Rect moderate = { .x = 190 ,.y = 234,.h = 72,.w = 180 };
-	SDL_Rect hard =     { .x = 190 ,.y = 326,.h = 72,.w = 180 };
-	SDL_Rect expert =   { .x = 190 ,.y = 418,.h = 72,.w = 180 };
+	SDL_Rect noob =     { .x = 190 ,.y = 40, .h = 72,.w = 180 };
+	SDL_Rect easy =     { .x = 190 ,.y = 132,.h = 72,.w = 180 };
+	SDL_Rect moderate = { .x = 190 ,.y = 224,.h = 72,.w = 180 };
+	SDL_Rect hard =     { .x = 190 ,.y = 316,.h = 72,.w = 180 };
+	SDL_Rect expert =   { .x = 190 ,.y = 408,.h = 72,.w = 180 };
 
 	 
 	SDL_Rect white = { .x = 100 , .y = 120,.h = 195,.w = 97 };
