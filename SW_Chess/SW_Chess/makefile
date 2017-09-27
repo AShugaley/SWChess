@@ -54,3 +54,6 @@ main.o: main.c Chess_GUIFlowMain.h Chess_ConsoleFlowMain.h
 	$(CC) $(COMP_FLAG) $(SDL_COMP_FLAG) -c $*.c
 clean:
 	rm -f *.o $(EXEC)
+
+
+
