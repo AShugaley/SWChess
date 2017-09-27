@@ -15,31 +15,32 @@ Widget* createButton(SDL_Renderer* windowRender, SDL_Rect* location, const char*
 	}
     
 	Widget* res = (Widget*) malloc(sizeof(Widget));
+	if (!res)
+		return NULL;
 	Button* data = (Button*) malloc(sizeof(Button));
-	SDL_Surface* loadingSurface = SDL_LoadBMP(image); //We use the surface as a temp var;
-	SDL_Texture* buttonTexture = SDL_CreateTextureFromSurface(windowRender,loadingSurface);
-	if ((res == NULL) || (data == NULL) || (loadingSurface == NULL) || (buttonTexture == NULL)) 
+	if (!data)
 	{
-        printf("ERROR SDL: error creating a SDL button\n");
-		
 		free(res);
-		printf("res");
-		SDL_Delay(50);
-		
-		free(data);
-		printf("data");
-		SDL_Delay(50);
-		
-		SDL_FreeSurface(loadingSurface); //It is safe to pass NULL
-		printf("surface");
-		SDL_Delay(50);
-
-		SDL_DestroyTexture(buttonTexture); ////It is safe to pass NULL
-		printf("buttontex");
-		SDL_Delay(50);
-
-		return NULL ;
+		return NULL;
 	}
+	SDL_Surface* loadingSurface = SDL_LoadBMP(image); //We use the surface as a temp var;
+	if (!loadingSurface)
+	{
+		printf("ERROR: unable to loading a surface: %s\n", SDL_GetError());
+		free(res);
+		free(data);
+		return NULL;
+	}
+	SDL_Texture* buttonTexture = SDL_CreateTextureFromSurface(windowRender,loadingSurface);
+	if (!buttonTexture)
+	{
+		printf("ERROR: unable to create a texture: %s\n", SDL_GetError());
+		free(res);
+		free(data);
+		SDL_FreeSurface(loadingSurface);
+		return NULL;
+	}
+	
 	SDL_FreeSurface(loadingSurface); //Surface is not actually needed after texture is created
 	data->buttonTexture = buttonTexture;
 	data->location = spCopyRect(location);
@@ -74,8 +75,6 @@ void destroyButton(Widget* src)
 
 void updateButtonTexture(Widget* src, const char* image)
 {
-	if ((src == NULL) || (image == NULL))
-		return;
 	Button* castedData = (Button*)src->data;
 	SDL_DestroyTexture(castedData->buttonTexture);
 
