@@ -48,7 +48,7 @@ Widget** createLoadWindowWidgets(SDL_Renderer* renderer)
 	{
 		if (!widgets[i])
 		{
-			printf("ERROR SDL: unable to create the window's buttons\n");
+			printf("ERROR SDL: unable to create the window's buttons. %d:\n", i);
 			for (int j = 0; j < 7; j++)
 			{
 				if (widgets[j])
@@ -61,7 +61,6 @@ Widget** createLoadWindowWidgets(SDL_Renderer* renderer)
 
 	return widgets;
 }
-
 
 ChessWindow* createLoadWindow(Uint32 winMode, chessGame* game)
 {
