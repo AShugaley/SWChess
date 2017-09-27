@@ -3,6 +3,9 @@
 #include "SPCommon.h"
 
 
+int mouseDeltaX, mouseDeltaY;
+int mouseX0, mouseY0;
+
 //You need a create function:
 Widget* createButton(SDL_Renderer* windowRender, SDL_Rect* location, const char* image, WIDGET_TYPE type)
 {
@@ -236,8 +239,8 @@ void handleButtonEvent(Widget* src, SDL_Event* event)
 			case CHESS_QUEEN_WHITE_BUTTON:
 			case CHESS_KING_WHITE_BUTTON:
 			case CHESS_KING_BLACK_BUTTON:
-				mouseX0 = event->button.x;
-				mouseY0 = event->button.y;
+                mouseX0 = event->button.x;
+                mouseY0 = event->button.y;
 				src->isActive = true;
 				return;
 			}
@@ -279,6 +282,7 @@ void handleButtonEvent(Widget* src, SDL_Event* event)
 		if ((event->type == SDL_MOUSEMOTION) && 
 			((SDL_GetMouseState(NULL, NULL)) & (SDL_BUTTON(SDL_BUTTON_LEFT))))
 		{
+            int mouseX0;
 			mouseDeltaX = event->motion.x - mouseX0;
 			mouseDeltaY = event->motion.y - mouseY0;
 			mouseX0 = event->motion.x;

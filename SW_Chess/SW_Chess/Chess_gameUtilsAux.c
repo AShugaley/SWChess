@@ -355,7 +355,7 @@ bool checkIfPathIsLegal(const char* filename) {
 		filename += 5;
 	}
 	FILE *f = fopen(filename, "r+");
-	if (f == NULL)
+	if (!f)
 		return false;
 	return true;
 }

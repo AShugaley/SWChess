@@ -20,7 +20,7 @@ SPArrayListNode* suggestMove(chessGame* src,  int depth){
 SPArrayListNode* initMinmaxTree(chessGame* currentGame, int depth){
     SPArrayListNode* bestMaxMove = (SPArrayListNode*)malloc(sizeof(SPArrayListNode));
     SPArrayListNode* bestMinMove = (SPArrayListNode*)malloc(sizeof(SPArrayListNode));
-    if((bestMaxMove == NULL) || (bestMaxMove == NULL)) /* mem alloc failure */
+    if((!bestMaxMove) || (!bestMaxMove)) /* mem alloc failure */
         return NULL;
     double bestMax = INT_MIN;
     double bestMin = INT_MAX;

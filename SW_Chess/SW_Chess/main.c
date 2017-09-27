@@ -3,8 +3,8 @@
 
 #include "Chess_ConsoleFlowMain.h"
 #include <stdbool.h>
-#include <SDL.h>
-#include <SDL_video.h>
+#include <sdl2/SDL.h>
+#include <sdl2/SDL_video.h>
 
 #include "unitTest.h"
 #include "Chess_gameParser.h"
@@ -17,9 +17,9 @@ int main(int argc, const char* argv[])
 {
 
 	//if (argc == 2 && strcmp(argv[1], "-g") == 0)
-		return GUIMain();
+		//return GUIMain();
 	//else
-		//consoleMode();
+		consoleMode();
 
 	return 0;
 }

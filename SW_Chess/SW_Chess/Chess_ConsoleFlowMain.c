@@ -104,11 +104,7 @@ reset: /* if we restart */
             continue;
         }
         if(setcmd.cmd == CHESS_LOAD){
-            if(!setcmd.isValidArg){
-                printf("Illigal argument\n");
-                continue;
-            }
-            //toadd
+            loadGame(input);
             continue;
         }
         if(setcmd.cmd == CHESS_INVALID_SETTING_LINE){

@@ -7,8 +7,8 @@
 #include "ChessGUI_LoadWindow.h"
 #include "ChessGUI_SettingsWindow.h"
 #include "ChessGUI_Utils.h"
-#include <SDL.h>
-#include <SDL_video.h>
+#include <sdl2/SDL.h>
+#include <sdl2/SDL_video.h>
 
 
 int GUIMain();

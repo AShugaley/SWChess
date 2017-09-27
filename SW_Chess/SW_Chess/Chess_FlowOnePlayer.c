@@ -33,9 +33,10 @@ GAME_STATUS onePlayerGameFlow(chessGame* src){
             printBoard = false;
             continue;
         }
+        printf("JJ");
         if(cmd.cmd == CHESS_SAVE){
             saveGame(src, input); 
-             printBoard = false;
+            printBoard = false;
             continue;
         }
         if(cmd.cmd == CHESS_MOVE){
@@ -85,7 +86,7 @@ bool compMove(chessGame* src){
     int depth = minFunc(src->difficulty, 4); /* if difficulty == 5, depth is stil 40 */
     
     SPArrayListNode* move = suggestMove(src, depth);
-    if(move == NULL){
+    if(!move){
         printf("ERROR - cannot suggest move");
         return false;
     }

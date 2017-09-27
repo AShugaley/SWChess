@@ -1,7 +1,7 @@
 #ifndef WIDGET_H_
 #define WIDGET_H_
-#include <SDL.h>
-#include <SDL_video.h>
+#include <sdl2/SDL.h>
+#include <sdl2/SDL_video.h>
 #include <stdbool.h>
 
 
@@ -46,8 +46,8 @@ typedef enum {
 	CHESS_KING_BLACK_BUTTON,
 } WIDGET_TYPE;
 
-int mouseDeltaX, mouseDeltaY;
-int mouseX0, mouseY0;
+extern int mouseDeltaX, mouseDeltaY;
+extern int mouseX0, mouseY0;
 
 typedef struct widget_t Widget;
 struct widget_t {
