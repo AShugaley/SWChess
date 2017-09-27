@@ -8,21 +8,17 @@ Widget* createButton(SDL_Renderer* windowRender, SDL_Rect* location, const char*
 {
 	if ((!windowRender) || (!location) || (!image))
 	{
-		printf("here1\n");
 		return NULL;
 	}
    
 	Widget* res = (Widget*)malloc(sizeof(Widget));
 	if (!res)
 	{
-		printf("here2\n");
 		return NULL;
 	}
 	Button* data = (Button*)malloc(sizeof(Button));
 	if (!data)
 	{
-		printf("here3\n");
-
 		free(res);
 		return NULL;
 	}
@@ -194,7 +190,7 @@ void handleButtonEvent(Widget* src, SDL_Event* event)
 				updateButtonTexture(src, "./expert_pressed.bmp");
 				break;
 			case CHESS_SLOT1_BUTTON:
-				updateButtonTexture(src, "./slot1_pressed.bmp ");
+				updateButtonTexture(src, "./slot1_pressed.bmp");
 				break;
 			case CHESS_SLOT2_BUTTON:
 				updateButtonTexture(src, "./slot2_pressed.bmp");
