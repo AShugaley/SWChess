@@ -10,6 +10,7 @@ SDL_COMP_FLAG = -I/usr/local/lib/sdl_2.0.5/include/SDL2 -D_REENTRANT
 SDL_LIB = -L/usr/local/lib/sdl_2.0.5/lib -Wl,-rpath,/usr/local/lib/sdl_2.0.5/lib -Wl,--enable-new-dtags -lSDL2 -lSDL2main
 $(EXEC): $(OBJS)
 	$(CC) $(OBJS) $(SDL_LIB) -o $@
+all: chessprog
 Chess_def.o: Chess_def.h Chess_def.c
 	$(CC) $(COMP_FLAG) $(SDL_COMP_FLAG) -c $*.c
 Chess_ArrayList.o: Chess_ArrayList.h Chess_ArrayList.c Chess_def.h

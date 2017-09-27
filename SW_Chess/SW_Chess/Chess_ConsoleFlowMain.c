@@ -104,7 +104,7 @@ reset: /* if we restart */
             continue;
         }
         if(setcmd.cmd == CHESS_LOAD){
-            loadGame(input);
+            src = loadGame(input);
             continue;
         }
         if(setcmd.cmd == CHESS_INVALID_SETTING_LINE){
