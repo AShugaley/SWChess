@@ -28,7 +28,7 @@ void drawButton(Widget* src);
 /* updates the button outlay */
 void updateButtonTexture(Widget* src, const char* image);
 
-/* updates the button location on a window *//
+/* updates the button location on a window */
 void updateButtonLocation(Widget* src, int x, int y);
 
 #endif
