@@ -62,7 +62,7 @@ Widget** createSettingsWindowWidgets(SDL_Renderer* renderer)
 	widgets[8] = createButton(renderer, &hard,     "./hard_active.bmp"	  , CHESS_HARD_BUTTON);
 
 	widgets[9] =  createButton(renderer, &white,  "./white_active.bmp"  , CHESS_WHITE_BUTTON);
-	widgets[10] = createButton(renderer, &black,  "./black_active.bmp"  , CHESS_BLACK_BUTTON);
+//	widgets[10] = createButton(renderer, &black,  "./black_active.bmp"  , CHESS_BLACK_BUTTON);
 	widgets[11] = createButton(renderer, &expert, "./expert_active.bmp" , CHESS_EXPERT_BUTTON);
 
 	for (int i = 0; i < 12; i++)
