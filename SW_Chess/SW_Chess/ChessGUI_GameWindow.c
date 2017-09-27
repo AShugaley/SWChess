@@ -9,7 +9,6 @@ static const int game_width = 900;
 static const int game_height = 700;
 bool steadyBoard = true;
 
-
 /////////////////for the exit message box////////////////// 
 const SDL_MessageBoxButtonData buttons[] = {
 	{ SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT,   0,    "yes" },
@@ -428,7 +427,7 @@ WINDOW_EVENT handleEventGameWindow(ChessWindow* src, SDL_Event* event)
 	int endStatus;
 	WINDOW_EVENT savingChoose;
 
-	if (src->game->gameMode == ONE_PLAYER && src->game->humanPlayerColor == BLACKS)
+	if (src->game->gameMode == ONE_PLAYER && src->game->humanPlayerColor == BLACKS && src->game->currentPlayer == WHITES)
 	{
 		compMove(src->game);
 		steadyBoard = true;
@@ -565,7 +564,7 @@ WINDOW_EVENT handleEventGameWindow(ChessWindow* src, SDL_Event* event)
 								}
 								compMove(src->game);
 								drawGameWindow(src);
-								SDL_Delay(50);
+								//SDL_Delay(50);
 								endStatus = checkGuiGameEnd(src);
 								if ((endStatus == STALEMATE) || (endStatus == CHECKMATE))
 									return CHESS_QUIT_WINDOWEVENT;
