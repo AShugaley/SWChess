@@ -78,8 +78,8 @@ CHESS_GAME_MESSAGE chessConsolePrintBoard(chessGame* src) {
         }
         printf("|\n");
     }
-    printf("  -----------------  \n");
-    printf("   A B C D E F G H   \n");
+    printf("  -----------------\n");
+    printf("   A B C D E F G H\n");
     return CHESS_GAME_SUCCESS;
 }
 
@@ -343,7 +343,7 @@ CHESS_GAME_MESSAGE undoChessPrevMove(chessGame* src, bool shouldPrint){
     switchCurrentPlayer(src);
     /* This way we can use the same function internally, without printing to console */
     if(shouldPrint)
-        printf("Undo move for player %s : <%d,%c> -> <%d,%c>\n",getCurrentPlayerStringName(src),move->prev_pos_row + 1, getColumnChar(move->prev_pos_col),move->current_pos_row + 1, getColumnChar(move->current_pos_col));
+        printf("Undo move for player %s : <%d,%c> -> <%d,%c>\n",getCurrentPlayerStringName(src),move->current_pos_row + 1, getColumnChar(move->current_pos_col),move->prev_pos_row + 1, getColumnChar(move->prev_pos_col));
     return CHESS_GAME_SUCCESS;
     
 }
@@ -459,15 +459,23 @@ chessGame* loadGame(const char* filename){
     if(strstr(filename, "load ") != 0) { /* Sometimes we send the whole command, and not just the path */
         filename += 5;
     }
+    
+    char currentStr1[1024] = "\0";
+    strcpy(currentStr1, filename);
+    char* currentToken1;
+    char delimiter[] = " \t\r\n<>";
+    currentToken1 = strtok(currentStr1, delimiter);	/* curtoken is the first part of the string */
 
-    FILE *f = fopen(filename, "r+");
+    FILE *f = fopen(currentToken1, "r+");
     if(!f){
         printf("Error: File does not exist or cannot be opened\n"); 
         return NULL;
     }
+    
+    
     char* currentToken;
     int row;
-    char delimiter[] = " \t\r\n<>";
+   
     char currentStr[1024] = "\0";
     char * buffer = 0;
     long length;
@@ -485,7 +493,7 @@ chessGame* loadGame(const char* filename){
         }
         fclose (f);
     }
-    /* printf("%s",buffer); */
+   // printf("%s",buffer);
     
     strcpy(currentStr, buffer);
     
@@ -559,7 +567,6 @@ chessGame* loadGame(const char* filename){
 
 
     }
-    
     return src;
 
    }
@@ -569,11 +576,19 @@ bool saveGame(chessGame* src, const char* filename){
     if(strstr(filename, "save ") != 0) { /* Sometimes we send the whole command, and not just the path */
         filename += 5;					//////////////// +5 ? //////////////
     }
-    FILE *file = fopen(filename, "w+");
+    char currentStr1[1024] = "\0";
+    strcpy(currentStr1, filename);
+    char* currentToken1;
+    char delimiter[] = " \t\r\n";
+    currentToken1 = strtok(currentStr1, delimiter);	/* curtoken is the first part of the string */
+
+    FILE *file = fopen(currentToken1, "w+");
+    
     if(!file){
         printf("File cannot be created or modified\n");
         return false;
     }
+    
     fprintf(file, "<?xml version=""1.0""encoding=""UTF-8""?>\n<game>\n");
     if(src->currentPlayer == WHITES)
         fprintf(file, "<current_turn>%s</current_turn>\n", "1");
@@ -649,9 +664,9 @@ void checkGameEnd(chessGame* src){
     if(isCheckmate(src)){
         /* we have a fucntion to get a string name of the player, but here we want a capital letter, so this is shorter */
         if(src->currentPlayer == WHITES)
-            printf("Checkmate! Black player wins the game\n");
+            printf("Checkmate! black player wins the game\n");
         if(src->currentPlayer == BLACKS)
-             printf("Checkmate! White player wins the game\n");
+             printf("Checkmate! white player wins the game\n");
         terminateGame(src);
     }
     if(isCheck(src))

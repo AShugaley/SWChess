@@ -37,7 +37,7 @@ GAME_STATUS twoPlayersGameFlow(chessGame* src){
         }
         if(cmd.cmd == CHESS_MOVE){
             if((!cmd.isValidFirstPair) || (!cmd.isValidSecondPair)){
-                printf("Illigal argument\n");
+                printf("Invalid position on the board\n");
                 printBoard = false;
                 continue;
             }
