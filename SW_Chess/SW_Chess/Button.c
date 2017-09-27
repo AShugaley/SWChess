@@ -3,8 +3,6 @@
 #include "SPCommon.h"
 
 
-int mouseDeltaX, mouseDeltaY;
-int mouseX0, mouseY0;
 
 //You need a create function:
 Widget* createButton(SDL_Renderer* windowRender, SDL_Rect* location, const char* image, WIDGET_TYPE type)

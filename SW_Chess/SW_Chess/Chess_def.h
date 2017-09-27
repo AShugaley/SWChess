@@ -4,8 +4,8 @@
 
 #include <stdio.h>
 #include <stdbool.h>
-#include <sdl2/SDL.h>
-#include <sdl2/SDL_video.h>
+#include <SDL.h>
+#include <SDL_video.h>
 
 #define BOARD_SIZE 8
 
