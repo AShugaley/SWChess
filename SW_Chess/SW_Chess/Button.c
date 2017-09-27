@@ -70,7 +70,7 @@ void destroyButton(Widget* src)
 
 void updateButtonTexture(Widget* src, const char* image)
 {
-	if ((!src) || (!image))
+	if ((!src))
 		return;
 
 	Button* castedData = (Button*)src->data;
