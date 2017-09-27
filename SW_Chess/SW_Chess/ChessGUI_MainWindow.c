@@ -8,9 +8,14 @@ static const int height = 700;
 //Helper function to create buttons in the simple window;
 Widget** createMainWindowWidgets(SDL_Renderer* renderer) 
 {
+	if (!renderer)
+		return NULL;
+
 	Widget** widgets = malloc(sizeof(Widget*) * 3);
 	if (!widgets) 
 		return NULL;
+
+	memset(widgets, 0, 3); 
 
 	SDL_Rect newGame =	{ .x = 125, .y = 70, .h = 80, .w = 200 };
 	SDL_Rect loadGame = { .x = 125, .y = 190, .h = 80, .w = 200 };
@@ -20,14 +25,19 @@ Widget** createMainWindowWidgets(SDL_Renderer* renderer)
 	widgets[1] = createButton(renderer, &loadGame,		"./load_active.bmp" , CHESS_LOAD_BUTTON);
 	widgets[2] = createButton(renderer, &quit,			"./exit_active.bmp" , CHESS_QUIT_BUTTON);
 
-	if ((widgets[0] == NULL) || (widgets[1] == NULL) || (widgets[2] == NULL))
+	for (int i = 0; i < 3; i++)
 	{
-        printf("ERROR SDL: error creating a SDL button\n");
-		destroyWidget(widgets[0]); //NULL SAFE
-		destroyWidget(widgets[1]); //NULL SAFE
-		destroyWidget(widgets[2]); //NULL SAFE
-		free(widgets);
-		return NULL ;
+		if (!widgets[i])
+		{
+			printf("ERROR SDL: unable to create the window's buttons\n");
+			for (int j = 0; j < 3; j++)
+			{
+				if (widgets[j])
+					destroyWidget(widgets[j]);
+			}
+			free(widgets);
+			return NULL;
+		}
 	}
 
 	return widgets;
@@ -36,6 +46,9 @@ Widget** createMainWindowWidgets(SDL_Renderer* renderer)
 
 ChessWindow* createMainWindow(Uint32 winMode, chessGame* game)
 {
+	if (!game)
+		return NULL;
+
 	ChessWindow* res = malloc(sizeof(ChessWindow));
 	if (!res)
 		return NULL;
@@ -58,7 +71,7 @@ ChessWindow* createMainWindow(Uint32 winMode, chessGame* game)
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	if (!renderer)
 	{
-		printf("ERROR: unable to create a texture: %s\n", SDL_GetError());
+		printf("ERROR: unable to create a renderer: %s\n", SDL_GetError());
 		free(res);
 		free(data);
 		SDL_DestroyWindow(window);	  //NULL safe
@@ -67,7 +80,7 @@ ChessWindow* createMainWindow(Uint32 winMode, chessGame* game)
 	Widget** widgets = createMainWindowWidgets(renderer);
 	if (!widgets)
 	{
-		printf("ERROR: unable to create a texture: %s\n", SDL_GetError());
+		printf("ERROR: unable to create window's buttons: %s\n", SDL_GetError());
 		free(res);
 		free(data);
 		SDL_DestroyRenderer(renderer); //NULL safe
@@ -84,6 +97,10 @@ ChessWindow* createMainWindow(Uint32 winMode, chessGame* game)
 	{
 		data->widgets[i]->isDragLegal = false;
 		data->widgets[i]->isVisible = true;
+		data->widgets[i]->isActivateLegal = true;
+		data->widgets[i]->isActive = false;
+		data->widgets[i]->isMoving = false;
+		data->widgets[i]->endOfDrag = false;
 	}
 
 	res->data = (void*) data;
@@ -99,6 +116,9 @@ ChessWindow* createMainWindow(Uint32 winMode, chessGame* game)
 
 void destroyMainWindow(ChessWindow* src) 
 {
+	if (!src)
+		return;
+
 	chessMainWindow* data = (chessMainWindow*) src->data;
 	for (int i = 0;  i < data->numOfWidgets; i++) 
 	{
@@ -114,6 +134,9 @@ void destroyMainWindow(ChessWindow* src)
 
 void drawMainWindow(ChessWindow* src)
 {
+	if (!src)
+		return;
+
 	chessMainWindow* data = (chessMainWindow*) src->data;
 	SDL_RenderClear(data->windowRenderer);
 
@@ -127,7 +150,7 @@ void drawMainWindow(ChessWindow* src)
 	SDL_Texture * background = SDL_CreateTextureFromSurface(data->windowRenderer, surf);
 	if (!background)
 	{
-		free(surf);
+		SDL_FreeSurface(surf);
 		printf("ERROR: unable to create a background: %s\n", SDL_GetError());
 		return;
 	}
@@ -138,7 +161,11 @@ void drawMainWindow(ChessWindow* src)
 		printf("ERROR: unable to blend background texture: %s\n", SDL_GetError());
 	}
 
-	SDL_RenderCopy(data->windowRenderer, background, NULL, NULL);
+	if (SDL_RenderCopy(data->windowRenderer, background, NULL, NULL) != 0)
+	{
+		printf("ERROR: unable to render texture: %s\n", SDL_GetError());
+	}
+
 	SDL_DestroyTexture(background);
 	
 	//Draw window
@@ -156,6 +183,9 @@ void drawMainWindow(ChessWindow* src)
 
 WINDOW_EVENT handleEventMainWindow(ChessWindow* src, SDL_Event* event)
 {
+	if ((!src) || (!event))
+		return CHESS_EMPTY_WINDOWEVENT;
+	
 	chessMainWindow* windata = (chessMainWindow*)src->data;
 
 	if (!((event->type == SDL_MOUSEBUTTONDOWN)  && (event->button.button == SDL_BUTTON_LEFT)) &&
@@ -187,5 +217,5 @@ WINDOW_EVENT handleEventMainWindow(ChessWindow* src, SDL_Event* event)
 			}
 		}	
 	}
-	return CHESS_EMPTY_WINDOWEVENT;   //return error!!!!!!!!!!!!!! 
+	return CHESS_EMPTY_WINDOWEVENT;
 }

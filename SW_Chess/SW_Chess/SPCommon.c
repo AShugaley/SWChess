@@ -3,13 +3,13 @@
 
 //Helper function
 SDL_Rect* spCopyRect(SDL_Rect* src){
-	if(src == NULL){
+	if(!src)
 		return NULL;
-	}
+	
 	SDL_Rect* res = malloc(sizeof(SDL_Rect));
-	if(res==NULL){
+	if(!res)
 		return NULL;
-	}
+	
 	res->h = src->h;
 	res->w = src->w;
 	res->x = src->x;

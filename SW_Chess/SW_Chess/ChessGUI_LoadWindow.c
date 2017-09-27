@@ -5,7 +5,7 @@
 
 static const int load_width = 550;
 static const int load_height = 700;
-int chosenSlot;
+int chosenSlot = -1;
 
 #define LOAD 0 
 #define BACK 1
@@ -19,14 +19,14 @@ int chosenSlot;
 //create buttons
 Widget** createLoadWindowWidgets(SDL_Renderer* renderer)
 {
-	if (renderer == NULL) {
+	if (!renderer)
 		return NULL;
-	}
+
 	Widget** widgets = malloc(sizeof(Widget*) * 7);
-	if (widgets == NULL)
-	{
+	if (!widgets)
 		return NULL;
-	}
+
+	memset(widgets, 0, 7);
 
 	SDL_Rect loadGame = { .x = 300,.y = 550, .h = 72, .w = 180 };
 	SDL_Rect back     = { .x = 70, .y = 550, .h = 72, .w = 180 };
@@ -36,7 +36,6 @@ Widget** createLoadWindowWidgets(SDL_Renderer* renderer)
 	SDL_Rect slot4    = { .x = 200,.y = 350,.h = 72,.w = 180 };
 	SDL_Rect slot5    = { .x = 200,.y = 450,.h = 72,.w = 180 };
 
-
 	widgets[0] = createButton(renderer, &loadGame,  "./load_inactive.bmp", CHESS_LOADER_INSIDE_BUTTON);
 	widgets[1] = createButton(renderer, &back,	    "./back_active.bmp"  , CHESS_BACK_BUTTON);
 	widgets[2] = createButton(renderer, &slot1,     "./slot1_active.bmp " , CHESS_SLOT1_BUTTON);
@@ -45,40 +44,68 @@ Widget** createLoadWindowWidgets(SDL_Renderer* renderer)
 	widgets[5] = createButton(renderer, &slot4,     "./slot4_active.bmp " , CHESS_SLOT4_BUTTON);
 	widgets[6] = createButton(renderer, &slot5,     "./slot5_active.bmp " , CHESS_SLOT5_BUTTON);
 
-
 	for (int i = 0; i < 7; i++)
 	{
-		if (widgets[i] == NULL)
+		if (!widgets[i])
 		{
+			printf("ERROR SDL: unable to create the window's buttons\n");
 			for (int j = 0; j < 7; j++)
 			{
-				destroyWidget(widgets[j]);
+				if (widgets[j])
+					destroyWidget(widgets[j]);
 			}
 			free(widgets);
 			return NULL;
 		}
 	}
+
 	return widgets;
 }
 
 
 ChessWindow* createLoadWindow(Uint32 winMode, chessGame* game)
 {
-	ChessWindow* res = malloc(sizeof(ChessWindow));
-	chessLoadWindow* data = malloc(sizeof(chessLoadWindow));
-	SDL_Window* window = SDL_CreateWindow("CHESS!", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, load_width, load_height, winMode);
-	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+	if (!game)
+		return NULL;
 
-	Widget** widgets = createLoadWindowWidgets(renderer);
-	if ((res == NULL) || (data == NULL) || (window == NULL) || (renderer == NULL) || (widgets == NULL))
+	ChessWindow* res = malloc(sizeof(ChessWindow));
+	if (!res)
+		return NULL;
+	chessLoadWindow* data = malloc(sizeof(chessLoadWindow));
+	if (!data)
 	{
 		free(res);
+		return NULL;
+	}
+	SDL_Window* window = SDL_CreateWindow("CHESS!", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, load_width, load_height, winMode);
+	if (!window)
+	{
+		printf("ERROR: unable to create a window: %s\n", SDL_GetError());
+		free(res);
 		free(data);
-		free(widgets);
+		return NULL;
+	}
+	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+	if (!renderer)
+	{
+		printf("ERROR: unable to create a renderer: %s\n", SDL_GetError());
+		free(res);
+		free(data);
+		SDL_DestroyWindow(window);	  //NULL safe
+		return NULL;
+	}
+
+	Widget** widgets = createLoadWindowWidgets(renderer);
+	if (!widgets)
+	{
+		printf("ERROR: unable to create window's buttons: %s\n", SDL_GetError());
+		free(res);
+		free(data);
 		SDL_DestroyRenderer(renderer); //NULL safe
 		SDL_DestroyWindow(window);	  //NULL safe
 		return NULL;
 	}
+
 	data->widgets = widgets;
 	data->numOfWidgets = 7; 
 	data->window = window;
@@ -87,6 +114,11 @@ ChessWindow* createLoadWindow(Uint32 winMode, chessGame* game)
 	for (int i = 0; i < data->numOfWidgets; i++)
 	{
 		data->widgets[i]->isDragLegal = false;
+		data->widgets[i]->isMoving = false;
+		data->widgets[i]->endOfDrag = false;
+		data->widgets[i]->isVisible = true;
+		data->widgets[i]->isActive = false;
+		data->widgets[i]->isActivateLegal = true;
 	}
 	data->widgets[LOAD]->isActivateLegal = false;
 
@@ -103,9 +135,9 @@ ChessWindow* createLoadWindow(Uint32 winMode, chessGame* game)
 
 void destroyLoadWindow(ChessWindow* src)
 {
-	if (src == NULL) {
+	if (!src)
 		return;
-	}
+
 	chessLoadWindow* data = (chessLoadWindow*)src->data;
 	for (int i = 0; i < data->numOfWidgets; i++)   
 	{
@@ -121,27 +153,36 @@ void destroyLoadWindow(ChessWindow* src)
 
 void drawLoadWindow(ChessWindow* src)
 {
-	if (src == NULL) {
+	if (!src)
 		return;
-	}
+	 
 	chessLoadWindow* data = (chessLoadWindow*)src->data;
 	SDL_RenderClear(data->windowRenderer);
 	
 	//draw background
 	SDL_Surface* surf = SDL_LoadBMP("./load_background.bmp");
-	SDL_Texture * background = SDL_CreateTextureFromSurface(data->windowRenderer, surf);
-	if ((surf == NULL) || (background == NULL))
+	if (!surf)
 	{
-		free(surf);
-		SDL_DestroyTexture(background);
+		printf("ERROR: unable to load BMP file: %s\n", SDL_GetError());
 		return;
 	}
+	SDL_Texture * background = SDL_CreateTextureFromSurface(data->windowRenderer, surf);
+	if (!background)
+	{
+		SDL_FreeSurface(surf);
+		printf("ERROR: unable to create a background: %s\n", SDL_GetError());
+		return;
+	}
+	
 	SDL_FreeSurface(surf);
 	if (SDL_SetTextureBlendMode(background, SDL_BLENDMODE_NONE) != 0)
 	{
 		printf("ERROR: unable to blend background texture: %s\n", SDL_GetError());
 	}
-	SDL_RenderCopy(data->windowRenderer, background, NULL, NULL);
+	if (SDL_RenderCopy(data->windowRenderer, background, NULL, NULL) != 0)
+	{
+		printf("ERROR: unable to render texture: %s\n", SDL_GetError());
+	}
 	SDL_DestroyTexture(background);
 	
 	//Draw window
@@ -167,14 +208,14 @@ void drawLoadWindow(ChessWindow* src)
 
 WINDOW_EVENT handleEventLoadWindow(ChessWindow* src, SDL_Event* event)
 {
-	if ((src == NULL) || (event == NULL)) {
+	if ((!src) || (!event))
 		return CHESS_EMPTY_WINDOWEVENT;
-	}
+
 	chessLoadWindow* windata = (chessLoadWindow*)src->data;
 
 	while (1)
 	{
-begin:
+	begin:
 		while (SDL_PollEvent(event))
 		{
 			if (!((event->type == SDL_MOUSEBUTTONDOWN)  && (event->button.button == SDL_BUTTON_LEFT)) &&

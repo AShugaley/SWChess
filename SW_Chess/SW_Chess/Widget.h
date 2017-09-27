@@ -49,12 +49,10 @@ typedef enum {
 int mouseDeltaX, mouseDeltaY;
 int mouseX0, mouseY0;
 
-
 typedef struct widget_t Widget;
 struct widget_t {
 	void (*drawWidget)(Widget*);
 	void (*handleEvent)(Widget*, SDL_Event*);
-//	void (*handleEvent)(Widget*, SDL_Event*);
 	void (*destroyWidget)(Widget*);
 	void* data;
 	WIDGET_TYPE widget_type; 
@@ -72,7 +70,7 @@ struct widget_t {
 	//for the pieces:
 	int row;
 	int coll;
-	char color; //for game pieces - w or b
+	char color; //for game pieces - 'w' or 'b'
 };
 
 //This function would be usefull for NULL safe desetroy

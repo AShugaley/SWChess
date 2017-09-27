@@ -14,25 +14,31 @@ int GUIMain()
 
 	//this game pointer will be updated along the game, here and in the game&settings windows 
 	chessGame* game = createChessGame(6, ONE_PLAYER, WHITES, 2); //default args
-	if (game == NULL)
-		destroyChessGame(game);
-
-	ChessWindow* currentWindow = createWindow(CHESS_MAIN_WINDOW, SDL_WINDOW_OPENGL, game);
-	if (currentWindow == NULL)
+	if (!game)
 	{
+		printf("ERROR: unable to create a game: %s\n", SDL_GetError());
+		SDL_Quit();
+		return 0;
+	}
+	
+	ChessWindow* currentWindow = createWindow(CHESS_MAIN_WINDOW, SDL_WINDOW_OPENGL, game);
+	if (!currentWindow)
+	{
+		destroyChessGame(game);
         printf("ERROR: unable to create window: %s\n", SDL_GetError());
 		SDL_Quit();
 		return 0;
 	}
 	
 	currentWindow->game = game;
-
 	currentWindow->drawWindow(currentWindow);
 	WINDOW_TYPE prev = CHESS_MAIN_WINDOW; //default, just for error cases
 
 	SDL_Event event;
 	WINDOW_EVENT windowEvent;
-	while (1)
+	bool continuePollEvent = true;
+
+	while (continuePollEvent)
 	{
 		SDL_WaitEvent(&event);
 		if (event.type == SDL_QUIT)
@@ -42,14 +48,9 @@ int GUIMain()
 		
 		switch (windowEvent)
 		{
-
 		case CHESS_EMPTY_WINDOWEVENT:
 			break;
 		
-		case CHESS_ERROR_WINDOWEVENT:
-			//quit ? somthing else? look for it in the PDF !!!!!!!!!!!!!!!!!!!!!!!!!
-			break;
-
 		case CHESS_STARTGAME_WINDOWEVENT: 
 			currentWindow = swapWindows(currentWindow, CHESS_GAME_WINDOW, game);
 			break;
@@ -87,14 +88,20 @@ int GUIMain()
 			break;
 		
 		case CHESS_QUIT_WINDOWEVENT:
+			destroyChessGame(game);
 			destroyWindow(currentWindow);
 			SDL_Quit();
 			return 0;
 		}
+		if (!currentWindow)
+		{
+			printf("ERROR: window is null: %s\n", SDL_GetError());
+			break;
+		}
 	}
 
+	//an error ocured
 	destroyChessGame(game);
-	destroyWindow(currentWindow);
 	SDL_Quit();
 	return 0;
 }

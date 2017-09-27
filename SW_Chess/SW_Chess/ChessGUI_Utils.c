@@ -8,35 +8,41 @@
 
 ChessWindow* createWindow(WINDOW_TYPE wintype, Uint32 winMode, chessGame* game)
 {
-	ChessWindow* res = NULL;
+	if (!game)
+		return NULL;
+
 	if (wintype == CHESS_LOAD_WINDOW)
-		res = createLoadWindow(winMode, game);
+		return createLoadWindow(winMode, game);
 	else if (wintype == CHESS_MAIN_WINDOW)
-		res = createMainWindow(winMode, game);
+		return createMainWindow(winMode, game);
 	else if (wintype == CHESS_GAME_WINDOW)
-		res = createGameWindow(winMode, game);
+		return createGameWindow(winMode, game);
 	else if (wintype == CHESS_SETTINGS_WINDOW)
-		res = createSettingsWindow(winMode, game);
-	return res;
+		return createSettingsWindow(winMode, game);
+	return NULL;
 }
 
 
 ChessWindow* swapWindows(ChessWindow* oldWindow, WINDOW_TYPE type, chessGame* game)
 {
-	destroyWindow(oldWindow);
-	ChessWindow* newWindow = NULL;
-	newWindow = createWindow(type, SDL_WINDOW_OPENGL, game);
-	if (newWindow == NULL)
-	{
-		SDL_Quit();
+	if ((!oldWindow) || (!game))
 		return NULL;
-	}
+
+	destroyWindow(oldWindow);
+	ChessWindow* newWindow = createWindow(type, SDL_WINDOW_OPENGL, game);
+	if (!newWindow)
+		return NULL;
+
 	newWindow->drawWindow(newWindow);
 	return newWindow;
 }
 
+
 void initGameGUIBoard(chessGame* game)
 {
+	if (!game)
+		return;
+
 	int leftDownCornerX = 380;
 	int leftDownCornerY = 520;
 	int width = 60;
@@ -59,6 +65,9 @@ void initGameGUIBoard(chessGame* game)
 
 void drawGameBoard(chessGameWindow* win, chessGame* game)
 {
+	if ((!win) || (!game))
+		return;
+
 	SDL_Surface* loadingSurface;
 	SDL_Texture* squareTexture;
 	for (int i = 0; i < BOARD_SIZE; i++)
@@ -67,28 +76,50 @@ void drawGameBoard(chessGameWindow* win, chessGame* game)
 		{
 			
 			if (SDL_RenderDrawRect(win->windowRenderer, &game->gameGUIBoard[i][j]) < 0)
-				printf("ERROR: unable to draw rect: %s\n", SDL_GetError());
+			{
+				printf("ERROR: unable to draw a rect: %s\n", SDL_GetError());
+				return;
+			}
 			if ((i % 2 == 0 && j % 2 == 0) || (i % 2 != 0 && j % 2 != 0))
 			{
 				loadingSurface = SDL_LoadBMP("./white_sq.bmp"); //We use the surface as a temp var;
+				if (!loadingSurface)
+				{
+					printf("ERROR: unable to load BMP file: %s\n", SDL_GetError());
+					return;
+				}
 				squareTexture =  SDL_CreateTextureFromSurface(win->windowRenderer, loadingSurface);
+				if (!squareTexture)
+				{
+					SDL_FreeSurface(loadingSurface);
+					printf("ERROR: unable to create a background: %s\n", SDL_GetError());
+					return;
+				}
 			}
 			else
 			{
 				loadingSurface = SDL_LoadBMP("./black_sq.bmp"); //We use the surface as a temp var;
+				if (!loadingSurface)
+				{
+					printf("ERROR: unable to load BMP file: %s\n", SDL_GetError());
+					return;
+				}
 				squareTexture =  SDL_CreateTextureFromSurface(win->windowRenderer, loadingSurface);
+				if (!squareTexture)
+				{
+					SDL_FreeSurface(loadingSurface);
+					printf("ERROR: unable to create a background: %s\n", SDL_GetError());
+					return;
+				}
 			}
+			SDL_FreeSurface(loadingSurface);
 						
-			if ((loadingSurface == NULL) || (squareTexture == NULL))
-			{
-				SDL_FreeSurface(loadingSurface); 
-				SDL_DestroyTexture(squareTexture);
-			}
-			else if (SDL_RenderCopy(win->windowRenderer, squareTexture, NULL, &game->gameGUIBoard[i][j]) != 0)
+			if (SDL_RenderCopy(win->windowRenderer, squareTexture, NULL, &game->gameGUIBoard[i][j]) != 0)
 			{
 				printf("ERROR: unable to draw the square texture: %s\n", SDL_GetError());
 				return;
 			}
+			SDL_DestroyTexture(squareTexture);
 		}
 	}
 }
@@ -96,6 +127,9 @@ void drawGameBoard(chessGameWindow* win, chessGame* game)
 
 bool updateConsoleBoardIfValid(int x, int y, chessGame* game, Widget* currentWidget)
 {
+	if ((!game) || (!currentWidget))
+		return false;
+
 	SDL_Point point;
 	point.x = x;
 	point.y = y;
@@ -111,11 +145,15 @@ bool updateConsoleBoardIfValid(int x, int y, chessGame* game, Widget* currentWid
 			}
 		}
 	}
-	return false;  //not in the board 
+	return false;  //not on the board 
 }
+
 
 void setButtonPlace(int* newX, int* newY, chessGame* game, int locX, int locY, Widget* src)
 {
+	if ((!game) || (!src))
+		return;
+
 	SDL_Point point;
 	point.x = locX;
 	point.y = locY;
@@ -138,14 +176,21 @@ void setButtonPlace(int* newX, int* newY, chessGame* game, int locX, int locY, W
 
 void widgetUpdates(Widget* src, int x, int y, int row, int coll)
 {
+	if (!src)
+		return;
+
 	src->isVisible = true;
 	updateButtonLocation(src, x, y);
 	src->row = row;
 	src->coll = coll;
 }
 
+
 void setBoardPieces(ChessWindow* src, chessGameWindow* data)
 {
+	if ((!src) || (!data))
+		return;
+
 	int kStart=-1, kEnd=-1, kInc=-1;
 
 	for (int s = 6; s <= 37; s++)
@@ -243,6 +288,8 @@ void setBoardPieces(ChessWindow* src, chessGameWindow* data)
 
 bool GUIMove(ChessWindow* src, Widget* currentwidget, SDL_Event* event, chessGameWindow* data)
 {
+	if ((!src) || (!currentwidget) || (!event) || (!data))
+		return false;
 	int newX, newY;
 	int mouseX, mouseY;
 	SDL_GetMouseState(&mouseX, &mouseY);
@@ -254,7 +301,6 @@ bool GUIMove(ChessWindow* src, Widget* currentwidget, SDL_Event* event, chessGam
 	{
 		setButtonPlace(&newX, &newY, src->game, event->button.x, event->button.y, currentwidget);
 		updateButtonLocation(currentwidget, newX, newY);
-		//setBoardPieces(src, data);
 		return true;
 	}
 	else
@@ -270,6 +316,9 @@ bool GUIMove(ChessWindow* src, Widget* currentwidget, SDL_Event* event, chessGam
 
 int checkGuiGameEnd(ChessWindow* src)
 {
+	if (!src)
+		return -1;
+
 	char* message = "";
 	char* buttonName = "";
 	int res = -1;
@@ -345,6 +394,9 @@ int checkGuiGameEnd(ChessWindow* src)
 
 void undoGui(chessGame* src)
 {
+	if (!src)
+		return;
+
 	SPArrayListNode* move = spArrayListGetLast(src->historyArray);
 	spArrayListRemoveLast(src->historyArray);
 	src->gameBoard[move->prev_pos_row][move->prev_pos_col] = move->moving_figure;
