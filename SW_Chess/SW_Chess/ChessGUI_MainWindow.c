@@ -29,6 +29,7 @@ Widget** createMainWindowWidgets(SDL_Renderer* renderer)
 	{
 		if (!widgets[i])
 		{
+			printf("here0 ");
 			printf("ERROR SDL: unable to create the window's buttons\n");
 			for (int j = 0; j < 3; j++)
 			{
