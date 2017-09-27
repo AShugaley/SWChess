@@ -109,8 +109,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="SW_Chess\Button.c" />
-    <ClCompile Include="SW_Chess\ChessGUI_FlowOnePlayer.c" />
-    <ClCompile Include="SW_Chess\ChessGUI_FlowTwoPlayers.c" />
     <ClCompile Include="SW_Chess\ChessGUI_GameWindow.c" />
     <ClCompile Include="SW_Chess\ChessGUI_LoadWindow.c" />
     <ClCompile Include="SW_Chess\ChessGUI_MainWindow.c" />
@@ -133,8 +131,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SW_Chess\Button.h" />
-    <ClInclude Include="SW_Chess\ChessGUI_FlowOnePlayer.h" />
-    <ClInclude Include="SW_Chess\ChessGUI_FlowTwoPlayers.h" />
     <ClInclude Include="SW_Chess\ChessGUI_GameWindow.h" />
     <ClInclude Include="SW_Chess\ChessGUI_LoadWindow.h" />
     <ClInclude Include="SW_Chess\ChessGUI_MainWindow.h" />
@@ -154,7 +150,6 @@
     <ClInclude Include="SW_Chess\SPCommon.h" />
     <ClInclude Include="SW_Chess\SPMiniMax.h" />
     <ClInclude Include="SW_Chess\Widget.h" />
-    <ClInclude Include="unitTest.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

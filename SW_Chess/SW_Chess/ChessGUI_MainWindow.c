@@ -15,7 +15,7 @@ Widget** createMainWindowWidgets(SDL_Renderer* renderer)
 	if (!widgets) 
 		return NULL;
 
-	memset(widgets, 0, 3); 
+	//memset(widgets, 0, 3); 
 
 	SDL_Rect newGame =	{ .x = 125, .y = 70, .h = 80, .w = 200 };
 	SDL_Rect loadGame = { .x = 125, .y = 190, .h = 80, .w = 200 };
@@ -29,7 +29,7 @@ Widget** createMainWindowWidgets(SDL_Renderer* renderer)
 	{
 		if (!widgets[i])
 		{
-			printf("here0 ");
+			printf("here0, %d ", i);
 			printf("ERROR SDL: unable to create the window's buttons\n");
 			for (int j = 0; j < 3; j++)
 			{

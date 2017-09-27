@@ -75,12 +75,6 @@
     <ClCompile Include="SW_Chess\ChessGUI_GameWindow.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SW_Chess\ChessGUI_FlowTwoPlayers.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SW_Chess\ChessGUI_FlowOnePlayer.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="sw_chess\Chess_ArrayList.h">
@@ -96,9 +90,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="sw_chess\Chess_gameUtilsAux.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="unitTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SW_Chess\Chess_def.h">
@@ -144,12 +135,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SW_Chess\Chess_GUIFlowMain.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SW_Chess\ChessGUI_FlowTwoPlayers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SW_Chess\ChessGUI_FlowOnePlayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
