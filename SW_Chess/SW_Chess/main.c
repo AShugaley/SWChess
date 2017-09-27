@@ -16,10 +16,10 @@
 int main(int argc, const char* argv[])
 {
 
-	//if (argc == 2 && strcmp(argv[1], "-g") == 0)
+	if (argc == 2 && strcmp(argv[1], "-g") == 0)
 		return GUIMain();
-	///else
-	//	consoleMode();
+	else
+		consoleMode();
 
 	return 0;
 }
