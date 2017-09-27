@@ -273,8 +273,8 @@ WINDOW_EVENT handleEventLoadWindow(ChessWindow* src, SDL_Event* event)
 						chosenSlot = 2;
 						if (windata->widgets[SLOT1]->isVisible)
 							updateButtonTexture(windata->widgets[SLOT1], "./slot1_active.bmp");
-						if (windata->widgets[SLOT2]->isVisible)
-							updateButtonTexture(windata->widgets[SLOT2], "./slot3_active.bmp");
+						if (windata->widgets[SLOT3]->isVisible)
+							updateButtonTexture(windata->widgets[SLOT3], "./slot3_active.bmp");
 						if (windata->widgets[SLOT4]->isVisible)
 							updateButtonTexture(windata->widgets[SLOT4], "./slot4_active.bmp");
 						if (windata->widgets[SLOT5]->isVisible)
