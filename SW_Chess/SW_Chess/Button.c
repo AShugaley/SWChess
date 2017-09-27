@@ -7,14 +7,20 @@
 Widget* createButton(SDL_Renderer* windowRender, SDL_Rect* location, const char* image, WIDGET_TYPE type)
 {
 	if ((!windowRender) || (!location) || (!image))
-		return NULL; 
-
-    Widget* res = (Widget*) malloc(sizeof(Widget));
+	{
+		printf("here1");
+		return NULL;
+	}
+   
+	Widget* res = (Widget*) malloc(sizeof(Widget));
 	if (!res)
+		printf("here2");
 		return NULL;
 	Button* data = (Button*) malloc(sizeof(Button));
 	if (!data)
 	{
+		printf("here3");
+
 		free(res);
 		return NULL;
 	}
