@@ -33,7 +33,7 @@ GAME_STATUS onePlayerGameFlow(chessGame* src){
             printBoard = false;
             continue;
         }
-        printf("JJ");
+   
         if(cmd.cmd == CHESS_SAVE){
             saveGame(src, input); 
             printBoard = false;
@@ -66,7 +66,6 @@ GAME_STATUS onePlayerGameFlow(chessGame* src){
 
 
 bool humanMove(chessGame* src, CHESSCommand cmd){
-    
     CHESS_GAME_MESSAGE message = setChessMove(src, (cmd.sourceRow -1), getIntFromColumnChar(cmd.sourceColl), (cmd.targertRow -1), getIntFromColumnChar(cmd.targetColl), true, true);
     if(message == CHESS_GAME_SUCCESS){
         return true; /*  perfect! */
@@ -103,26 +102,3 @@ bool compMove(chessGame* src){
 
 
 
-
-
-/*
-todo:
-
-
-
-
-
-
-known bugs:
- 3. MinMax tends to come to a loop - maybe add a randomization factor? Generally it works I think. Give some people a chance to play against it and see if a basic improvment needed.
- 6. save with an empty path does not result in error
- 
- 
-bonuses:
-1. add ROOKING
-2. add CROWNINNG
-3. add GET_ALL_MOVES FUNC - already have printing in format, just add where applicable
-5. add better minmax
-
-
-*/

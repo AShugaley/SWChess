@@ -33,17 +33,20 @@ bool spParserIsValidOrederedPair(const char* currentToken, char* delimiter, CHES
 		return false;
 
 	/* should be an int */
+
+
 	chToken = currentToken[1];
+
 	currentstr[0] = currentToken[1];
 	if (spParserIsInt(currentstr))
 	{
 		if (argPlace == CHESS_SOURCE_MOVE)
 		{
-			command->sourceRow = atoi(&(chToken));
+			command->sourceRow = chToken - '0';
 		}
 		else if (argPlace == CHESS_TARGET_MOVE)
 		{
-			command->targertRow = atoi(&(chToken));
+            command->targertRow =chToken - '0';
 		}
 	}
 	else
@@ -122,6 +125,7 @@ CHESSCommand spParserLine(const char* str)
 
 	else if (!strcmp(currentToken, "move"))
 	{
+        
 		command.cmd = CHESS_MOVE;
 		currentToken = strtok(NULL, delimiter);
         if(!currentToken){
@@ -131,7 +135,6 @@ CHESSCommand spParserLine(const char* str)
 
 
 		command.isValidFirstPair = spParserIsValidOrederedPair(currentToken, delimiter,&command, CHESS_SOURCE_MOVE);
-		
 		currentToken = strtok(NULL, delimiter);
         if(!currentToken){
             command.cmd = CHESS_INVALID_LINE;
@@ -155,7 +158,7 @@ CHESSCommand spParserLine(const char* str)
 	{
 		command.cmd = CHESS_INVALID_LINE;
 	}
-    printf("%d", command.cmd);
+    
 
 
 	/* if there is additional text after the first& second parts  - invalid  */
@@ -166,6 +169,6 @@ CHESSCommand spParserLine(const char* str)
 		command.isValidFirstPair = false;
 		command.isValidSecondPair = false;
 	}
-    printf("%d", command.cmd);
+    
 	return command;
 }

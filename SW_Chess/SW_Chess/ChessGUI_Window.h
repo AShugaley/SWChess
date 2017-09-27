@@ -8,6 +8,15 @@
 #include <stdbool.h>
 #include "Chess_def.h"
 
+/**
+ * ChessGUI_Window.h summary:
+ *
+ * A container that inculdes various basic SDL functions and definitions used in the specific windowTypes .h files
+ *
+ **/
+
+
+/* enum represting the different user event types */
 typedef enum {
 	CHESS_EMPTY_WINDOWEVENT,
 	CHESS_STARTGAME_WINDOWEVENT,
@@ -25,7 +34,7 @@ typedef enum {
 	CHESS_SAVE_QUIT_WINDOWEVENT,
 } WINDOW_EVENT;
 
-
+/* enum represting the different window types */
 typedef enum {
 	CHESS_MAIN_WINDOW,
 	CHESS_GAME_WINDOW,
@@ -44,7 +53,7 @@ struct spwindow_t {
 	chessGame* game;
 };
 
-//NULL safe FUNCTION
+/* destroies a SDL window */
 void destroyWindow(ChessWindow* src);
 
 

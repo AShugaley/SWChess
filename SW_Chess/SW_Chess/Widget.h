@@ -4,6 +4,7 @@
 #include <SDL_video.h>
 #include <stdbool.h>
 
+/* a contanier that holts mosty definition about SDL widgets used in the game */
 
 typedef enum {
 	CHESS_EMPTY_BUTTON,
