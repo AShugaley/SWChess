@@ -103,26 +103,3 @@ bool compMove(chessGame* src){
 
 
 
-
-
-/*
-todo:
-
-
-
-
-
-
-known bugs:
- 3. MinMax tends to come to a loop - maybe add a randomization factor? Generally it works I think. Give some people a chance to play against it and see if a basic improvment needed.
- 6. save with an empty path does not result in error
- 
- 
-bonuses:
-1. add ROOKING
-2. add CROWNINNG
-3. add GET_ALL_MOVES FUNC - already have printing in format, just add where applicable
-5. add better minmax
-
-
-*/

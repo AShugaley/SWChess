@@ -10,7 +10,11 @@
 #include <SDL.h>
 #include <SDL_video.h>
 
-
+/**
+ * Initializes the GUI setup for the game - opens the main screen. 
+ * 
+ * returns nothing
+ **/
 int GUIMain();
 
 

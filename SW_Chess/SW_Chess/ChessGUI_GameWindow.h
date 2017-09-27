@@ -5,6 +5,21 @@
 #include <stdio.h>
 
 
+/**
+ * ChessGUI_GameWindow.h summary:
+ *
+ * A container that inculdes all the functions needed in order to create and manage the Game
+ * game screen (i.e. the actual board screen, where the game is held).
+ *
+ * createMainWindow       - Create a new GameWindow structure.
+ * destroyMainWindow      - Destroies the window element
+ * drawMainWindow         - Draws the visual elements of the window
+ * handleEventMainWindow  - Handles user events.
+ **/
+
+
+
+/* defining a figureIndex, in order to simplfy searching in arrays later on */
 #define BISHOP_WHITE1 6
 #define BISHOP_WHITE2 7
 
@@ -64,9 +79,33 @@ struct chess_gameWindow {
 	int numOfWidgets;
 };
 
+/**
+ * Creats a new SDL window, for the game screen.
+ * @param game - the current chess game
+ *
+ * returns a window
+ */
 ChessWindow* createGameWindow(Uint32 winMode, chessGame* game);
+
+/**
+ * Destroies a gameWindow window, incl all the mem allocations.
+ *
+ * returns nothing
+ */
 void destroyGameWindow(ChessWindow* src);
+
+/**
+ * Draws the visual elements, including the buttons and widgets on a gameWindow window.
+ *
+ * returns nothing
+ */
 void drawGameWindow(ChessWindow* src);
+
+/**
+ * Handeles user events on the gameWindow
+ *
+ * returns enum - event type
+ */
 WINDOW_EVENT handleEventGameWindow(ChessWindow* src, SDL_Event* event);
 
 #endif

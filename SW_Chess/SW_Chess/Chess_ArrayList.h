@@ -197,6 +197,8 @@ int spArrayListMaxCapacity(SPArrayList* src);
  * Undefined value if either src == NULL
  * Otherwise, the number of the elements in the list is returned.
  */
+
+
 int spArrayListSize(SPArrayList* src);
 
 /**
