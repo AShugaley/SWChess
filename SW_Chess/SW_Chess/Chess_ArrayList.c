@@ -6,7 +6,7 @@ SPArrayList* spArrayListCreate(int maxSize)
         return NULL;
     
     SPArrayList * gameMovesList = (SPArrayList*)malloc(sizeof(SPArrayList));
-    if (gameMovesList == NULL)
+    if (!gameMovesList)
         return NULL;
     
 	gameMovesList->elements = (SPArrayListNode*)malloc(maxSize * sizeof(SPArrayListNode));
@@ -19,7 +19,7 @@ SPArrayList* spArrayListCreate(int maxSize)
 SPArrayList* spArrayListCopy(SPArrayList* src)
 {
     int i = 0;
-    if (src == NULL)
+    if (!src)
         return NULL;
     
     SPArrayList * copyList = spArrayListCreate(src->maxSize);
@@ -46,7 +46,7 @@ void spArrayListDestroy(SPArrayList* src)
 
 SP_ARRAY_LIST_MESSAGE spArrayListClear(SPArrayList* src)
 {
-    if (src == NULL)
+    if (!src)
         return SP_ARRAY_LIST_INVALID_ARGUMENT;
     else
     {
@@ -59,7 +59,7 @@ SP_ARRAY_LIST_MESSAGE spArrayListClear(SPArrayList* src)
 SP_ARRAY_LIST_MESSAGE spArrayListAddFirst(SPArrayList* src, int current_pos_row, int current_pos_col, int prev_pos_row, int prev_pos_col, char pre_pos_fig, char moving_fig)
 {
     int i = 0;
-    if (src == NULL)
+    if (!src)
         return SP_ARRAY_LIST_INVALID_ARGUMENT;
     
     if (spArrayListIsFull(src))
@@ -85,7 +85,7 @@ SP_ARRAY_LIST_MESSAGE spArrayListAddFirst(SPArrayList* src, int current_pos_row,
 
 SP_ARRAY_LIST_MESSAGE spArrayListAddLast(SPArrayList* src, int current_pos_row, int current_pos_col, int prev_pos_row, int prev_pos_col, char pre_pos_fig,char moving_fig)
 { 
-    if (src == NULL)
+    if (!src)
         return SP_ARRAY_LIST_INVALID_ARGUMENT;
     
     if (spArrayListIsFull(src))
@@ -106,7 +106,7 @@ SP_ARRAY_LIST_MESSAGE spArrayListAddLast(SPArrayList* src, int current_pos_row, 
 SP_ARRAY_LIST_MESSAGE spArrayListRemoveFirst(SPArrayList* src)
 {
     int i = 0;
-    if (src == NULL)
+    if (!src)
         return SP_ARRAY_LIST_INVALID_ARGUMENT;
     
     if (spArrayListIsEmpty(src))
@@ -127,7 +127,7 @@ SP_ARRAY_LIST_MESSAGE spArrayListRemoveFirst(SPArrayList* src)
 
 SP_ARRAY_LIST_MESSAGE spArrayListRemoveLast(SPArrayList* src)
 {
-    if (src == NULL)
+    if (!src)
         return SP_ARRAY_LIST_INVALID_ARGUMENT;
     
     if (spArrayListIsEmpty(src))
@@ -142,7 +142,7 @@ SP_ARRAY_LIST_MESSAGE spArrayListRemoveLast(SPArrayList* src)
 
 SPArrayListNode* spArrayListGetAt(SPArrayList* src, int index)
 {
-    if ((src == NULL) || (index >= src->actualSize) || (index < 0))
+    if ((!src) || (index >= src->actualSize) || (index < 0))
         return NULL;
     return &(src->elements[index]);
 }
@@ -150,7 +150,7 @@ SPArrayListNode* spArrayListGetAt(SPArrayList* src, int index)
 
 SPArrayListNode* spArrayListGetFirst(SPArrayList* src)
 {
-    if ((src == NULL) || (src->actualSize == 0))
+    if ((!src) || (src->actualSize == 0))
         return NULL;
     return &(src->elements[0]);
 }
@@ -158,7 +158,7 @@ SPArrayListNode* spArrayListGetFirst(SPArrayList* src)
 
 SPArrayListNode* spArrayListGetLast(SPArrayList* src)
 {
-    if ((src == NULL) || (src->actualSize == 0))
+    if ((!src) || (src->actualSize == 0))
         return NULL;			
     return &(src->elements[src->actualSize - 1]);   
 }
@@ -166,7 +166,7 @@ SPArrayListNode* spArrayListGetLast(SPArrayList* src)
 
 int spArrayListMaxCapacity(SPArrayList* src)
 {
-    if (src == NULL)
+    if (!src)
         return SP_ARRAY_LIST_INVALID_ARGUMENT;
     return src->maxSize;
 }
@@ -174,7 +174,7 @@ int spArrayListMaxCapacity(SPArrayList* src)
 
 int spArrayListSize(SPArrayList* src)
 {
-    if (src == NULL)
+    if (!src)
         return SP_ARRAY_LIST_INVALID_ARGUMENT;
     return src->actualSize;
 }
@@ -182,7 +182,7 @@ int spArrayListSize(SPArrayList* src)
 
 bool spArrayListIsFull(SPArrayList* src)
 {
-    if ((src->maxSize > src->actualSize) || (src == NULL))
+    if ((src->maxSize > src->actualSize) || (!src))
         return false;
     return true;
 }
@@ -190,7 +190,7 @@ bool spArrayListIsFull(SPArrayList* src)
 
 bool spArrayListIsEmpty(SPArrayList* src)
 {
-    if ((src->actualSize != 0) || (src == NULL))
+    if ((src->actualSize != 0) || (!src))
         return false;
     return true;
 }

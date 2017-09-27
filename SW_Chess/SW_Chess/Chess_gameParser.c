@@ -90,7 +90,7 @@ CHESSCommand spParserLine(const char* str)
 	
 
 	currentToken = strtok(currentStr, delimiter);	/* curtoken is the first part of the string */
-    if(currentToken == NULL){
+    if(!currentToken){
         command.cmd = CHESS_INVALID_LINE;
         return command;
     }
@@ -124,7 +124,7 @@ CHESSCommand spParserLine(const char* str)
 	{
 		command.cmd = CHESS_MOVE;
 		currentToken = strtok(NULL, delimiter);
-        if(currentToken == NULL){
+        if(!currentToken){
             command.cmd = CHESS_INVALID_LINE;
             return command;
         }
@@ -133,7 +133,7 @@ CHESSCommand spParserLine(const char* str)
 		command.isValidFirstPair = spParserIsValidOrederedPair(currentToken, delimiter,&command, CHESS_SOURCE_MOVE);
 		
 		currentToken = strtok(NULL, delimiter);
-        if(currentToken == NULL){
+        if(!currentToken){
             command.cmd = CHESS_INVALID_LINE;
             return command;
         }
@@ -155,16 +155,17 @@ CHESSCommand spParserLine(const char* str)
 	{
 		command.cmd = CHESS_INVALID_LINE;
 	}
+    printf("%d", command.cmd);
 
 
 	/* if there is additional text after the first& second parts  - invalid  */
 	currentToken = strtok(NULL, delimiter);
-	if (currentToken != NULL)
+	if ((currentToken != NULL) && (command.cmd != CHESS_SAVE))
 	{
 		command.cmd = CHESS_INVALID_LINE;
 		command.isValidFirstPair = false;
 		command.isValidSecondPair = false;
 	}
-
+    printf("%d", command.cmd);
 	return command;
 }

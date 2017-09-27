@@ -19,7 +19,7 @@ chessGame* createChessGame(int historySize, GAME_MODE_PLAYER mode, PLAYER_COLOR 
         return NULL;
     
     chessGame *gameSt = (chessGame *)malloc(sizeof(chessGame));
-    if (gameSt == NULL) /* mem alloc failure */
+    if (!gameSt) /* mem alloc failure */
         return NULL;
     
     gameSt->difficulty = difficulty;
@@ -38,7 +38,7 @@ chessGame* createChessGame(int historySize, GAME_MODE_PLAYER mode, PLAYER_COLOR 
 
 chessGame* copyChessGame(chessGame* src){
     chessGame *gameSt = (chessGame *)malloc(sizeof(chessGame));
-    if (gameSt == NULL) /* mem alloc failure */
+    if (!gameSt) /* mem alloc failure */
         return NULL;
     
     for(int i = 0; i<BOARD_SIZE; i++)
@@ -68,7 +68,7 @@ void destroyChessGame(chessGame* src)
 
 CHESS_GAME_MESSAGE chessConsolePrintBoard(chessGame* src) {
     
-    if (src == NULL)
+    if (!src)
         return CHESS_GAME_INVALID_ARGUMENT;
     
     for (int i = BOARD_SIZE - 1; i>-1; i--) {
@@ -415,7 +415,7 @@ void get_moves(chessGame* src, int row, int col){
 
 void loadGameInPlace(const char* filename, chessGame* src) {
 	chessGame* newGame = loadGame(filename);
-	if (newGame == NULL)
+	if (!newGame)
 		return;
 	for (int i = 0; i<8; i++)
 		for (int j = 0; j<8; j++)
@@ -461,7 +461,7 @@ chessGame* loadGame(const char* filename){
     }
 
     FILE *f = fopen(filename, "r+");
-    if(f == NULL){
+    if(!f){
         printf("Error: File does not exist or cannot be opened\n"); 
         return NULL;
     }
@@ -570,7 +570,7 @@ bool saveGame(chessGame* src, const char* filename){
         filename += 5;					//////////////// +5 ? //////////////
     }
     FILE *file = fopen(filename, "w+");
-    if(file == NULL){
+    if(!file){
         printf("File cannot be created or modified\n");
         return false;
     }

@@ -105,7 +105,7 @@ CHESSSettingCommand spParserSettingLine(const char* str)
 
 	/* if there is additional text after the first& second parts  - invalid  */
 	currentSetToken = strtok(NULL, delimiter);
-	if (currentSetToken != NULL)
+	if ((currentSetToken != NULL) && (command.cmd != CHESS_LOAD))
 	{
 		command.cmd = CHESS_INVALID_SETTING_LINE;
 		command.isValidArg = false;
