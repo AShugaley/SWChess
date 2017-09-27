@@ -38,11 +38,11 @@ Widget** createLoadWindowWidgets(SDL_Renderer* renderer)
 
 	widgets[0] = createButton(renderer, &loadGame,  "./load_inactive.bmp", CHESS_LOADER_INSIDE_BUTTON);
 	widgets[1] = createButton(renderer, &back,	    "./back_active.bmp"  , CHESS_BACK_BUTTON);
-	widgets[2] = createButton(renderer, &slot1,     "./slot1_active.bmp " , CHESS_SLOT1_BUTTON);
-	widgets[3] = createButton(renderer, &slot2,     "./slot2_active.bmp " , CHESS_SLOT2_BUTTON);
-	widgets[4] = createButton(renderer, &slot3,     "./slot3_active.bmp " , CHESS_SLOT3_BUTTON);
-	widgets[5] = createButton(renderer, &slot4,     "./slot4_active.bmp " , CHESS_SLOT4_BUTTON);
-	widgets[6] = createButton(renderer, &slot5,     "./slot5_active.bmp " , CHESS_SLOT5_BUTTON);
+	widgets[2] = createButton(renderer, &slot1,     "./slot1_active.bmp" , CHESS_SLOT1_BUTTON);
+	widgets[3] = createButton(renderer, &slot2,     "./slot2_active.bmp" , CHESS_SLOT2_BUTTON);
+	widgets[4] = createButton(renderer, &slot3,     "./slot3_active.bmp" , CHESS_SLOT3_BUTTON);
+	widgets[5] = createButton(renderer, &slot4,     "./slot4_active.bmp" , CHESS_SLOT4_BUTTON);
+	widgets[6] = createButton(renderer, &slot5,     "./slot5_active.bmp" , CHESS_SLOT5_BUTTON);
 
 	for (int i = 0; i < 7; i++)
 	{
